@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "603274710993",
+    "project_id": "injury-recovery",
+    "storage_bucket": "injury-recovery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:603274710993:android:42b0bd722e7b37b462daf0",
+        "android_client_info": {
+          "package_name": "com.example.injury_recovery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZffkmwvATvARvtzKgAj3PST9Z_iSNJkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
