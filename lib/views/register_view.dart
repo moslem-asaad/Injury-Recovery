@@ -35,7 +35,10 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Register'),),
+        appBar: AppBar(title: const Text('Register'),
+        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: Colors.grey,
+      ),
       body: Column(
         children: [
           TextField(
@@ -45,7 +48,10 @@ class _RegisterViewState extends State<RegisterView> {
             keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(
               hintText: 'Email',
+              hintStyle: TextStyle(color: Colors.grey),
             ),
+            cursorColor: Colors.white,
+            style: TextStyle(color: const Color.fromARGB(255, 217, 217, 217)),
           ),
           TextField(
             controller: _password,
@@ -54,9 +60,12 @@ class _RegisterViewState extends State<RegisterView> {
             autocorrect: false,
             decoration: const InputDecoration(
               hintText: 'Password',
+              hintStyle: TextStyle(color: Colors.grey),
             ),
+            cursorColor: Colors.white,
+            style: TextStyle(color: const Color.fromARGB(255, 217, 217, 217)),
           ),
-          TextButton(
+          TextButton.icon(
             onPressed: () async {
               final email = _email.text;
               final password = _password.text;
@@ -75,7 +84,18 @@ class _RegisterViewState extends State<RegisterView> {
                 await showErrorDialog(context, 'Failed to register');
               }
             },
-            child: const Text('Register'),
+            style: TextButton.styleFrom(
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.teal,
+            disabledBackgroundColor: Colors.grey,
+            textStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+              )
+            ),
+            icon: const Icon(Icons.app_registration),
+            label: const Text('Register'),
+            //child: const Text('Register'),
           ),
           TextButton(onPressed: (){
             Navigator.of(context).pushNamedAndRemoveUntil(loginRoute,
@@ -83,6 +103,15 @@ class _RegisterViewState extends State<RegisterView> {
             );
           },
           child: const Text('Already Registered? Login here!'),
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.teal,
+            disabledBackgroundColor: Colors.grey,
+            textStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+              )
+            ),
           )
         ],
       ),
