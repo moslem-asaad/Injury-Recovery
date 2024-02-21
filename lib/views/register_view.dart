@@ -17,11 +17,13 @@ class _RegisterViewState extends State<RegisterView> {
 
   late final TextEditingController _email;
   late final TextEditingController _password;
+  late final TextEditingController _confermed_password;
 
   @override
   void initState() {
     _email = TextEditingController();
     _password = TextEditingController();
+    _confermed_password = TextEditingController();
     super.initState();
   }
 
@@ -65,15 +67,32 @@ class _RegisterViewState extends State<RegisterView> {
             cursorColor: Colors.white,
             style: TextStyle(color: const Color.fromARGB(255, 217, 217, 217)),
           ),
+          TextField(
+            controller: _confermed_password,
+            obscureText: true,
+            enableSuggestions: false,
+            autocorrect: false,
+            decoration: const InputDecoration(
+              hintText: 'Confirm Password',
+              hintStyle: TextStyle(color: Colors.grey),
+            ),
+            cursorColor: Colors.white,
+            style: TextStyle(color: const Color.fromARGB(255, 217, 217, 217)),
+          ),
           TextButton.icon(
             onPressed: () async {
               final email = _email.text;
               final password = _password.text;
+              final confermed_password = _confermed_password;
               try {
+                if(password == confermed_password){
                 await AuthService.firebase().createUser(email: email, password: password);
                 //final user = AuthService.firebase().currentUser;
                 await AuthService.firebase().sendEmailVerification();
                 Navigator.of(context).pushNamed(verifyEmailRoute);
+                }else{
+                  await showErrorDialog(context, 'Passwords don\'t match');
+                }
               } on WeakPasswordAuthException{
                 await showErrorDialog(context, 'Weak Password');
               } on EmailAlreadyInUseAuthException{
