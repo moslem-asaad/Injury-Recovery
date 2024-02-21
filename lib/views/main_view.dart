@@ -73,19 +73,46 @@ Future<bool> showLogOutDialog(BuildContext context){
     context: context,
     builder:(context){
       return AlertDialog(
-        title: const Text('Sign Out'),
-        content: const Text('Are you sure you want to sign out?'),
+        backgroundColor: Color.fromARGB(147, 71, 71, 71),
+        title: const Text(
+          'Sign Out',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        content: const Text(
+          'Are you sure you want to sign out?',
+           style: TextStyle(
+            fontSize: Checkbox.width,
+            color: Colors.white,
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: (){
               Navigator.of(context).pop(false);
           }, 
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: Color.fromARGB(35, 0, 0, 0),
+              textStyle: const TextStyle(
+                fontWeight: FontWeight.bold,
+                ),
+              ),
             child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: (){
               Navigator.of(context).pop(true);
           }, 
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: Color.fromARGB(35, 0, 0, 0),
+              textStyle: const TextStyle(
+                fontWeight: FontWeight.bold,
+                ),
+              ),
             child: const Text('Log out'),
           ),
         ],
