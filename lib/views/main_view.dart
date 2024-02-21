@@ -33,10 +33,29 @@ class _MainViewState extends State<MainView> {
               }
           },
           itemBuilder: (context) {
-            return const [
+            return[
               PopupMenuItem<MenuAction>(
                 value: MenuAction.logout,
-              child: Text('Logout'),
+                child: RichText(
+                  text: TextSpan(
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    children:const [
+                      WidgetSpan(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 0.5),
+                          child: Icon(Icons.logout),
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' Logout',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               ),
             ];
           },
