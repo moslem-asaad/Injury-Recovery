@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:injury_recovery/firebase_options.dart';
 import 'package:injury_recovery/services/auth/auth_user.dart';
 import 'package:injury_recovery/services/auth/auth_provider.dart';
@@ -115,4 +118,5 @@ class FirebaseAuthProvider implements AuthProvider{
         throw GenericAuthException();
     }
   }
+
 }

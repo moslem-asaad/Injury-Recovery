@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:injury_recovery/services/auth/auth_user.dart';
 
 abstract class AuthProvider{
