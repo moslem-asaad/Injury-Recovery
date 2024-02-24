@@ -5,6 +5,7 @@ import 'package:injury_recovery/views/login_view.dart';
 import 'package:injury_recovery/views/main_view.dart';
 import 'package:injury_recovery/views/register_view.dart';
 import 'package:injury_recovery/views/reset_password_view.dart';
+import 'package:injury_recovery/views/upload_video_view.dart';
 import 'package:injury_recovery/views/verify_email_view.dart';
 
 void main() {
@@ -22,6 +23,7 @@ void main() {
         mainRoute:(context) => const MainView(),
         verifyEmailRoute:(context) => const VerifyEmailView(),
         resetPasswordRout:(context) => const ResetPasswordView(),
+        uploadVideoRout:(context) => const UploadVideoView(),
       },
     ),
   );

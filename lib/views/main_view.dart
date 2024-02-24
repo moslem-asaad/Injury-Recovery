@@ -1,4 +1,5 @@
 
+import 'package:injury_recovery/components/my_button.dart';
 import 'package:injury_recovery/constants/routes.dart';
 import 'package:injury_recovery/enums/menu_action.dart';
 import 'package:injury_recovery/services/auth/auth_service.dart';
@@ -62,7 +63,17 @@ class _MainViewState extends State<MainView> {
           )
         ],
       ),
-      body: const Text('WOOW'),
+      body: Column(
+        children: [
+          const SizedBox(height: 25),
+            MyButton(
+              onPressed: () async {
+                Navigator.of(context).pushNamed(uploadVideoRout);
+              }, 
+              title: 'upload video'
+            ),
+        ],
+      ),
     );
   }
 }
