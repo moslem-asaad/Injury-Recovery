@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injury_recovery/firebase_options.dart';
 import 'package:injury_recovery/services/auth/auth_user.dart';
 import 'package:injury_recovery/services/auth/auth_provider.dart';
@@ -116,6 +117,16 @@ class FirebaseAuthProvider implements AuthProvider{
       }
     } catch (e){
         throw GenericAuthException();
+    }
+  }
+
+  @override
+  UploadTask? uploadFile(String destination, File file) {
+    try{
+      final ref = FirebaseStorage.instance.ref(destination);
+      return ref.putFile(file);
+    }on FirebaseException catch (e){
+      return null;
     }
   }
 

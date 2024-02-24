@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:injury_recovery/components/my_button.dart';
 import 'package:injury_recovery/constants/routes.dart';
 import 'package:injury_recovery/services/auth/auth_service.dart';
+import 'package:injury_recovery/utilities/show_error_dialog.dart';
 
 class UploadVideoView extends StatefulWidget {
   const UploadVideoView({super.key});
@@ -15,7 +16,7 @@ class UploadVideoView extends StatefulWidget {
 }
 
 class _UploadVideoViewState extends State<UploadVideoView> {
-
+  UploadTask? task;
   File? file;
 
   @override
@@ -27,15 +28,6 @@ class _UploadVideoViewState extends State<UploadVideoView> {
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(height: 25),
-            MyButton(
-              onPressed: () async {
-                await AuthService.firebase().logOut();
-                Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
-              }, 
-              title: 'Restart'
-            ),
-
             const SizedBox(height: 50),
             MyButton(
               onPressed: () async{
@@ -58,25 +50,56 @@ class _UploadVideoViewState extends State<UploadVideoView> {
             const SizedBox(height: 25),
             MyButton(
               onPressed: ()async{
-                if(file == null) null;
-                final fileName = getFileName(file);
-                final destination = 'files/$fileName';
-                try{
-                  final ref = FirebaseStorage.instance.ref(destination);
-                  return ref.putFile(file!);
-                }catch(e){
-
-                }
+                uploadFile(file);
             }, 
-              title: 'Upload File'),
+              title: 'Upload File'
+            ),
+            task!=null? showUploadProgress(task!): Container(),
           ],
         ),
       ),
     );
   }
 
+  uploadFile(File? file) async{
+    if(file == null) null;
+    final fileName = getFileName(file);
+    final destination = 'files/$fileName';
+    try{
+      task = AuthService.firebase().uploadFile(destination, file!);
+      setState(() {});
+      final snapshot = await task!.whenComplete(() {});
+      final urlDownload = await snapshot.ref.getDownloadURL();
+      print(urlDownload);
+
+    }catch(e){
+      showErrorDialog(context, 'Error On Uploading the File');
+    }
+  }
+
   String getFileName(File? file){
     if(file!=null) return file!.path.split('/').last;
     else return 'No File Selected';
   }
+
+  showUploadProgress(UploadTask task)=> StreamBuilder<TaskSnapshot>(
+    stream: task.snapshotEvents, 
+    builder: (context, snapshot) {
+      if(snapshot.hasData){
+        final snap = snapshot.data!;
+        final progress = snap.bytesTransferred/snap.totalBytes;
+        final percentage = (progress * 100).toStringAsFixed(2);
+        return Text(
+          '$percentage %',
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white
+          ),
+        );
+      }else{
+        return Container();
+      }
+    }, 
+  );
 }

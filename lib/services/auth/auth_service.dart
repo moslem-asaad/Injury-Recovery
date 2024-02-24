@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injury_recovery/services/auth/auth_provider.dart';
 import 'package:injury_recovery/services/auth/auth_user.dart';
 import 'package:injury_recovery/services/auth/fire_base_auth_provider.dart';
@@ -41,5 +44,10 @@ class AuthService implements AuthProvider{
   @override
   Future<void> resetPassword({required String email}) {
     return provider.resetPassword(email: email);
+  }
+
+  @override
+  UploadTask? uploadFile(String destination, File file) {
+    return provider.uploadFile(destination, file);
   }
 }
