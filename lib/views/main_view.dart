@@ -72,6 +72,13 @@ class _MainViewState extends State<MainView> {
               }, 
               title: 'upload video'
             ),
+
+            MyButton(
+              onPressed:() async{
+                Navigator.of(context).pushNamed(gallaryRout);
+              }, 
+              title: 'Gallary'
+            ),
         ],
       ),
     );
