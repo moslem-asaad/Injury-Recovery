@@ -15,11 +15,11 @@ class StoreData{
     return downloadURL;
   }
 
-  Future<void> saveVideoData(String videoDownloadURL) async{
+  Future<void> saveVideoData(String videoDownloadURL,String videoName) async{
     await _firestore.collection('videos').add({
       'url': videoDownloadURL,
       'timeStamp': FieldValue.serverTimestamp(),
-      'name': 'User Video',
+      'name': videoName,
     });
   }
 }

@@ -1,25 +1,36 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:injury_recovery/components/my_button.dart';
-import 'package:injury_recovery/services/store/store_date.dart';
 import 'package:video_player/video_player.dart';
 
-class UploadVideoView extends StatefulWidget {
-  const UploadVideoView({super.key});
+class VideoPlayerPreview extends StatefulWidget {
+  const VideoPlayerPreview({
+    super.key,
+    required this.controller,
+    required this.videoURL,
+  });
+
+  final VideoPlayerController? controller;
+  final String? videoURL;
 
   @override
-  State<UploadVideoView> createState() => _UploadVideoViewState();
+  State<VideoPlayerPreview> createState() => _VideoPlayerPreviewState();
 }
 
-class _UploadVideoViewState extends State<UploadVideoView> {
+class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
   String? _videoURL;
   VideoPlayerController? _controller;
   String? _downloadURL;
   bool _showVideoButtons = false;
   Timer? _timer;
+
+  @override
+  void initState() {
+    _controller = widget.controller;
+    _videoURL = widget.videoURL;
+    //_controller!.initialize().then((_) => setState(() {}));
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -31,10 +42,6 @@ class _UploadVideoViewState extends State<UploadVideoView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const Text('Upload Video'),
-      ),
       body: SingleChildScrollView(
         child: Container(
           child: ConstrainedBox(
@@ -50,41 +57,20 @@ class _UploadVideoViewState extends State<UploadVideoView> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _pickVideo,
-        child: const Icon(Icons.video_library),
-      ),
     );
-  }
-
-  void _pickVideo() async {
-    final picker = ImagePicker();
-    XFile? videoFile;
-    try {
-      videoFile = await picker.pickVideo(source: ImageSource.gallery);
-      _videoURL = videoFile!.path;
-    } catch (e) {
-      print(e.toString());
-    }
-    _initializeVideoPlayer();
-  }
-
-  void _initializeVideoPlayer() {
-    _controller = VideoPlayerController.file(File(_videoURL!))
-      ..initialize().then((_) {
-        setState(() {});
-        _controller!.play();
-    });
   }
 
   Widget _videoPlayerPreview() {
     if (_controller != null) {
-      double videoWidth = _controller!.value.size.width;
-      double videoHeight = _controller!.value.size.height;
+      /*double videoWidth = _controller!.value.size.width ?? 0;
+      double videoHeight = _controller!.value.size.height ?? 0;
       double _aspectRatio = videoWidth / videoHeight;
-      if (_aspectRatio < 1) {
-        _aspectRatio = _aspectRatio * 2;
+      if (_aspectRatio < 0) {
+        _aspectRatio = 0;
       }
+      else if (_aspectRatio < 1) {
+        _aspectRatio = _aspectRatio * 2;
+      }*/
       return Column(
         children: [
           GestureDetector(
@@ -94,7 +80,7 @@ class _UploadVideoViewState extends State<UploadVideoView> {
             child: Stack(
               children: [
                 AspectRatio(
-                  aspectRatio: _aspectRatio,
+                  aspectRatio: _controller!.value.aspectRatio,
                   child: VideoPlayer(_controller!),
                 ),
                 _pauseVideo(),
@@ -103,10 +89,6 @@ class _UploadVideoViewState extends State<UploadVideoView> {
               ],
             ),
           ),
-          MyButton(
-            onPressed: _uploadVideo,
-            title: ('Upload'),
-          ),
         ],
       );
     } else {
@@ -114,7 +96,6 @@ class _UploadVideoViewState extends State<UploadVideoView> {
     }
   }
 
-  // Function to handle tap event on the video player
   void _handleTap() {
     setState(() {
       _showVideoButtons = !_showVideoButtons;
@@ -126,7 +107,6 @@ class _UploadVideoViewState extends State<UploadVideoView> {
     }
   }
 
-  // Start the timer
   void _startTimer() {
     _timer?.cancel(); // Cancel the timer if it's already running
     _timer = Timer(Duration(seconds: 4), () {
@@ -209,33 +189,4 @@ class _UploadVideoViewState extends State<UploadVideoView> {
       ),
     );
   }
-
-  void _uploadVideo() async {
-    _downloadURL = await StoreData().uploadVideo(_videoURL!);
-    await StoreData()
-        .saveVideoData(_downloadURL!, _videoURL!.toString().split('/').last);
-    setState(() {
-      _videoURL = null;
-    });
-  }
-
-  showUploadProgress(UploadTask task) => StreamBuilder<TaskSnapshot>(
-        stream: task.snapshotEvents,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final snap = snapshot.data!;
-            final progress = snap.bytesTransferred / snap.totalBytes;
-            final percentage = (progress * 100).toStringAsFixed(2);
-            return Text(
-              '$percentage %',
-              style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            );
-          } else {
-            return Container();
-          }
-        },
-      );
 }
