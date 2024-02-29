@@ -1,7 +1,12 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:injury_recovery/components/menu_button.dart';
+import 'package:injury_recovery/constants/routes.dart';
+import 'package:injury_recovery/enums/menu_action.dart';
+import 'package:injury_recovery/services/auth/auth_service.dart';
 import 'package:injury_recovery/utilities/show_error_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:injury_recovery/views/main_view.dart';
 import 'package:injury_recovery/views/play_video_view.dart';
 
 class GallaryView extends StatefulWidget {
@@ -23,9 +28,7 @@ class _GallaryViewState extends State<GallaryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Gallary'),
-      ),
+      appBar: const MenuButton(title: 'Gallary').bar(context),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(25.0),

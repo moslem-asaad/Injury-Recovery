@@ -13,6 +13,7 @@ class PlayVideoView extends StatefulWidget {
 
 class _PlayVideoViewState extends State<PlayVideoView> {
   VideoPlayerController? _controller;
+  
   @override
   void dispose() {
     _controller!.dispose();

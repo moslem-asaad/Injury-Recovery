@@ -1,4 +1,5 @@
 
+import 'package:injury_recovery/components/menu_button.dart';
 import 'package:injury_recovery/components/my_button.dart';
 import 'package:injury_recovery/constants/routes.dart';
 import 'package:injury_recovery/enums/menu_action.dart';
@@ -16,53 +17,8 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Main UI'),
-        actions: [
-          PopupMenuButton<MenuAction>(
-            onSelected:(value) async {
-              switch (value){
-                case MenuAction.logout:
-                  final shouldLogout = await showLogOutDialog(context);
-                  if (shouldLogout){
-                    await AuthService.firebase().logOut();
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      loginRoute, 
-                      (_) => false
-                    );
-                  }
-              }
-          },
-          itemBuilder: (context) {
-            return[
-              PopupMenuItem<MenuAction>(
-                value: MenuAction.logout,
-                child: RichText(
-                  text: TextSpan(
-                    style: Theme.of(context).textTheme.bodyLarge,
-                    children:const [
-                      WidgetSpan(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 0.5),
-                          child: Icon(Icons.logout),
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Logout',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ),
-            ];
-          },
-          )
-        ],
-      ),
+      backgroundColor: Colors.grey[300],
+      appBar: MenuButton(title: 'Main UI').bar(context),
       body: Column(
         children: [
           const SizedBox(height: 25),
