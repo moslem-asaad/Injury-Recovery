@@ -20,6 +20,8 @@ class _UploadVideoViewState extends State<UploadVideoView> {
   String? _downloadURL;
   bool _showVideoButtons = false;
   Timer? _timer;
+  String? _videoName;
+  double _uploadProgress = 0;
 
   @override
   void dispose() {
@@ -74,7 +76,7 @@ class _UploadVideoViewState extends State<UploadVideoView> {
       ..initialize().then((_) {
         setState(() {});
         _controller!.play();
-    });
+      });
   }
 
   Widget _videoPlayerPreview() {
@@ -107,6 +109,15 @@ class _UploadVideoViewState extends State<UploadVideoView> {
             onPressed: _uploadVideo,
             title: ('Upload'),
           ),
+          SizedBox(height: 20),
+          LinearProgressIndicator(
+            value: _uploadProgress / 100,
+            minHeight: 10,
+            backgroundColor: Colors.grey,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+          ),
+          SizedBox(height: 10),
+          Text('${_uploadProgress.toStringAsFixed(2)}% Uploaded'),
         ],
       );
     } else {
@@ -211,12 +222,48 @@ class _UploadVideoViewState extends State<UploadVideoView> {
   }
 
   void _uploadVideo() async {
-    _downloadURL = await StoreData().uploadVideo(_videoURL!);
-    await StoreData()
-        .saveVideoData(_downloadURL!, _videoURL!.toString().split('/').last);
-    setState(() {
-      _videoURL = null;
-    });
+    _videoName = await _askForVideoName();
+    if (_videoName != null && _videoURL != null) {
+      setState(() {
+        _uploadProgress = 0; // Reset progress before starting upload
+      });
+      _downloadURL = await StoreData().uploadVideo(_videoURL!, (progress) {
+        setState(() {
+          _uploadProgress = progress * 100; // Convert to percentage
+        });
+      });
+      //_downloadURL = await StoreData().uploadVideo(_videoURL!);
+      await StoreData().saveVideoData(_downloadURL!, _videoName!);
+      setState(() {
+        //_controller!.pause();
+        //_videoURL = null;
+      });
+    }
+  }
+
+  Future<String?> _askForVideoName() async {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Enter Video Name'),
+          content: TextField(
+            onChanged: (value) {
+              _videoName = value;
+            },
+            decoration: InputDecoration(hintText: 'Video Name'),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(_videoName);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   showUploadProgress(UploadTask task) => StreamBuilder<TaskSnapshot>(

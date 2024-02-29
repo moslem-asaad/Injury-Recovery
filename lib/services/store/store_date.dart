@@ -8,9 +8,19 @@ final FirebaseStorage _storage = FirebaseStorage.instance;
 final FirebaseFirestore _firestore = FirebaseFirestore.instance; 
 
 class StoreData{
-  Future<String> uploadVideo (String videoURL) async{
+  Future<String> uploadVideo (String videoURL,Function(double)? onProgress) async{
     Reference ref = _storage.ref().child('/videos/${DateTime.now()}.mp4');
-    await ref.putFile(File(videoURL));
+    UploadTask uploadTask = ref.putFile(File(videoURL));
+    
+    uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+      double progress = snapshot.bytesTransferred / snapshot.totalBytes;
+      onProgress?.call(progress);
+    }, onError: (error) {
+      // Handle upload error
+      print('Error uploading video: $error');
+    });
+    await uploadTask;
+    //await ref.putFile(File(videoURL));
     String downloadURL = await ref.getDownloadURL();
     return downloadURL;
   }
