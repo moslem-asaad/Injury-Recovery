@@ -44,6 +44,8 @@ dependencies:
   path_provider: ^2.1.2
   image_picker: ^1.0.7
   video_player: ^2.8.2
+  native_device_orientation: ^2.0.3
+  auto_orientation: ^2.3.1
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +63,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - images/ball_cure.png
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

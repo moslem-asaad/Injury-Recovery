@@ -38,18 +38,16 @@ class _PlayVideoViewState extends State<PlayVideoView> {
       body:  SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width,
-                  maxHeight: MediaQuery.of(context).size.height,
-                ),
-                child: Center(
-                  child: VideoPlayerPreview(controller: _controller,videoURL: widget.videoURL,),
-                ),
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width,
+                maxHeight: MediaQuery.of(context).size.height,
+              ),
+              child: Center(
+                child: VideoPlayerPreview(controller: _controller,videoURL: widget.videoURL,),
               ),
             ),
-            Text(widget.videoName)
+            
           ],
         ),
       ),

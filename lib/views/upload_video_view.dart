@@ -52,9 +52,26 @@ class _UploadVideoViewState extends State<UploadVideoView> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _pickVideo,
-        child: const Icon(Icons.video_library),
+      floatingActionButton: Column(
+        children: [
+          const SizedBox(
+            height: 700,
+          ),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius:
+                  BorderRadius.circular(8.0), // Adjust the radius as needed
+              color: const Color.fromARGB(255, 237, 237, 237), // or any other color you want
+            ),
+            child: TextButton.icon(
+              onPressed: _pickVideo,
+              icon: const Icon(Icons.video_library), // Icon color
+              label: const Text(
+                'Pick Video',
+              ), // Text color
+            ),
+          )
+        ],
       ),
     );
   }

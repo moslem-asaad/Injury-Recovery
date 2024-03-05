@@ -83,7 +83,7 @@ class _RegisterViewState extends State<RegisterView> {
             onPressed: () async {
               final email = _email.text;
               final password = _password.text;
-              final confermed_password = _confermed_password;
+              final confermed_password = _confermed_password.text;
               try {
                 if(password == confermed_password){
                 await AuthService.firebase().createUser(email: email, password: password);
