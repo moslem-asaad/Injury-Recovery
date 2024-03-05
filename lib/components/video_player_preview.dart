@@ -63,69 +63,33 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
     if (_controller != null) {
       return Column(
         children: [
-          SizedBox(
-            height: 300,
-            child: VideoPlayer(_controller!),
-          ),
-          Stack(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _pauseVideo(),
-                  _showProgressTime(),
-                  _videoProgress(),
-                  _showEndTime(),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  _fullScreenMode(),
-                ],
-              ),
-            ],
-          )
-        ],
-      );
-    } else {
-      return const CircularProgressIndicator();
-    }
-  }
-
-  /*Widget _videoPlayerPreview() {
-    if (_controller != null) {
-      /*double videoWidth = _controller!.value.size.width ?? 0;
-      double videoHeight = _controller!.value.size.height ?? 0;
-      double _aspectRatio = videoWidth / videoHeight;
-      if (_aspectRatio < 0) {
-        _aspectRatio = 0;
-      }
-      else if (_aspectRatio < 1) {
-        _aspectRatio = _aspectRatio * 2;
-      }*/
-      return Column(
-        children: [
           GestureDetector(
             onTap: () {
               _handleTap();
             },
             child: Stack(
               children: [
-                AspectRatio(
-                  aspectRatio: _controller!.value.aspectRatio,
-                  child: VideoPlayer(_controller!),
-                ),
-                _pauseVideo(),
-                _restartVideo(),
-                if (_showVideoButtons) _videoProgress(),
+                SizedBox(
+                height: 300,
+                child: VideoPlayer(_controller!),),
               ],
             ),
+          ),
+          Row(
+            children: [
+              _pauseVideo(),
+              _showProgressTime(),
+              _videoProgress(),
+              _showEndTime(),
+              _fullScreenMode(),
+            ],
           ),
         ],
       );
     } else {
       return const CircularProgressIndicator();
     }
-  }*/
+  }
 
   void _handleTap() {
     setState(() {
@@ -153,7 +117,7 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
       icon: Icon(
         _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
         size: 25,
-        color: Colors.white,
+        color: Colors.black,
       ),
       onPressed: () {
         setState(() {
@@ -177,7 +141,7 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
           icon: const Icon(
             Icons.replay,
             size: 24,
-            color: Colors.white,
+            color: Colors.black,
           ),
           onPressed: () {
             setState(() {
@@ -190,7 +154,6 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
     );
   }
 
-  // Function to build the custom video controls widget
   Widget _videoProgress() {
     return Expanded(
       child: SizedBox(
@@ -222,7 +185,7 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
         return Text(
           _videoDuration(value.position),
           style: const TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontSize: 14,
           ),
         );
@@ -234,7 +197,7 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
     return Text(
       _videoDuration(_controller!.value.duration),
       style: const TextStyle(
-        color: Colors.white,
+        color: Colors.black,
         fontSize: 14,
       ),
     );
@@ -253,18 +216,16 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
   }
 
   Widget _fullScreenMode(){
-    return Positioned(
-      child: IconButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder:(context) => LandScapeView(controller: _controller),)
-          );
-        },
-        icon: const Icon(
-          Icons.fullscreen,
-          color: Colors.white,
-        ),
-      )
+    return IconButton(
+      onPressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder:(context) => LandScapeView(controller: _controller),)
+        );
+      },
+      icon: const Icon(
+        Icons.fullscreen,
+        color: Colors.black,
+      ),
     );
   }
 }

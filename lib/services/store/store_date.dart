@@ -26,7 +26,8 @@ class StoreData {
   }
 
   Future<void> saveVideoData(String videoDownloadURL, String videoName) async {
-    DocumentSnapshot snapshot = await _firestore.collection('counters').doc('videos').get();
+    DocumentSnapshot snapshot =
+        await _firestore.collection('counters').doc('videos').get();
     int videoCount = snapshot.exists ? snapshot['videoCount'] : 1;
     await _firestore.collection('videos').add({
       'url': videoDownloadURL,
@@ -36,15 +37,14 @@ class StoreData {
     });
 
     await _firestore.collection('counters').doc('videos').set({
-    'videoCount': videoCount + 1,
+      'videoCount': videoCount + 1,
     });
-
   }
 
   Future<int> getCollectionSize(String collectionName) async {
     try {
       QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection(collectionName).get();
+          await _firestore.collection(collectionName).get();
       if (snapshot != null) {
         return snapshot.size;
       } else {
@@ -53,6 +53,22 @@ class StoreData {
     } catch (error) {
       print('Error fetching collection size: $error');
       return 0;
+    }
+  }
+
+  Future<DocumentSnapshot?> getVideoById(int videoId) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('videos')
+        .where('id', isEqualTo: videoId)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      // Return the first document found (assuming IDs are unique)
+      return querySnapshot.docs.first;
+    } else {
+      // Video not found
+      print('Not Found!! ${videoId}!!!');
+      return null;
     }
   }
 }

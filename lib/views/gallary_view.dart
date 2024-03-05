@@ -100,6 +100,7 @@ class _GallaryViewState extends State<GallaryView> {
                                             return PlayVideoView(
                                               videoName: video['name'],
                                               videoURL: video['url'],
+                                              videoID: video['id'],
                                             );
                                           },
                                         ),

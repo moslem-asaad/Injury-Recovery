@@ -1,11 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:injury_recovery/components/video_player_preview.dart';
+import 'package:injury_recovery/services/store/store_date.dart';
 import 'package:video_player/video_player.dart';
 
 class PlayVideoView extends StatefulWidget {
-  const PlayVideoView({super.key, required this.videoURL, required this.videoName});
+  const PlayVideoView(
+      {super.key,
+      required this.videoURL,
+      required this.videoName,
+      required this.videoID});
   final String videoURL;
   final String videoName;
+  final int videoID;
 
   @override
   State<PlayVideoView> createState() => _PlayVideoViewState();
@@ -13,7 +20,7 @@ class PlayVideoView extends StatefulWidget {
 
 class _PlayVideoViewState extends State<PlayVideoView> {
   VideoPlayerController? _controller;
-  
+
   @override
   void dispose() {
     _controller!.dispose();
@@ -21,7 +28,7 @@ class _PlayVideoViewState extends State<PlayVideoView> {
   }
 
   @override
-  void initState(){
+  void initState() {
     _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoURL));
     //_controller.setLooping(true);
     _controller!.initialize().then((_) => setState(() {}));
@@ -29,30 +36,103 @@ class _PlayVideoViewState extends State<PlayVideoView> {
     _controller!.play();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Play Video'),
       ),
-      body:  SingleChildScrollView(
+      //backgroundColor: Colors.grey[200],
+      body: SingleChildScrollView(
         child: Column(
           children: [
+            Container(
+              alignment: Alignment.topLeft,
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  color: Colors.grey[200]),
+              height: 40,
+              child: Row(
+                children: [
+                  Container(
+                    width: 204,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: Border.all(color: Colors.grey[300]!),
+                    ),
+                    height: 40,
+                    child: Text(
+                      ' ${widget.videoName} video ',
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  Container(
+                    width: 205,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: Border.all(color: Colors.grey[300]!),
+                    ),
+                    child: TextButton.icon(
+                      onPressed: () {
+                        _playNextVideo();
+                      },
+                      icon: const Icon(
+                        Icons.navigate_next,
+                        color: Colors.black,
+                        size: 25,
+                      ),
+                      label: const Text(
+                        'Next Video',
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             ConstrainedBox(
               constraints: BoxConstraints(
                 maxWidth: MediaQuery.of(context).size.width,
                 maxHeight: MediaQuery.of(context).size.height,
               ),
               child: Center(
-                child: VideoPlayerPreview(controller: _controller,videoURL: widget.videoURL,),
+                child: VideoPlayerPreview(
+                  controller: _controller,
+                  videoURL: widget.videoURL,
+                ),
               ),
             ),
-            
           ],
         ),
       ),
     );
   }
 
-  
+  _playNextVideo() async {
+    int next_id = widget.videoID + 1;
+    DocumentSnapshot? videoSnapshot =
+        await StoreData().getVideoById(next_id);
+    videoSnapshot ??= await StoreData().getVideoById(1);
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) {
+          return PlayVideoView(
+            videoName: videoSnapshot!['name'],
+            videoURL: videoSnapshot!['url'],
+            videoID: videoSnapshot!['id'],
+          );
+        },
+      ),
+    );
+  }
 }
