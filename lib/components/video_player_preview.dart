@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:injury_recovery/views/land_scape_view.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerPreview extends StatefulWidget {
@@ -43,17 +44,15 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Container(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width,
-              maxHeight: MediaQuery.of(context).size.height,
-            ),
-            child: Center(
-              child: _videoURL != null
-                  ? _videoPlayerPreview()
-                  : const Text('No Video is Selected'),
-            ),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height,
+          ),
+          child: Center(
+            child: _videoURL != null
+                ? _videoPlayerPreview()
+                : const Text('No Video is Selected'),
           ),
         ),
       ),
@@ -61,6 +60,38 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
   }
 
   Widget _videoPlayerPreview() {
+    if (_controller != null) {
+      return Column(
+        children: [
+          SizedBox(
+            height: 300,
+            child: VideoPlayer(_controller!),
+          ),
+          Stack(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _pauseVideo(),
+                  _showProgressTime(),
+                  _videoProgress(),
+                  _showEndTime(),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  _fullScreenMode(),
+                ],
+              ),
+            ],
+          )
+        ],
+      );
+    } else {
+      return const CircularProgressIndicator();
+    }
+  }
+
+  /*Widget _videoPlayerPreview() {
     if (_controller != null) {
       /*double videoWidth = _controller!.value.size.width ?? 0;
       double videoHeight = _controller!.value.size.height ?? 0;
@@ -94,7 +125,7 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
     } else {
       return const CircularProgressIndicator();
     }
-  }
+  }*/
 
   void _handleTap() {
     setState(() {
@@ -118,30 +149,21 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
   }
 
   Widget _pauseVideo() {
-    return Visibility(
-      visible: _showVideoButtons,
-      child: Positioned(
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        child: IconButton(
-          icon: Icon(
-            _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
-            size: 48,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            setState(() {
-              if (_controller!.value.isPlaying) {
-                _controller!.pause();
-              } else {
-                _controller!.play();
-              }
-            });
-          },
-        ),
+    return IconButton(
+      icon: Icon(
+        _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
+        size: 25,
+        color: Colors.white,
       ),
+      onPressed: () {
+        setState(() {
+          if (_controller!.value.isPlaying) {
+            _controller!.pause();
+          } else {
+            _controller!.play();
+          }
+        });
+      },
     );
   }
 
@@ -170,23 +192,79 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
 
   // Function to build the custom video controls widget
   Widget _videoProgress() {
-    return Positioned(
-      bottom: 0,
-      left: 0,
-      right: 0,
-      child: Container(
-        color: Colors.black.withOpacity(0.5),
-        padding: EdgeInsets.symmetric(vertical: 8),
-        child: VideoProgressIndicator(
-          _controller!,
-          allowScrubbing: true, // Allow scrubbing
-          colors: const VideoProgressColors(
-            playedColor: Colors.red,
-            bufferedColor: Colors.white,
-            backgroundColor: Colors.grey,
+    return Expanded(
+      child: SizedBox(
+        height: 10,
+        child: Container(
+          color: Colors.transparent,
+          child: VideoProgressIndicator(
+            _controller!,
+            allowScrubbing: true, // Allow scrubbing
+            colors: const VideoProgressColors(
+              playedColor: Colors.red,
+              bufferedColor: Colors.white,
+              backgroundColor: Colors.grey,
+            ),
+            padding: const EdgeInsets.symmetric(
+              vertical: 0,
+              horizontal: 20,
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _showProgressTime() {
+    return ValueListenableBuilder(
+      valueListenable: _controller!,
+      builder: (context, value, child) {
+        return Text(
+          _videoDuration(value.position),
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _showEndTime() {
+    return Text(
+      _videoDuration(_controller!.value.duration),
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 14,
+      ),
+    );
+  }
+
+  String _videoDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+    return [
+      if (duration.inHours > 0) hours,
+      minutes,
+      seconds,
+    ].join(':');
+  }
+
+  Widget _fullScreenMode(){
+    return Positioned(
+      child: IconButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder:(context) => LandScapeView(controller: _controller),)
+          );
+        },
+        icon: const Icon(
+          Icons.fullscreen,
+          color: Colors.white,
+        ),
+      )
     );
   }
 }
