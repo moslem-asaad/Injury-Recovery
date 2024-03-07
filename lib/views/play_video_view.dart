@@ -58,10 +58,10 @@ class _PlayVideoViewState extends State<PlayVideoView> {
                 children: [
                   Container(
                     width: 204,
-                    alignment: Alignment.center,
+                    alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
-                      border: Border.all(color: Colors.grey[300]!),
+                      border: Border.all(color: Colors.grey[100]!),
                     ),
                     height: 40,
                     child: Text(
@@ -74,10 +74,13 @@ class _PlayVideoViewState extends State<PlayVideoView> {
                   ),
                   const Spacer(),
                   Container(
-                    width: 205,
+                    alignment: Alignment.centerLeft,
+                    width: 130,
+                    height: 200,
                     decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      border: Border.all(color: Colors.grey[300]!),
+                      color: Colors.grey[500],
+                      border: Border.all(color: Colors.grey[200]!),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     child: TextButton.icon(
                       onPressed: () {
@@ -86,12 +89,12 @@ class _PlayVideoViewState extends State<PlayVideoView> {
                       icon: const Icon(
                         Icons.navigate_next,
                         color: Colors.black,
-                        size: 25,
+                        size: 17,
                       ),
                       label: const Text(
                         'Next Video',
                         style: TextStyle(
-                          fontSize: 17,
+                          fontSize: 15,
                           color: Colors.black,
                         ),
                       ),

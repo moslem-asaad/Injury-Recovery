@@ -67,17 +67,22 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
             onTap: () {
               _handleTap();
             },
+            onDoubleTap: (){
+              _onDoubleTap();
+            },
             child: Stack(
               children: [
                 SizedBox(
-                height: 300,
-                child: VideoPlayer(_controller!),),
+                  width: _controller!.value.size.width / 2,
+                  height: 300,
+                  child: VideoPlayer(_controller!),
+                ),
               ],
             ),
           ),
           Row(
             children: [
-              _pauseVideo(),
+              _pauseVideo(25),
               _showProgressTime(),
               _videoProgress(),
               _showEndTime(),
@@ -89,6 +94,12 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
     } else {
       return const CircularProgressIndicator();
     }
+  }
+
+  void _onDoubleTap() {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => LandScapeView(controller: _controller),
+    ));
   }
 
   void _handleTap() {
@@ -112,11 +123,11 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
     });
   }
 
-  Widget _pauseVideo() {
+  Widget _pauseVideo(double button_size) {
     return IconButton(
       icon: Icon(
         _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
-        size: 25,
+        size: button_size,
         color: Colors.black,
       ),
       onPressed: () {
@@ -215,12 +226,12 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
     ].join(':');
   }
 
-  Widget _fullScreenMode(){
+  Widget _fullScreenMode() {
     return IconButton(
       onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder:(context) => LandScapeView(controller: _controller),)
-        );
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => LandScapeView(controller: _controller),
+        ));
       },
       icon: const Icon(
         Icons.fullscreen,

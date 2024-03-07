@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -13,16 +12,20 @@ class LandScapeView extends StatefulWidget {
 }
 
 class _LandScapeViewState extends State<LandScapeView> {
-
   bool _showVideoButtons = false;
-  Future _landscapeMode() async{
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
+
+  Future _landscapeMode() async {
+    double hight = widget.controller!.value.size.height;
+    double width = widget.controller!.value.size.width;
+    if (hight <= width) {
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+    }
   }
 
-  Future _setAllOrientation() async{
+  Future _setAllOrientation() async {
     await SystemChrome.setPreferredOrientations(DeviceOrientation.values);
   }
 
@@ -38,45 +41,88 @@ class _LandScapeViewState extends State<LandScapeView> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    double aspectRatio = widget.controller!.value.aspectRatio;
+    double videoWidth = screenWidth;
+    double videoHeight = screenWidth / aspectRatio;
+
+    if (videoHeight > screenHeight) {
+      videoHeight = screenHeight;
+      videoWidth = screenHeight * aspectRatio;
+    }
+
+    double hight = widget.controller!.value.size.height;
+    double width = widget.controller!.value.size.width;
     return Scaffold(
-      body: GestureDetector(
-        onTap: (){
-          _handleTap();
-        },
-        child: Stack(
-          children: [
-            VideoPlayer(widget.controller!),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Row(
+      backgroundColor: Colors.black,
+        body: GestureDetector(
+      onTap: () {
+        _handleTap();
+      },
+      onDoubleTap: (){
+        _onDoubleTap();
+      },
+      child: Column(
+        children: [
+          SizedBox(height: (screenHeight - videoHeight)/2,),
+          Center(
+            child: Container(
+              color: Colors.black,
+              height: screenHeight - (screenHeight - videoHeight)/2,
+              child: Stack(
                 children: [
-                  _pauseVideo(),
-                  _showProgressTime(),
-                  _videoProgress(),
-                  _showEndTime(),
-                  _fullScreenMode(),
-                  const SizedBox(width: 10,),
+                  SizedBox(
+                    width: videoWidth,
+                    height: videoHeight,
+                    child: AspectRatio(
+                      aspectRatio: aspectRatio,
+                      child: VideoPlayer(widget.controller!),
+                    ),
+                  ),
+                  Center(
+                    child: _pauseVideo(60),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Row(
+                      children: [
+                        _pauseVideo(25),
+                        _showProgressTime(),
+                        _videoProgress(),
+                        _showEndTime(),
+                        _fullScreenMode(),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
-            )
-          ],
-        ),
-      ) 
-    );
+            ),
+          ),
+        ],
+      ),
+    ));
   }
 
-  Widget _pauseVideo() {
+  void _onDoubleTap() {
+    Navigator.pop(context);
+  }
+
+  Widget _pauseVideo(double button_size) {
     return Visibility(
       visible: _showVideoButtons,
       child: IconButton(
         icon: Icon(
           widget.controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
-          size: 25,
+          size: button_size,
           color: Colors.white,
         ),
         onPressed: () {
@@ -168,7 +214,7 @@ class _LandScapeViewState extends State<LandScapeView> {
     ].join(':');
   }
 
-  Widget _fullScreenMode(){
+  Widget _fullScreenMode() {
     return Visibility(
       visible: _showVideoButtons,
       child: IconButton(
