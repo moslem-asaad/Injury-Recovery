@@ -1,4 +1,3 @@
-import 'package:injury_recovery/components/my_button.dart';
 import 'package:injury_recovery/constants/routes.dart';
 import 'package:injury_recovery/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';

@@ -36,6 +36,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context){
+    double screen_height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.grey[300],
       body: SafeArea(
@@ -43,7 +44,7 @@ class _LoginViewState extends State<LoginView> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const SizedBox(height: 25),
+                SizedBox(height: screen_height/32),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
@@ -51,7 +52,7 @@ class _LoginViewState extends State<LoginView> {
                     width: 200,
                   ),
                 ),
-                const SizedBox(height: 50),
+                SizedBox(height: screen_height/16.5),
                 
                 Text(
                   'Hello Again',
@@ -61,7 +62,7 @@ class _LoginViewState extends State<LoginView> {
                     fontWeight: FontWeight.bold, 
                   ),
                 ),
-                const SizedBox(height: 50),
+                SizedBox(height: screen_height/16.5),
 
                 Text(
                   'Welcome back, you\'v been missed!',
@@ -71,7 +72,7 @@ class _LoginViewState extends State<LoginView> {
                   ),
                 ),
             
-                const SizedBox(height: 25),
+                SizedBox(height: screen_height/32),
             
                 // user name textfield
                 MyTextField(
@@ -83,7 +84,7 @@ class _LoginViewState extends State<LoginView> {
                   keyboardType: TextInputType.emailAddress,
                 ),
             
-                const SizedBox(height: 10),
+                SizedBox(height: screen_height/82),
             
                 // password text field
                 MyTextField(
@@ -94,9 +95,7 @@ class _LoginViewState extends State<LoginView> {
                   autocorrect: false,
                   keyboardType: TextInputType.visiblePassword,
                 ),
-            
-                //const SizedBox(height: 5),
-            
+                        
                 // forgot password
                  Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -119,7 +118,7 @@ class _LoginViewState extends State<LoginView> {
                   ),
                 ),
             
-                const SizedBox(height: 25.0),
+                SizedBox(height: screen_height/32),
             
                 // sign in button
                 MyButton(
@@ -160,7 +159,7 @@ class _LoginViewState extends State<LoginView> {
                   },
                 ),
             
-                const SizedBox(height: 50.0),
+                SizedBox(height: screen_height/16.5),
             
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),

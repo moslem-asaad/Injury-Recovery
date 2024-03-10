@@ -35,6 +35,7 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
+    double screen_height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
@@ -47,7 +48,7 @@ class _RegisterViewState extends State<RegisterView> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const SizedBox(height: 25),
+                SizedBox(height: screen_height/32),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
@@ -55,7 +56,7 @@ class _RegisterViewState extends State<RegisterView> {
                     width: 200,
                   ),
                 ),
-                const SizedBox(height: 50),
+                SizedBox(height: screen_height/16.5),
 
                 MyTextField(
                   controller: _email,
@@ -66,7 +67,7 @@ class _RegisterViewState extends State<RegisterView> {
                   keyboardType: TextInputType.emailAddress,
                 ),
 
-                const SizedBox(height: 10),
+                SizedBox(height: screen_height/82),
 
                 // password text field
                 MyTextField(
@@ -78,8 +79,8 @@ class _RegisterViewState extends State<RegisterView> {
                   keyboardType: TextInputType.visiblePassword,
                 ),
 
-                const SizedBox(
-                  height: 10,
+                SizedBox(
+                  height: screen_height/82,
                 ),
 
                 MyTextField(
@@ -90,8 +91,8 @@ class _RegisterViewState extends State<RegisterView> {
                     autocorrect: false,
                     keyboardType: TextInputType.visiblePassword),
 
-                const SizedBox(
-                  height: 50,
+                SizedBox(
+                  height: screen_height/16.5,
                 ),
                 MyButton(
                   onPressed: () async {
@@ -100,7 +101,7 @@ class _RegisterViewState extends State<RegisterView> {
                   title: 'Register',
                 ),
 
-                const SizedBox(height: 50.0),
+                SizedBox(height: screen_height/16.5),
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
