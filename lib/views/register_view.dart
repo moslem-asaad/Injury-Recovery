@@ -1,10 +1,10 @@
-
+import 'package:injury_recovery/components/my_button.dart';
+import 'package:injury_recovery/components/my_text_field.dart';
 import 'package:injury_recovery/constants/routes.dart';
 import 'package:injury_recovery/services/auth/auth_exceptions.dart';
 import 'package:injury_recovery/services/auth/auth_service.dart';
 import 'package:injury_recovery/utilities/show_error_dialog.dart';
 import 'package:flutter/material.dart';
-
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -14,7 +14,6 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-
   late final TextEditingController _email;
   late final TextEditingController _password;
   late final TextEditingController _confermed_password;
@@ -37,103 +36,133 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Register'),
-        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: Colors.grey[300],
+      appBar: AppBar(
+        title: const Center(child: Text('Register')),
+        foregroundColor:  Colors.white,
         backgroundColor: Colors.grey,
       ),
-      body: Column(
-        children: [
-          TextField(
-            controller: _email,
-            enableSuggestions: false,
-            autocorrect: false,
-            keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(
-              hintText: 'Email',
-              hintStyle: TextStyle(color: Colors.grey),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 25),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset(
+                    'images/ball_cure.png',
+                    width: 200,
+                  ),
+                ),
+                const SizedBox(height: 50),
+
+                MyTextField(
+                  controller: _email,
+                  hintText: 'Email',
+                  obscureText: false,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  keyboardType: TextInputType.emailAddress,
+                ),
+
+                const SizedBox(height: 10),
+
+                // password text field
+                MyTextField(
+                  controller: _password,
+                  hintText: 'Password',
+                  obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  keyboardType: TextInputType.visiblePassword,
+                ),
+
+                const SizedBox(
+                  height: 10,
+                ),
+
+                MyTextField(
+                    controller: _confermed_password,
+                    hintText: 'Confirm Password',
+                    obscureText: true,
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    keyboardType: TextInputType.visiblePassword),
+
+                const SizedBox(
+                  height: 50,
+                ),
+                MyButton(
+                  onPressed: () async {
+                    _register();
+                  },
+                  title: 'Register',
+                ),
+
+                const SizedBox(height: 50.0),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Already registered ?',
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            loginRoute,
+                            (route) => false,
+                          );
+                        },
+                        child: const Text(
+                          'Login Here',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            cursorColor: Colors.white,
-            style: TextStyle(color: const Color.fromARGB(255, 217, 217, 217)),
           ),
-          TextField(
-            controller: _password,
-            obscureText: true,
-            enableSuggestions: false,
-            autocorrect: false,
-            decoration: const InputDecoration(
-              hintText: 'Password',
-              hintStyle: TextStyle(color: Colors.grey),
-            ),
-            cursorColor: Colors.white,
-            style: TextStyle(color: const Color.fromARGB(255, 217, 217, 217)),
-          ),
-          TextField(
-            controller: _confermed_password,
-            obscureText: true,
-            enableSuggestions: false,
-            autocorrect: false,
-            decoration: const InputDecoration(
-              hintText: 'Confirm Password',
-              hintStyle: TextStyle(color: Colors.grey),
-            ),
-            cursorColor: Colors.white,
-            style: TextStyle(color: const Color.fromARGB(255, 217, 217, 217)),
-          ),
-          TextButton.icon(
-            onPressed: () async {
-              final email = _email.text;
-              final password = _password.text;
-              final confermed_password = _confermed_password.text;
-              try {
-                if(password == confermed_password){
-                await AuthService.firebase().createUser(email: email, password: password);
-                //final user = AuthService.firebase().currentUser;
-                await AuthService.firebase().sendEmailVerification();
-                Navigator.of(context).pushNamed(verifyEmailRoute);
-                }else{
-                  await showErrorDialog(context, 'Passwords don\'t match');
-                }
-              } on WeakPasswordAuthException{
-                await showErrorDialog(context, 'Weak Password');
-              } on EmailAlreadyInUseAuthException{
-                await showErrorDialog(context, 'email is already in use'); 
-              } on InvalidEmailAuthException{
-                await showErrorDialog(context, 'Invalid Email address');
-              } on GenericAuthException{
-                await showErrorDialog(context, 'Failed to register');
-              }
-            },
-            style: TextButton.styleFrom(
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.teal,
-            disabledBackgroundColor: Colors.grey,
-            textStyle: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic,
-              )
-            ),
-            icon: const Icon(Icons.app_registration),
-            label: const Text('Register'),
-            //child: const Text('Register'),
-          ),
-          TextButton(onPressed: (){
-            Navigator.of(context).pushNamedAndRemoveUntil(loginRoute,
-            (route) => false,
-            );
-          },
-          child: const Text('Already Registered? Login here!'),
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.teal,
-            disabledBackgroundColor: Colors.grey,
-            textStyle: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic,
-              )
-            ),
-          )
-        ],
+        ),
       ),
     );
+  }
+
+  Future _register() async {
+    final email = _email.text;
+    final password = _password.text;
+    final confermed_password = _confermed_password.text;
+    try {
+      if (password == confermed_password) {
+        await AuthService.firebase()
+            .createUser(email: email, password: password);
+        //final user = AuthService.firebase().currentUser;
+        await AuthService.firebase().sendEmailVerification();
+        Navigator.of(context).pushNamed(verifyEmailRoute);
+      } else {
+        await showErrorDialog(context, 'Passwords don\'t match');
+      }
+    } on WeakPasswordAuthException {
+      await showErrorDialog(context, 'Weak Password');
+    } on EmailAlreadyInUseAuthException {
+      await showErrorDialog(context, 'email is already in use');
+    } on InvalidEmailAuthException {
+      await showErrorDialog(context, 'Invalid Email address');
+    } on GenericAuthException {
+      await showErrorDialog(context, 'Failed to register');
+    }
   }
 }

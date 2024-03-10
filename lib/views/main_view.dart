@@ -2,8 +2,6 @@
 import 'package:injury_recovery/components/menu_button.dart';
 import 'package:injury_recovery/components/my_button.dart';
 import 'package:injury_recovery/constants/routes.dart';
-import 'package:injury_recovery/enums/menu_action.dart';
-import 'package:injury_recovery/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class MainView extends StatefulWidget {
@@ -21,14 +19,13 @@ class _MainViewState extends State<MainView> {
       appBar: MenuButton(title: 'Main UI').bar(context),
       body: Column(
         children: [
-          const SizedBox(height: 25),
+          const SizedBox(height: 300),
             MyButton(
               onPressed: () async {
                 Navigator.of(context).pushNamed(uploadVideoRout);
               }, 
               title: 'upload video'
             ),
-
             MyButton(
               onPressed:() async{
                 Navigator.of(context).pushNamed(gallaryRout);
@@ -47,7 +44,7 @@ Future<bool> showLogOutDialog(BuildContext context){
     context: context,
     builder:(context){
       return AlertDialog(
-        backgroundColor: Color.fromARGB(147, 71, 71, 71),
+        backgroundColor: Colors.blue,
         title: const Text(
           'Sign Out',
           style: TextStyle(
