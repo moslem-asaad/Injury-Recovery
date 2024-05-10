@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:injury_recovery/constants/routes.dart';
 import 'package:injury_recovery/enums/menu_action.dart';
 import 'package:injury_recovery/services/auth/auth_service.dart';
-import 'package:injury_recovery/views/main_view.dart';
+import 'package:injury_recovery/features/presentation/views/main_view.dart';
 
 class MenuButton extends StatelessWidget {
   const MenuButton({super.key, required this.title});

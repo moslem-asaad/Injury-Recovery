@@ -5,3 +5,5 @@ const verifyEmailRoute = '/verify-email/';
 const resetPasswordRout = '/reset-password/';
 const uploadVideoRout = '/upload-video/';
 const gallaryRout = '/gallary/';
+const customerProfileRout = '/customer-profile/';
+const treatmentsRout = '/treatments/';

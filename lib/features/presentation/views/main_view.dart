@@ -19,7 +19,7 @@ class _MainViewState extends State<MainView> {
       appBar: MenuButton(title: 'Main UI').bar(context),
       body: Column(
         children: [
-          const SizedBox(height: 300),
+          const SizedBox(height: 150),
             MyButton(
               onPressed: () async {
                 Navigator.of(context).pushNamed(uploadVideoRout);

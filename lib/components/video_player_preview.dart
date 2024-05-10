@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:injury_recovery/views/land_scape_view.dart';
+import 'package:injury_recovery/features/presentation/views/land_scape_view.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerPreview extends StatefulWidget {

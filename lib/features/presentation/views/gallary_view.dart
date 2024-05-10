@@ -2,7 +2,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:injury_recovery/components/menu_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:injury_recovery/views/play_video_view.dart';
+import 'package:injury_recovery/features/presentation/views/play_video_view.dart';
 
 class GallaryView extends StatefulWidget {
   const GallaryView({super.key});

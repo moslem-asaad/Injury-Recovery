@@ -138,7 +138,7 @@ class _LoginViewState extends State<LoginView> {
                           );
                         }else{
                           Navigator.of(context).pushNamedAndRemoveUntil(
-                            gallaryRout, 
+                            customerProfileRout, 
                             (route) => false
                           );
                         }
