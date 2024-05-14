@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:injury_recovery/constants/routes.dart';
 import 'package:injury_recovery/features/presentation/views/customer_profile.dart';
+import 'package:injury_recovery/features/presentation/views/treatment_view.dart';
 import 'package:injury_recovery/features/presentation/views/treatments.dart';
 import 'package:injury_recovery/services/auth/auth_service.dart';
 import 'package:injury_recovery/features/presentation/views/gallary_view.dart';
@@ -52,7 +53,7 @@ class HomePage extends StatelessWidget {
                 if (user.toString() == 'asaadmoslem2000@gmail.com')
                   return const MainView();
                 else
-                  return const Treatmants();
+                  return const TreatmentView();
               } else {
                 return const VerifyEmailView();
               }
