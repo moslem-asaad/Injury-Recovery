@@ -19,17 +19,41 @@ class FirebaseServiceImpl implements FirebaseService{
 
   @override
   Future<bool> isLoggedIn() async{
-    throw UnimplementedError();
+    return firebaseAuth.currentUser?.uid != null;
   }
 
   @override
   Future<void> logIn(User user) async{
-    throw UnimplementedError();
+    try{
+        UserCredential userCredential = await firebaseAuth.signInWithEmailAndPassword(email: user.email, password: user.password);
+        if(userCredential.user?.uid != null){
+          return;
+        }else{
+        throw UserNotLoggedInAuthException();
+      }
+
+    }on FirebaseAuthException catch (e){
+      if (e.code == 'user-not-found'){
+        throw UserNotFoundAuthException();
+      }
+      else if (e.code == 'wrong-password'){
+        throw WrongPasswordAuthException();
+      }else{
+        throw GenericAuthException();
+      }
+    } catch (_){
+        throw GenericAuthException();
+    }
   }
 
   @override
   Future<void> logOut() async{
-    throw UnimplementedError();
+    try{
+      await FirebaseAuth.instance.signOut();
+    }catch (_){
+        throw GenericAuthException();
+    }
+
   }
 
   @override
@@ -44,6 +68,7 @@ class FirebaseServiceImpl implements FirebaseService{
       }
 
     }on FirebaseAuthException catch(e){
+      print("here1111");
       if(e.code == 'weak-password'){
         throw WeakPasswordAuthException();
       }else if (e.code == 'email-already-in-use'){
@@ -54,6 +79,7 @@ class FirebaseServiceImpl implements FirebaseService{
         throw GenericAuthException();
       }
     }catch(_){
+      print("here2222");
       throw GenericAuthException();
     }
   }
