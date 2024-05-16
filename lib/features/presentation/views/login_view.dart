@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:injury_recovery/components/my_button.dart';
 import 'package:injury_recovery/components/my_text_field.dart';
 import 'package:injury_recovery/constants/routes.dart';
+import 'package:injury_recovery/features/presentation/services/response.dart';
+import 'package:injury_recovery/features/presentation/services/service_layer.dart';
 import 'package:injury_recovery/services/auth/auth_exceptions.dart';
 import 'package:injury_recovery/services/auth/auth_service.dart';
 import 'package:injury_recovery/utilities/show_error_dialog.dart';
@@ -126,10 +128,27 @@ class _LoginViewState extends State<LoginView> {
                     onPressed: () async {
                     final email = _email.text;
                     final password = _password.text;
-                    try {
-                      await AuthService.firebase().logIn(email: email, password: password);
-                      final user = AuthService.firebase().currentUser;
-                      if(user?.isEmailVerified?? false){ 
+                    var response = await Service().logIn(email, password);
+                    if(response.errorOccured!){
+                      print('sakljdslkajdslakd');
+                      await showErrorDialog(context, response.errorMessage!);
+                    }else{
+                      if(email== 'asaadmoslem2000@gmail.com'){
+                          // user's email is verified 
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            mainRoute, 
+                            (route) => false
+                          );
+                        }else{
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            customerProfileRout, 
+                            (route) => false
+                          );
+                        }
+                    }
+                    /*else{
+                      print('in else');
+                     // if(user?.isEmailVerified?? false){ 
                         if(email== 'asaadmoslem2000@gmail.com'){
                           // user's email is verified 
                           Navigator.of(context).pushNamedAndRemoveUntil(
@@ -142,20 +161,14 @@ class _LoginViewState extends State<LoginView> {
                             (route) => false
                           );
                         }
-                      }else{
+                      /*}else{
                         // user's email is NOT verified
                         Navigator.of(context).pushNamedAndRemoveUntil(
                           verifyEmailRoute, 
                           (route) => false
                         );
-                      }
-                    } on UserNotFoundAuthException{
-                      await showErrorDialog(context, 'User not found');
-                    } on WrongPasswordAuthException{
-                      await showErrorDialog(context, 'Wrong Password');
-                    } on GenericAuthException{
-                      await showErrorDialog(context, 'Authintication Error');
-                    }
+                      }*/
+                    }*/
                   },
                 ),
             
@@ -203,3 +216,46 @@ class _LoginViewState extends State<LoginView> {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    /*try {
+                      await AuthService.firebase().logIn(email: email, password: password);
+                      final user = AuthService.firebase().currentUser;
+                      if(user?.isEmailVerified?? false){ 
+                        if(email== 'asaadmoslem2000@gmail.com'){
+                          // user's email is verified 
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            mainRoute, 
+                            (route) => false
+                          );
+                        }else{
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            customerProfileRout, 
+                            (route) => false
+                          );
+                        }
+                      }else{
+                        // user's email is NOT verified
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          verifyEmailRoute, 
+                          (route) => false
+                        );
+                      }
+                    } on UserNotFoundAuthException{
+                      await showErrorDialog(context, 'User not found');
+                    } on WrongPasswordAuthException{
+                      await showErrorDialog(context, 'Wrong Password');
+                    } on GenericAuthException{
+                      await showErrorDialog(context, 'Authintication Error');
+                    }*/

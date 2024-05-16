@@ -60,7 +60,7 @@ class HomePage extends StatelessWidget {
                 if (user.toString() == 'asaadmoslem2000@gmail.com')
                   return const MainView();
                 else
-                  return const TreatmentView();
+                  return const CustomerProfile();
               } else {
                 return const VerifyEmailView();
               }

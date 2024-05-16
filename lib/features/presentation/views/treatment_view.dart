@@ -4,14 +4,24 @@ import 'package:flutter/widgets.dart';
 import 'package:injury_recovery/constants/colors.dart' as co;
 import 'package:injury_recovery/features/presentation/widgets/video_navigation_button.dart';
 
+import '../../domain/entities/exercise_video.dart';
+
 class TreatmentView extends StatefulWidget {
-  const TreatmentView({super.key});
+  const TreatmentView({super.key, required this.videosList});
+  final List<ExerciseVideo> videosList;
 
   @override
   State<TreatmentView> createState() => _TreatmentViewState();
 }
 
 class _TreatmentViewState extends State<TreatmentView> {
+  late List<ExerciseVideo> videosList;
+  @override
+  void initState() {
+    super.initState();
+    videosList = widget.videosList;
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -64,12 +74,19 @@ class _TreatmentViewState extends State<TreatmentView> {
                     child: Container(
                       color: Colors.green,
                       height: height * 0.4,
+                      /*child: Column(
+                        children: [
+                          for (var video in videosList)
+                            Text(video.videoDescription),
+                        ],
+                      ),*/
                     ),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  const VideoNavigationButtons(numVideos: 5,
+                  VideoNavigationButtons(
+                    numVideos: videosList.length,
                   ),
                   const SizedBox(
                     height: 20,

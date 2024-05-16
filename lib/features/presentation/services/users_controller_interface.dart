@@ -5,11 +5,11 @@ import '../../domain/entities/user.dart';
 
 abstract class UsersController{
 
-  Future<void> logIn(User user);
+  Future<void> logIn(String email,String password);
   Future<void> logOut();
   Future<void> register(CustomerUser customerUser);
   Future<bool> isLoggedIn();
   Future<String> getCurrentUserId();
   List<Treatment> getUserTreatments();
-
+  
 }

@@ -7,10 +7,10 @@ import '../../consts.dart';
 import '../../domain/services/firebase_service.dart';
 
 class FirebaseServiceImpl implements FirebaseService{
-  FirebaseFirestore firestore;
-  FirebaseAuth firebaseAuth;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  FirebaseServiceImpl({required this.firestore,required this.firebaseAuth});
+  FirebaseServiceImpl(/*{required this.firestore,required this.firebaseAuth}*/);
 
   @override
   Future<String> getCurrentUserId() async{
@@ -23,25 +23,31 @@ class FirebaseServiceImpl implements FirebaseService{
   }
 
   @override
-  Future<void> logIn(User user) async{
+  Future<void> logIn(String email,String password) async{
     try{
+      User user = User ('100',email, password);
         UserCredential userCredential = await firebaseAuth.signInWithEmailAndPassword(email: user.email, password: user.password);
         if(userCredential.user?.uid != null){
+          print('in if1');
           return;
         }else{
+          print('in else1');
         throw UserNotLoggedInAuthException();
       }
 
     }on FirebaseAuthException catch (e){
+      print('in else3');
       if (e.code == 'user-not-found'){
         throw UserNotFoundAuthException();
       }
       else if (e.code == 'wrong-password'){
         throw WrongPasswordAuthException();
       }else{
+        print('in else4');
         throw GenericAuthException();
       }
     } catch (_){
+      print('in else5');
         throw GenericAuthException();
     }
   }
