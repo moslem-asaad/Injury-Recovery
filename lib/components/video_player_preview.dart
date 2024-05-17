@@ -7,11 +7,11 @@ import 'package:video_player/video_player.dart';
 class VideoPlayerPreview extends StatefulWidget {
   const VideoPlayerPreview({
     super.key,
-    required this.controller,
+    //required this.controller,
     required this.videoURL,
   });
 
-  final VideoPlayerController? controller;
+  //final VideoPlayerController? controller;
   final String? videoURL;
 
   @override
@@ -21,16 +21,20 @@ class VideoPlayerPreview extends StatefulWidget {
 class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
   String? _videoURL;
   VideoPlayerController? _controller;
-  String? _downloadURL;
   bool _showVideoButtons = false;
   Timer? _timer;
 
   @override
   void initState() {
-    _controller = widget.controller;
+    //_controller = widget.controller;
     _videoURL = widget.videoURL;
     //_controller!.initialize().then((_) => setState(() {}));
     super.initState();
+    _controller = VideoPlayerController.networkUrl(
+        Uri.parse(_videoURL!));
+    _controller!.setLooping(true);
+    _controller!.initialize().then((_) => setState(() {}));
+    //_controller!.play();
   }
 
   @override
@@ -42,18 +46,17 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
 
   @override
   Widget build(BuildContext context) {
+    print('url1234 $_videoURL');
     return Scaffold(
-      body: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height,
-          ),
-          child: Center(
-            child: _videoURL != null
-                ? _videoPlayerPreview()
-                : const Text('No Video is Selected'),
-          ),
+      body: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width,
+          maxHeight: MediaQuery.of(context).size.height,
+        ),
+        child: Center(
+          child: _videoURL != null
+              ? _videoPlayerPreview()
+              : const Text('No Video is Selected'),
         ),
       ),
     );
@@ -67,14 +70,14 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
             onTap: () {
               _handleTap();
             },
-            onDoubleTap: (){
+            onDoubleTap: () {
               _onDoubleTap();
             },
             child: Stack(
               children: [
                 SizedBox(
                   width: _controller!.value.size.width / 2,
-                  height: 300,
+                  height: MediaQuery.of(context).size.height * 0.3,
                   child: VideoPlayer(_controller!),
                 ),
               ],

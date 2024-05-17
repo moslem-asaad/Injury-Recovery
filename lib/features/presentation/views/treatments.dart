@@ -35,16 +35,14 @@ class _TreatmantsState extends State<Treatmants> {
         child: Column(
           children: [
             for (var treatment in treatments.val!)
-              treatmentWidget(treatment.treatmentId,
-                  treatment.treatmentDescription, treatment.videosList),
+              treatmentWidget(treatment),
           ],
         ),
       ),
     );
   }
 
-  treatmentWidget(String treatmentId, String treatmentDescription,
-      List<ExerciseVideo> videosList) {
+  treatmentWidget(Treatment treatment) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Container(
@@ -75,7 +73,7 @@ class _TreatmantsState extends State<Treatmants> {
               child: Row(
                 children: [
                   Text(
-                    treatmentId,
+                    treatment.treatmentId,
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -101,7 +99,7 @@ class _TreatmantsState extends State<Treatmants> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                treatmentDescription,
+                treatment.treatmentDescription,
                 style: TextStyle(fontSize: 17),
               ),
             ),
@@ -109,7 +107,7 @@ class _TreatmantsState extends State<Treatmants> {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: TextButton(
-                  onPressed: () {start_treatment(context, treatmentId, videosList);},
+                  onPressed: () {start_treatment(context,treatment);},
                   child: Center(
                     child: Container(
                       decoration: BoxDecoration(
@@ -138,13 +136,13 @@ class _TreatmantsState extends State<Treatmants> {
     );
   }
 
-  start_treatment(BuildContext context, String treatmentId,
-      List<ExerciseVideo> videosList1) {
+  start_treatment(BuildContext context, Treatment treatment) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) {
           return TreatmentView(
-            videosList: videosList1,
+            treatment: treatment,
+            index: 0,
           );
         },
       ),

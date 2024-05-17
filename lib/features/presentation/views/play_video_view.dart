@@ -110,7 +110,7 @@ class _PlayVideoViewState extends State<PlayVideoView> {
               ),
               child: Center(
                 child: VideoPlayerPreview(
-                  controller: _controller,
+                  //controller: _controller,
                   videoURL: widget.videoURL,
                 ),
               ),

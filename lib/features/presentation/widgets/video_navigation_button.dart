@@ -1,43 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:injury_recovery/features/domain/entities/treatment.dart';
+import 'package:injury_recovery/features/presentation/views/treatment_view.dart';
 import 'package:injury_recovery/utilities/show_error_dialog.dart';
 
-class VideoNavigationButtons extends StatefulWidget {
-  final int numVideos;
+import '../../../components/video_player_preview.dart';
+import '../../domain/entities/exercise_video.dart';
 
-  const VideoNavigationButtons({required this.numVideos});
+class VideoNavigationButtons extends StatelessWidget {
+  final Treatment treatment;
+  final int selectedIndex;
+  final void Function(int) onVideoSelected;
 
-  @override
-  _VideoNavigationButtonsState createState() => _VideoNavigationButtonsState();
-}
-
-class _VideoNavigationButtonsState extends State<VideoNavigationButtons> {
-  int selectedVideoIndex = -1;
+  const VideoNavigationButtons({
+    Key? key,
+    required this.treatment,
+    required this.selectedIndex,
+    required this.onVideoSelected,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
-        widget.numVideos,
+        treatment.videosList.length,
         (index) => GestureDetector(
           onTap: () {
-            setState(() {
-              selectedVideoIndex = index;
-            });
-            // Navigate to specific video when circle is pressed
-            // Add your navigation logic here
-            showErrorDialog(context, 'index: $index');
+            onVideoSelected(index);
           },
-          child: Container(
-            width: 20, // Adjust the width of the circle
-            height: 20, // Adjust the height of the circle
-            margin: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.black),
-              color: selectedVideoIndex == index ? Colors.blue : Colors.transparent,
-            ),
+          child: Column(
+            children: [
+              Container(
+                width: 20, // Adjust the width of the circle
+                height: 20, // Adjust the height of the circle
+                margin: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.black),
+                  color: selectedIndex == index ? Colors.blue : Colors.transparent,
+                ),
+              ),
+            ],
           ),
         ),
       ),
