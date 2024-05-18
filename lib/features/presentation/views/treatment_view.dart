@@ -84,36 +84,13 @@ class _TreatmentViewState extends State<TreatmentView> {
                   ConstrainedBox(
                     constraints: BoxConstraints(
                       maxWidth: width,
-                      maxHeight: height*0.4,
+                      maxHeight: height,
                     ),
                     child: Center(
                       child: VideosView(
                         videos: treatment.videosList,
                       ),
                     ),
-                  ),
-
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  VideoNavigationButtons(
-                    treatment: treatment,
-                    selectedIndex: widget.index,
-                    onVideoSelected: (index) {
-                      setState(() {
-                        widget.index = index;
-                        currentVideoUrl = treatment.videosList[index].videoUrl;
-                        print('currentVideoUrl: $currentVideoUrl');
-                      });
-                      print('index: $index');
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text('description'),
                   ),
                 ],
               ),

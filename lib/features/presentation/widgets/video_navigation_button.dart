@@ -7,7 +7,58 @@ import 'package:injury_recovery/utilities/show_error_dialog.dart';
 import '../../../components/video_player_preview.dart';
 import '../../domain/entities/exercise_video.dart';
 
-class VideoNavigationButtons extends StatelessWidget {
+class VideoNavigationButtons extends StatefulWidget {
+  final List<ExerciseVideo> videos;
+  final int currentIndex;
+  final Function(int) onPageChanged;
+
+  const VideoNavigationButtons({
+    Key? key,
+    required this.videos,
+    required this.currentIndex,
+    required this.onPageChanged,
+  }) : super(key: key);
+
+  @override
+  _VideoNavigationButtonsState createState() => _VideoNavigationButtonsState();
+}
+
+class _VideoNavigationButtonsState extends State<VideoNavigationButtons> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(
+        widget.videos.length,
+        (index) => GestureDetector(
+          onTap: () {
+            widget.onPageChanged(index); // Notify parent of page change
+          },
+          child: Column(
+            children: [
+              Container(
+                width: 20,
+                height: 20,
+                margin: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.black),
+                  color: index == widget.currentIndex
+                      ? Colors.blue
+                      : Colors.transparent,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+/*class VideoNavigationButtons extends StatelessWidget {
   final Treatment treatment;
   final int selectedIndex;
   final void Function(int) onVideoSelected;
@@ -47,4 +98,4 @@ class VideoNavigationButtons extends StatelessWidget {
       ),
     );
   }
-}
+}*/

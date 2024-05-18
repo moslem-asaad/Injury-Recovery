@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:injury_recovery/components/video_player_preview.dart';
 
 import '../../domain/entities/exercise_video.dart';
+import '../widgets/video_navigation_button.dart';
 
 class VideosView extends StatefulWidget {
   const VideosView({
@@ -35,6 +36,11 @@ class _VideosViewState extends State<VideosView> {
     setState(() {
       _currentPageIndex = index;
     });
+    _pageController.animateToPage(
+      index,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.ease,
+    );
   }
 
   void _onHorizontalDragEnd(DragEndDetails details) {
@@ -57,7 +63,7 @@ class _VideosViewState extends State<VideosView> {
     }
   }
 
-  @override
+  /*@override
   Widget build(BuildContext context) {
     return GestureDetector(
       onHorizontalDragEnd: _onHorizontalDragEnd,
@@ -70,5 +76,51 @@ class _VideosViewState extends State<VideosView> {
         },
       ),
     );
-  }
+  }*/
+
+  @override
+Widget build(BuildContext context) {
+  return GestureDetector(
+    onHorizontalDragEnd: _onHorizontalDragEnd,
+    child: Stack(
+      children: [
+        PageView.builder(
+          controller: _pageController,
+          itemCount: widget.videos.length,
+          onPageChanged: _onPageChanged,
+          itemBuilder: (context, index) {
+            return VideoPlayerPreview(
+              videoURL: widget.videos[index].videoUrl,
+            );
+          },
+        ),
+        Positioned(
+          bottom: MediaQuery.of(context).size.height*0.5,
+          left: 0,
+          right: 0,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                VideoNavigationButtons(
+                  videos: widget.videos,
+                  currentIndex: _currentPageIndex,
+                  onPageChanged: _onPageChanged,
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(widget.videos[_currentPageIndex].videoDescription),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 }
