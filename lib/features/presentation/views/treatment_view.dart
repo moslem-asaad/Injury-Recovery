@@ -22,7 +22,6 @@ class TreatmentView extends StatefulWidget {
 class _TreatmentViewState extends State<TreatmentView> {
   late Treatment treatment;
   late String currentVideoUrl;
-  VideoPlayerController? _controller;
 
   @override
   void dispose() {
@@ -35,11 +34,6 @@ class _TreatmentViewState extends State<TreatmentView> {
     super.initState();
     treatment = widget.treatment;
     currentVideoUrl = treatment.videosList[widget.index].videoUrl;
-    /*_controller = VideoPlayerController.networkUrl(
-        Uri.parse(widget.videosList[0].videoUrl));
-    _controller!.setLooping(true);
-    _controller!.initialize().then((_) => setState(() {}));
-    _controller!.play();*/
   }
 
   @override

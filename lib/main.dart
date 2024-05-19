@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:injury_recovery/constants/routes.dart';
 import 'package:injury_recovery/features/data/services/firebase_service_impl.dart';
 import 'package:injury_recovery/features/presentation/views/customer_profile.dart';
@@ -27,6 +28,16 @@ void main() {
         scaffoldBackgroundColor: Color.fromARGB(87, 155, 155, 155),
       ),
       home: const HomePage(),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('he'),
+        Locale('en')
+      ],
+      locale: Locale('en', ''),
       routes: {
         loginRoute: (context) => const LoginView(),
         registerRoute: (context) => const RegisterView(),
@@ -74,10 +85,10 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  void test_method(){
-            // print("dfgdfhgfh232231");
-            // var a = CustomerUser("", "newemail11@hotmail.com", "dsklfhJ345ds", "", "", "");
-            // var service = FirebaseServiceImpl(firestore: FirebaseFirestore.instance, firebaseAuth: FirebaseAuth.instance);
-            // service.register(a);
+  void test_method() {
+    // print("dfgdfhgfh232231");
+    // var a = CustomerUser("", "newemail11@hotmail.com", "dsklfhJ345ds", "", "", "");
+    // var service = FirebaseServiceImpl(firestore: FirebaseFirestore.instance, firebaseAuth: FirebaseAuth.instance);
+    // service.register(a);
   }
 }

@@ -63,21 +63,6 @@ class _VideosViewState extends State<VideosView> {
     }
   }
 
-  /*@override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onHorizontalDragEnd: _onHorizontalDragEnd,
-      child: PageView.builder(
-        controller: _pageController,
-        itemCount: widget.videos.length,
-        onPageChanged: _onPageChanged,
-        itemBuilder: (context, index) {
-          return VideoPlayerPreview(videoURL: widget.videos[index].videoUrl);
-        },
-      ),
-    );
-  }*/
-
   @override
 Widget build(BuildContext context) {
   return GestureDetector(
