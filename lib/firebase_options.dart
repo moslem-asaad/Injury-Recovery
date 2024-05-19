@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -49,6 +43,15 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyDLd3Jj8utafJnb1WRlC6S8NRsQUihoc4s',
+    appId: '1:603274710993:web:6f22b3946c20e8f862daf0',
+    messagingSenderId: '603274710993',
+    projectId: 'injury-recovery',
+    authDomain: 'injury-recovery.firebaseapp.com',
+    storageBucket: 'injury-recovery.appspot.com',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDZffkmwvATvARvtzKgAj3PST9Z_iSNJkg',
     appId: '1:603274710993:android:42b0bd722e7b37b462daf0',
@@ -64,5 +67,14 @@ class DefaultFirebaseOptions {
     projectId: 'injury-recovery',
     storageBucket: 'injury-recovery.appspot.com',
     iosBundleId: 'com.example.injuryRecovery',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyCZmEtLfjwbNEfi4QwLBzE2F89TaXiEWTg',
+    appId: '1:603274710993:ios:5d61e6ace703e02462daf0',
+    messagingSenderId: '603274710993',
+    projectId: 'injury-recovery',
+    storageBucket: 'injury-recovery.appspot.com',
+    iosBundleId: 'com.example.injuryRecovery.RunnerTests',
   );
 }
