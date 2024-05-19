@@ -84,6 +84,7 @@ class _LoginViewState extends State<LoginView> {
                   enableSuggestions: false,
                   autocorrect: false,
                   keyboardType: TextInputType.emailAddress,
+                  maxLines: 1,
                 ),
             
                 SizedBox(height: screen_height/82),
@@ -96,6 +97,7 @@ class _LoginViewState extends State<LoginView> {
                   enableSuggestions: false,
                   autocorrect: false,
                   keyboardType: TextInputType.visiblePassword,
+                  maxLines: 1,
                 ),
                         
                 // forgot password

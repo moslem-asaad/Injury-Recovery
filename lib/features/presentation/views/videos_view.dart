@@ -63,7 +63,7 @@ class _VideosViewState extends State<VideosView> {
     }
   }
 
-  @override
+ @override
 Widget build(BuildContext context) {
   return GestureDetector(
     onHorizontalDragEnd: _onHorizontalDragEnd,
@@ -80,32 +80,37 @@ Widget build(BuildContext context) {
           },
         ),
         Positioned(
-          bottom: MediaQuery.of(context).size.height*0.5,
+          bottom: MediaQuery.of(context).size.height*0,
           left: 0,
           right: 0,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                VideoNavigationButtons(
-                  videos: widget.videos,
-                  currentIndex: _currentPageIndex,
-                  onPageChanged: _onPageChanged,
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(widget.videos[_currentPageIndex].videoDescription),
-                ),
-              ],
+          child: Container(
+            color: Colors.green,
+            height: MediaQuery.of(context).size.height * 0.57,
+            //height: 100,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  VideoNavigationButtons(
+                    videos: widget.videos,
+                    currentIndex: _currentPageIndex,
+                    onPageChanged: _onPageChanged,
+                  ),
+                  /*const SizedBox(
+                    height: 50,
+                  ),*/
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(widget.videos[_currentPageIndex].videoDescription),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ],
     ),
   );
-}
+} 
 
 }

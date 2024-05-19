@@ -1,8 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:injury_recovery/constants/routes.dart';
+import 'package:injury_recovery/features/presentation/views/feedback_request.dart';
 import 'package:injury_recovery/features/presentation/views/land_scape_view.dart';
+import 'package:injury_recovery/features/presentation/widgets/check_box.dart';
 import 'package:video_player/video_player.dart';
+import 'package:injury_recovery/constants/colors.dart' as co;
 
 class VideoPlayerPreview extends StatefulWidget {
   const VideoPlayerPreview({
@@ -30,8 +35,7 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
     _videoURL = widget.videoURL;
     //_controller!.initialize().then((_) => setState(() {}));
     super.initState();
-    _controller = VideoPlayerController.networkUrl(
-        Uri.parse(_videoURL!));
+    _controller = VideoPlayerController.networkUrl(Uri.parse(_videoURL!));
     _controller!.setLooping(true);
     _controller!.initialize().then((_) => setState(() {}));
     //_controller!.play();
@@ -48,6 +52,7 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
   Widget build(BuildContext context) {
     print('url1234 $_videoURL');
     return Scaffold(
+      backgroundColor: co.backgraound,
       body: ConstrainedBox(
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width,
@@ -66,6 +71,17 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
     if (_controller != null) {
       return Column(
         children: [
+          ButtonBar(
+            children: [
+              OutlinedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => FeedbackRequest(),
+                    ));
+                  },
+                  child: Text('feedback')),
+            ],
+          ),
           GestureDetector(
             onTap: () {
               _handleTap();

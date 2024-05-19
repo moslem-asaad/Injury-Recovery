@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:injury_recovery/constants/routes.dart';
 import 'package:injury_recovery/features/data/services/firebase_service_impl.dart';
 import 'package:injury_recovery/features/presentation/views/customer_profile.dart';
+import 'package:injury_recovery/features/presentation/views/feedback_request.dart';
 import 'package:injury_recovery/features/presentation/views/treatment_view.dart';
 import 'package:injury_recovery/features/presentation/views/treatments.dart';
 import 'package:injury_recovery/services/auth/auth_service.dart';
@@ -25,7 +26,7 @@ void main() {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
-        scaffoldBackgroundColor: Color.fromARGB(87, 155, 155, 155),
+        //scaffoldBackgroundColor: Color.fromARGB(87, 155, 155, 155),
       ),
       home: const HomePage(),
       localizationsDelegates: [
@@ -48,6 +49,7 @@ void main() {
         gallaryRout: (context) => const GallaryView(),
         customerProfileRout: (context) => const CustomerProfile(),
         treatmentsRout: (context) => const Treatmants(),
+        feedbackRequestRout:(context) => const FeedbackRequest(),
       },
     ),
   );

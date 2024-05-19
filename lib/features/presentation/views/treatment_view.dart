@@ -21,11 +21,9 @@ class TreatmentView extends StatefulWidget {
 
 class _TreatmentViewState extends State<TreatmentView> {
   late Treatment treatment;
-  late String currentVideoUrl;
 
   @override
   void dispose() {
-    //_controller!.dispose();
     super.dispose();
   }
 
@@ -33,7 +31,6 @@ class _TreatmentViewState extends State<TreatmentView> {
   void initState() {
     super.initState();
     treatment = widget.treatment;
-    currentVideoUrl = treatment.videosList[widget.index].videoUrl;
   }
 
   @override
@@ -81,9 +78,9 @@ class _TreatmentViewState extends State<TreatmentView> {
                       maxHeight: height,
                     ),
                     child: Center(
-                      child: VideosView(
-                        videos: treatment.videosList,
-                      ),
+                      child: !treatment.videosList.isEmpty
+                          ? VideosView(videos: treatment.videosList)
+                          : Container(),
                     ),
                   ),
                 ],
