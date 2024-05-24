@@ -126,12 +126,12 @@ class _LoginViewState extends State<LoginView> {
             
                 // sign in button
                 MyButton(
-                    title: 'Sign In',
+                    title: 'כניסה',
                     onPressed: () async {
                     final email = _email.text;
                     final password = _password.text;
                     var response = await Service().logIn(email, password);
-                    if(response.errorOccured!){
+                    if(response.errorOccured!){ 
                       print('sakljdslkajdslakd');
                       await showErrorDialog(context, response.errorMessage!);
                     }else{

@@ -38,7 +38,7 @@ void main() {
         Locale('he'),
         Locale('en')
       ],
-      locale: Locale('en', ''),
+      locale: Locale('he', ''),
       routes: {
         loginRoute: (context) => const LoginView(),
         registerRoute: (context) => const RegisterView(),

@@ -17,9 +17,9 @@ class _TreatmantsState extends State<Treatmants> {
   late ResponseT<List<Treatment>> treatments;
 
   @override
-  void initState() {
+  void initState() async{
     super.initState();
-    treatments = Service().getUserTreatments();
+    treatments = await Service().getUserTreatments();
   }
 
   @override

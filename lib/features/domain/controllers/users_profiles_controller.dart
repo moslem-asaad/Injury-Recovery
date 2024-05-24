@@ -57,7 +57,7 @@ class UsersProfilesController{
     }
   }
 
-  Future<bool> register(String email, String password, String firstName, String lastName, String phoneNumber){
+  Future<bool> register(String email, String password, String firstName, String lastName, String phoneNumber) async{
     return firebaseService.register(email, password, firstName, lastName, phoneNumber);
   }
 
@@ -120,7 +120,7 @@ class UsersProfilesController{
 
 
 
-  Future<void> SendFeedbackRequest(int treatmentId, int videoTreamentId, String? myVideiURL, String description){
+  Future<void> SendFeedbackRequest(int treatmentId, int videoTreamentId, String? myVideiURL, String description) async{
     throw Exception('${treatmentId} $videoTreamentId $description $myVideiURL');
   }
 }
