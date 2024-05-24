@@ -56,6 +56,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
             enableSuggestions: false,
             autocorrect: false,
             keyboardType: TextInputType.emailAddress,
+            maxLines: 1,
           ),
           
           const SizedBox(height: 15),

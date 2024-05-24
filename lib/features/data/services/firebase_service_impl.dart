@@ -39,19 +39,23 @@ class FirebaseServiceImpl{
         if(userCredential.user?.uid != null){
           return await getLoggedInUser();
         }else{
+          print('in else1');
         throw UserNotLoggedInAuthException();
       }
 
     }on FirebaseAuthException catch (e){
+      print('in else3');
       if (e.code == 'user-not-found'){
         throw UserNotFoundAuthException();
       }
       else if (e.code == 'wrong-password'){
         throw WrongPasswordAuthException();
       }else{
+        print('in else4');
         throw GenericAuthException();
       }
     } catch (_){
+      print('in else5');
         throw GenericAuthException();
     }
   }

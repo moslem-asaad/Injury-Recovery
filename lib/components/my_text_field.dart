@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:injury_recovery/constants/colors.dart' as co;
 
 class MyTextField extends StatelessWidget{
   final controller;
@@ -7,6 +8,7 @@ class MyTextField extends StatelessWidget{
   final bool enableSuggestions;
   final bool autocorrect;
   final TextInputType? keyboardType;
+  final int? maxLines;
   const MyTextField({
     super.key,
     required this.controller,
@@ -14,7 +16,8 @@ class MyTextField extends StatelessWidget{
     required this.obscureText,
     required this.enableSuggestions,
     required this.autocorrect,
-    required this.keyboardType,
+    this.keyboardType,
+    required this.maxLines
     });
 
   @override
@@ -27,6 +30,7 @@ class MyTextField extends StatelessWidget{
         enableSuggestions: enableSuggestions,
         autocorrect: autocorrect,
         keyboardType: keyboardType,
+        maxLines: maxLines,
         decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),

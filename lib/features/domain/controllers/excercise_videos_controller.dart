@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:injury_recovery/features/domain/entities/customer_user.dart';
 import 'package:injury_recovery/features/domain/entities/exercise_video.dart';
 import 'package:injury_recovery/features/domain/entities/system_manager.dart';
-import 'package:injury_recovery/features/presentation/views/treatments.dart';
 
 import '../../data/services/firebase_service_impl.dart';
 import '../entities/treatment.dart';

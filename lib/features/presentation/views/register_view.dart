@@ -6,6 +6,8 @@ import 'package:injury_recovery/services/auth/auth_service.dart';
 import 'package:injury_recovery/utilities/show_error_dialog.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/row_line_with_button.dart';
+
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
 
@@ -40,7 +42,7 @@ class _RegisterViewState extends State<RegisterView> {
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         title: const Center(child: Text('Register')),
-        foregroundColor:  Colors.white,
+        foregroundColor: Colors.white,
         backgroundColor: Colors.grey,
       ),
       body: SafeArea(
@@ -48,7 +50,7 @@ class _RegisterViewState extends State<RegisterView> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: screen_height/32),
+                SizedBox(height: screen_height / 32),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
@@ -56,7 +58,7 @@ class _RegisterViewState extends State<RegisterView> {
                     width: 200,
                   ),
                 ),
-                SizedBox(height: screen_height/16.5),
+                SizedBox(height: screen_height / 16.5),
 
                 MyTextField(
                   controller: _email,
@@ -65,9 +67,10 @@ class _RegisterViewState extends State<RegisterView> {
                   enableSuggestions: false,
                   autocorrect: false,
                   keyboardType: TextInputType.emailAddress,
+                  maxLines: 1,
                 ),
 
-                SizedBox(height: screen_height/82),
+                SizedBox(height: screen_height / 82),
 
                 // password text field
                 MyTextField(
@@ -77,10 +80,11 @@ class _RegisterViewState extends State<RegisterView> {
                   enableSuggestions: false,
                   autocorrect: false,
                   keyboardType: TextInputType.visiblePassword,
+                  maxLines: 1,
                 ),
 
                 SizedBox(
-                  height: screen_height/82,
+                  height: screen_height / 82,
                 ),
 
                 MyTextField(
@@ -89,10 +93,12 @@ class _RegisterViewState extends State<RegisterView> {
                     obscureText: true,
                     enableSuggestions: false,
                     autocorrect: false,
-                    keyboardType: TextInputType.visiblePassword),
+                    keyboardType: TextInputType.visiblePassword,
+                    maxLines: 1,
+                    ),
 
                 SizedBox(
-                  height: screen_height/16.5,
+                  height: screen_height / 16.5,
                 ),
                 MyButton(
                   onPressed: () async {
@@ -101,37 +107,19 @@ class _RegisterViewState extends State<RegisterView> {
                   title: 'Register',
                 ),
 
-                SizedBox(height: screen_height/16.5),
+                SizedBox(height: screen_height / 16.5),
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Already registered ?',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
+                  child: RowTextTextButtun(
+                    text1: 'Already registered ?',
+                    onPresses: () {
                           Navigator.of(context).pushNamedAndRemoveUntil(
                             loginRoute,
                             (route) => false,
                           );
                         },
-                        child: const Text(
-                          'Login Here',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
+                    button_text: 'Login Here',
                   ),
                 ),
               ],

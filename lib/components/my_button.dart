@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:injury_recovery/constants/colors.dart' as co;
 
 class MyButton extends StatelessWidget {
 
