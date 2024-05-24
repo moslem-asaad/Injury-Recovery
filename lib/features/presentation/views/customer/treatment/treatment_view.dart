@@ -2,13 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:injury_recovery/constants/colors.dart' as co;
-import 'package:injury_recovery/features/presentation/views/videos_view.dart';
+import 'package:injury_recovery/features/presentation/views/customer/treatment/videos_view.dart';
 import 'package:injury_recovery/features/presentation/widgets/video_navigation_button.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../../components/video_player_preview.dart';
-import '../../domain/entities/exercise_video.dart';
-import '../../domain/entities/treatment.dart';
+import 'video_player_preview.dart';
+import '../../../../domain/entities/exercise_video.dart';
+import '../../../../domain/entities/treatment.dart';
 
 class TreatmentView extends StatefulWidget {
   TreatmentView({super.key, required this.treatment, required this.index});
@@ -79,7 +79,10 @@ class _TreatmentViewState extends State<TreatmentView> {
                     ),
                     child: Center(
                       child: !treatment.videosList.isEmpty
-                          ? VideosView(videos: treatment.videosList)
+                          ? VideosView(
+                              videos: treatment.videosList,
+                              treatmentId: treatment.treatmentId,
+                            )
                           : Container(),
                     ),
                   ),

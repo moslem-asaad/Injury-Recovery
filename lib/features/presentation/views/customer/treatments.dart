@@ -5,10 +5,10 @@ import 'package:injury_recovery/components/menu_button.dart';
 import 'package:injury_recovery/constants/routes.dart';
 import 'package:injury_recovery/features/presentation/services/response.dart';
 import 'package:injury_recovery/features/presentation/services/service_layer.dart';
-import 'package:injury_recovery/features/presentation/views/treatment_view.dart';
+import 'package:injury_recovery/features/presentation/views/customer/treatment/treatment_view.dart';
 
-import '../../domain/entities/exercise_video.dart';
-import '../../domain/entities/treatment.dart';
+import '../../../domain/entities/exercise_video.dart';
+import '../../../domain/entities/treatment.dart';
 
 class Treatmants extends StatefulWidget {
   const Treatmants({super.key});

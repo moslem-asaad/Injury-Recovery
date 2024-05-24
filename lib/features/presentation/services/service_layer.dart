@@ -30,4 +30,18 @@ class Service {
       return ResponseT(e.toString(), true);
     }
   }
+
+   Future<Response> sendFeedbackRequest(String treatmentId, String videoTreamentId, String? myVideiURL, String description) async{
+    try{
+      await usersController.SendFeedbackRequest(
+        treatmentId,
+        videoTreamentId,
+        myVideiURL,
+        description
+      );
+      return Response.empty();
+    }catch(e){
+      return Response(e.toString(), true);
+    }
+  }
 }

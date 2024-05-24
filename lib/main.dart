@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:injury_recovery/constants/routes.dart';
 import 'package:injury_recovery/features/data/services/firebase_service_impl.dart';
-import 'package:injury_recovery/features/presentation/views/customer_profile.dart';
-import 'package:injury_recovery/features/presentation/views/feedback_request.dart';
-import 'package:injury_recovery/features/presentation/views/treatment_view.dart';
-import 'package:injury_recovery/features/presentation/views/treatments.dart';
+import 'package:injury_recovery/features/presentation/views/customer/customer_profile.dart';
+import 'package:injury_recovery/features/presentation/views/customer/treatment/feedback_request.dart';
+import 'package:injury_recovery/features/presentation/views/customer/treatment/treatment_view.dart';
+import 'package:injury_recovery/features/presentation/views/customer/treatments.dart';
 import 'package:injury_recovery/services/auth/auth_service.dart';
 import 'package:injury_recovery/features/presentation/views/gallary_view.dart';
 import 'package:injury_recovery/features/presentation/views/login_view.dart';
@@ -49,7 +49,7 @@ void main() {
         gallaryRout: (context) => const GallaryView(),
         customerProfileRout: (context) => const CustomerProfile(),
         treatmentsRout: (context) => const Treatmants(),
-        feedbackRequestRout:(context) => const FeedbackRequest(),
+        //feedbackRequestRout:(context) => const FeedbackRequest(treatmentId: ,),
       },
     ),
   );
@@ -78,7 +78,7 @@ class HomePage extends StatelessWidget {
                 return const VerifyEmailView();
               }
             } else {
-              return const LoginView();
+              return const CustomerProfile();
             }
           default:
             return const CircularProgressIndicator();

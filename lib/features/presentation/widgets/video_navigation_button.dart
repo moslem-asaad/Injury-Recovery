@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:injury_recovery/features/domain/entities/treatment.dart';
-import 'package:injury_recovery/features/presentation/views/treatment_view.dart';
-import 'package:injury_recovery/utilities/show_error_dialog.dart';
-
-import '../../../components/video_player_preview.dart';
 import '../../domain/entities/exercise_video.dart';
 
 class VideoNavigationButtons extends StatefulWidget {
   final List<ExerciseVideo> videos;
   final int currentIndex;
-  final Function(int) onPageChanged;
+  final Function(int,int) onPageChanged;
 
   const VideoNavigationButtons({
     Key? key,
@@ -32,7 +27,7 @@ class _VideoNavigationButtonsState extends State<VideoNavigationButtons> {
         widget.videos.length,
         (index) => GestureDetector(
           onTap: () {
-            widget.onPageChanged(index); // Notify parent of page change
+            widget.onPageChanged(index,20);
           },
           child: Column(
             children: [

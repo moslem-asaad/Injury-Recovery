@@ -50,6 +50,7 @@ dependencies:
   auto_orientation: ^2.3.1
   flutter_localizations:
     sdk: flutter
+  smooth_video_progress: ^0.0.4
 
 dev_dependencies:
   flutter_test:

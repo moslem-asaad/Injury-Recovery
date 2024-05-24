@@ -11,5 +11,5 @@ abstract class UsersController{
   Future<bool> isLoggedIn();
   Future<String> getCurrentUserId();
   List<Treatment> getUserTreatments();
-  
+  Future<void> SendFeedbackRequest(String treatmentId, String videoTreamentId, String? myVideiURL, String description);
 }
