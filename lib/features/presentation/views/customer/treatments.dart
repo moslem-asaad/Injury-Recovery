@@ -14,12 +14,12 @@ class Treatmants extends StatefulWidget {
 }
 
 class _TreatmantsState extends State<Treatmants> {
-  late ResponseT<List<Treatment>> treatments;
+  late Future<ResponseT<List<Treatment>>> treatments;
 
   @override
-  void initState() async{
+  void initState(){
     super.initState();
-    treatments = await Service().getUserTreatments();
+    treatments = Service().getUserTreatments();
   }
 
   @override
@@ -30,8 +30,8 @@ class _TreatmantsState extends State<Treatmants> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            for (var treatment in treatments.val!)
-              treatmentWidget(treatment),
+            /*for (var treatment in treatments.val!)
+              treatmentWidget(treatment),*/
           ],
         ),
       ),

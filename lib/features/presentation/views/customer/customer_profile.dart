@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:injury_recovery/components/menu_button.dart';
 import 'package:injury_recovery/components/my_button.dart';
 import 'package:injury_recovery/constants/routes.dart';
+import 'package:injury_recovery/features/presentation/services/service_layer.dart';
+import 'package:injury_recovery/utilities/show_error_dialog.dart';
 
 class CustomerProfile extends StatefulWidget {
   const CustomerProfile({super.key});
@@ -13,6 +15,14 @@ class CustomerProfile extends StatefulWidget {
 }
 
 class _CustomerProfileState extends State<CustomerProfile> {
+  late String name;
+
+  @override
+  void initState(){
+    //name = await _getUserName();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screen_height = MediaQuery.of(context).size.height;
@@ -109,5 +119,18 @@ class _CustomerProfileState extends State<CustomerProfile> {
         ],
       ),
     );
+  }
+
+  Future<String> _getUserName() async{
+    var firstName = await Service().getUserFirstName();
+    if(firstName.errorOccured!){
+      showErrorDialog(context, firstName.errorMessage!);
+    }
+    var lastName = await Service().getUserLastName();
+    if(lastName.errorOccured!){
+      showErrorDialog(context, lastName.errorMessage!);
+    }
+
+    return '${firstName.val} ${lastName.val}';
   }
 }

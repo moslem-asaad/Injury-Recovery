@@ -11,13 +11,14 @@ class MyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
     return TextButton(
       onPressed: onPressed,
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(12),
         margin: const EdgeInsets.symmetric(horizontal: 25),
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: co.my_green,
           borderRadius: BorderRadius.circular(8),
           ),
         child: Center(

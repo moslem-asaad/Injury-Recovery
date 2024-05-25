@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:injury_recovery/constants/colors.dart';
 
 class RowTextTextButtun extends StatefulWidget {
   final String text1;
@@ -29,7 +30,7 @@ class _RowTextTextButtunState extends State<RowTextTextButtun> {
           child: Text(
             widget.button_text,
             style: const TextStyle(
-              color: Colors.blue,
+              color: my_green,
               fontWeight: FontWeight.bold,
             ),
           ),
