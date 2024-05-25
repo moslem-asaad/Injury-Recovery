@@ -45,8 +45,9 @@ class Service {
 
   Future<ResponseT<List<Treatment>>> getUserTreatments() async {
     try {
-      List<Treatment> treatments = await usersController.getUserTreatments('');
-      //List<Treatment> treatments = usersController.getUserTreatments1();
+      //List<Treatment> treatments = await usersController.getUserTreatments('moslem.asaad2000@gmail.com');
+      List<Treatment> treatments = usersController.getUserTreatments1();
+      print('getUserTreatments 40 ${treatments[0].treatmentDescription}');
       return ResponseT.empty(treatments);
     } catch (e) {
       return ResponseT(e.toString(), true);

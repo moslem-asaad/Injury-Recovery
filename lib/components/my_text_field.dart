@@ -9,6 +9,9 @@ class MyTextField extends StatelessWidget{
   final bool autocorrect;
   final TextInputType? keyboardType;
   final int? maxLines;
+  final bool? readOnly;
+  final Color? fillcolor;
+  
   const MyTextField({
     super.key,
     required this.controller,
@@ -17,7 +20,9 @@ class MyTextField extends StatelessWidget{
     required this.enableSuggestions,
     required this.autocorrect,
     this.keyboardType,
-    required this.maxLines
+    required this.maxLines,
+    this.readOnly = false,
+    this.fillcolor = const Color.fromARGB(255, 238, 238, 238),
     });
 
   @override
@@ -31,6 +36,7 @@ class MyTextField extends StatelessWidget{
         autocorrect: autocorrect,
         keyboardType: keyboardType,
         maxLines: maxLines,
+        readOnly: readOnly!,
         decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
@@ -38,7 +44,7 @@ class MyTextField extends StatelessWidget{
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey.shade400),
           ),
-          fillColor: Colors.grey.shade200,
+          fillColor: fillcolor,
           filled: true,
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.grey[400]),

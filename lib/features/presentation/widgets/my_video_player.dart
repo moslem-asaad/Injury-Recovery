@@ -105,17 +105,19 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
   }
 
   Widget _videoProgress() {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.58,
-      child: SmoothVideoProgress(
-        controller: widget.controller!,
-        builder: (context, position, duration, child) => Slider(
-          onChanged: (value) =>
-              widget.controller!.seekTo(Duration(milliseconds: value.toInt())),
-          value: position.inMilliseconds.toDouble(),
-          min: 0,
-          max: duration.inMilliseconds.toDouble(),
-          activeColor: Colors.blue,
+    return Expanded(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.58,
+        child: SmoothVideoProgress(
+          controller: widget.controller!,
+          builder: (context, position, duration, child) => Slider(
+            onChanged: (value) =>
+                widget.controller!.seekTo(Duration(milliseconds: value.toInt())),
+            value: position.inMilliseconds.toDouble(),
+            min: 0,
+            max: duration.inMilliseconds.toDouble(),
+            activeColor: Colors.blue,
+          ),
         ),
       ),
     );

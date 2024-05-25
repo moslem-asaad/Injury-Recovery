@@ -15,12 +15,32 @@ class CustomerProfile extends StatefulWidget {
 }
 
 class _CustomerProfileState extends State<CustomerProfile> {
-  late String name;
+  late String name =' ';
 
   @override
   void initState(){
-    //name = await _getUserName();
+    setState(() {
+      setName();
+    });
     super.initState();
+  }
+
+  
+  Future<String> _getUserName() async{
+    var firstName = await Service().getUserFirstName();
+    if(firstName.errorOccured!){
+      await showErrorDialog(context, firstName.errorMessage!);
+    }
+    var lastName = await Service().getUserLastName();
+    if(lastName.errorOccured!){
+      await showErrorDialog(context, lastName.errorMessage!);
+    }
+
+    return '${firstName.val} ${lastName.val}';
+  }
+
+  void setName() async{
+    name = await _getUserName();
   }
 
   @override
@@ -36,7 +56,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
             padding: const EdgeInsets.all(15.0),
             child: Center(
               child: Text(
-                'Welcome Valued Client ',
+                'Welcome $name',
                 style: TextStyle(
                   color: Colors.grey[700],
                   fontSize: 30,
@@ -121,16 +141,4 @@ class _CustomerProfileState extends State<CustomerProfile> {
     );
   }
 
-  Future<String> _getUserName() async{
-    var firstName = await Service().getUserFirstName();
-    if(firstName.errorOccured!){
-      showErrorDialog(context, firstName.errorMessage!);
-    }
-    var lastName = await Service().getUserLastName();
-    if(lastName.errorOccured!){
-      showErrorDialog(context, lastName.errorMessage!);
-    }
-
-    return '${firstName.val} ${lastName.val}';
-  }
 }

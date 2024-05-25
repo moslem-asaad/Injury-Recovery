@@ -4,6 +4,7 @@ import 'package:injury_recovery/components/menu_button.dart';
 import 'package:injury_recovery/features/presentation/services/response.dart';
 import 'package:injury_recovery/features/presentation/services/service_layer.dart';
 import 'package:injury_recovery/features/presentation/views/customer/treatment/treatment_view.dart';
+import 'package:injury_recovery/utilities/show_error_dialog.dart';
 import '../../../domain/entities/treatment.dart';
 
 class Treatmants extends StatefulWidget {
@@ -14,28 +15,50 @@ class Treatmants extends StatefulWidget {
 }
 
 class _TreatmantsState extends State<Treatmants> {
-  late Future<ResponseT<List<Treatment>>> treatments;
+  late Future<List<Treatment>> futureTreatments;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    treatments = Service().getUserTreatments();
+    futureTreatments = _getUserTreatments();
+  }
+
+  Future<List<Treatment>> _getUserTreatments() async {
+    var treatmentsResponse = await Service().getUserTreatments();
+    if (treatmentsResponse.errorOccured!) {
+      await showErrorDialog(context, treatmentsResponse.errorMessage!);
+      return [];
+    } else {
+      return treatmentsResponse.val!;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const MenuButton(title: 'Treatments').bar(context),
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            /*for (var treatment in treatments.val!)
-              treatmentWidget(treatment),*/
-          ],
-        ),
-      ),
-    );
+    return FutureBuilder(
+        future: futureTreatments,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            showErrorDialog(context, '${snapshot.error}');
+            return Text('Error: ${snapshot.error}');
+          } else {
+            var treatments = snapshot.data!;
+            return Scaffold(
+              appBar: const MenuButton(title: 'Treatments').bar(context),
+              backgroundColor: Colors.white,
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    for (var treatment in treatments)
+                      treatmentWidget(treatment),
+                  ],
+                ),
+              ),
+            );
+          }
+        });
   }
 
   treatmentWidget(Treatment treatment) {
@@ -103,7 +126,9 @@ class _TreatmantsState extends State<Treatmants> {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: TextButton(
-                  onPressed: () {start_treatment(context,treatment);},
+                  onPressed: () {
+                    start_treatment(context, treatment);
+                  },
                   child: Center(
                     child: Container(
                       decoration: BoxDecoration(

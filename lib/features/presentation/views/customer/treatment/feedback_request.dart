@@ -13,7 +13,6 @@ import 'package:injury_recovery/utilities/show_error_dialog.dart';
 import 'package:video_player/video_player.dart';
 
 class FeedbackRequest extends StatefulWidget {
-  //todo: add treatment id and video id
 
   const FeedbackRequest(
       {super.key, required this.treatmentId, required this.videoId});
