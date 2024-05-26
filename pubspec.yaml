@@ -51,6 +51,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   smooth_video_progress: ^0.0.4
+  youtube_player_flutter: ^9.0.1
+  video_thumbnail: ^0.5.3
 
 dev_dependencies:
   flutter_test:

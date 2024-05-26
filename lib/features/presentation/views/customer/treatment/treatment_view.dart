@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:injury_recovery/constants/colors.dart' as co;
+import 'package:injury_recovery/features/presentation/views/customer/treatment/all_feedbacks.dart';
 import 'package:injury_recovery/features/presentation/views/customer/treatment/ro_feedback_request.dart';
 import 'package:injury_recovery/features/presentation/views/customer/treatment/videos_view.dart';
 import '../../../../domain/entities/treatment.dart';
@@ -37,28 +38,31 @@ class _TreatmentViewState extends State<TreatmentView> {
       child: Scaffold(
         backgroundColor: co.backgraound,
         appBar: AppBar(
-          bottom: const TabBar(tabs: [
-            Tab(
-              child: Text(
-                'Videos',
-                style: TextStyle(
-                  color: co.text_color,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+          bottom: const TabBar(
+            tabs: [
+              Tab(
+                child: Text(
+                  'Videos',
+                  style: TextStyle(
+                    color: co.text_color,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            Tab(
-              child: Text(
-                'Feedback Request',
-                style: TextStyle(
-                  color: co.text_color,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+              Tab(
+                child: Text(
+                  'Feedback Request',
+                  style: TextStyle(
+                    color: co.text_color,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-          ]),
+            ],
+            indicatorColor: Colors.blue,
+          ),
           title: Text('Treatment A'),
         ),
         body: TabBarView(
@@ -100,9 +104,10 @@ class _TreatmentViewState extends State<TreatmentView> {
   Widget feedbackBarView() {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return Scaffold(
+    return AllFeedbacks(treatmentId: widget.treatment.treatmentGlobalId);
+    /*return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(25.0),
         child: Column(
           children: [
             Container(
@@ -111,7 +116,7 @@ class _TreatmentViewState extends State<TreatmentView> {
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(10),
-                  color: co.my_green),
+                  color: co.my_blue),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -130,34 +135,22 @@ class _TreatmentViewState extends State<TreatmentView> {
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'to see your request details',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                RoFeedBackRequest(treatmentId: 1, videoId: 1),
-                          ));
-                        },
-                        child: Text(
-                          'click here',
-                          style: TextStyle(
-                              //color: Colors.white,
-                              ),
-                        ),
-                      ),
-                    ],
+                  SizedBox(
+                    height: height * 0.03,
                   ),
                   Center(
-                      child: OutlinedButton(
-                          onPressed: () {}, child: Text('Show Response'))),
+                    child: OutlinedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              RoFeedBackRequest(treatmentId: 1, videoId: 1),
+                        ));
+                      },
+                      child: Text(
+                        'review the request',
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -175,6 +168,6 @@ class _TreatmentViewState extends State<TreatmentView> {
           ],
         ),
       ),
-    );
+    );*/
   }
 }

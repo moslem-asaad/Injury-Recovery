@@ -4,6 +4,7 @@ import 'package:injury_recovery/components/menu_button.dart';
 import 'package:injury_recovery/features/presentation/services/response.dart';
 import 'package:injury_recovery/features/presentation/services/service_layer.dart';
 import 'package:injury_recovery/features/presentation/views/customer/treatment/treatment_view.dart';
+import 'package:injury_recovery/features/presentation/widgets/treatments_images.dart';
 import 'package:injury_recovery/utilities/show_error_dialog.dart';
 import '../../../domain/entities/treatment.dart';
 
@@ -58,12 +59,12 @@ class _TreatmantsState extends State<Treatmants> {
               ),
             );
           }
-        });
+    });
   }
 
   treatmentWidget(Treatment treatment) {
     return Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(25.0),
       child: Container(
         width: double.infinity,
         height: MediaQuery.of(context).size.height * 0.5,
@@ -75,15 +76,7 @@ class _TreatmantsState extends State<Treatmants> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.2,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.grey[500],
-              ),
-            ),
+            getImage(context, 0.5, treatment.treatmentGlobalId!),
             const SizedBox(
               height: 10,
             ),
