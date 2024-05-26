@@ -18,7 +18,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
   late String name;
 
   @override
-  void initState(){
+  void initState() {
     //name = await _getUserName();
     super.initState();
   }
@@ -28,7 +28,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
     double screen_height = MediaQuery.of(context).size.height;
     double screen_width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: const MenuButton(title: 'my profile').bar(context),
+      appBar: const MenuButton(title: 'הפרופיל שלי').bar(context),
       backgroundColor: Colors.white,
       body: Column(
         children: [
@@ -36,7 +36,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
             padding: const EdgeInsets.all(15.0),
             child: Center(
               child: Text(
-                'Welcome Valued Client ',
+                'ברוך הבא לקוח מעורך',
                 style: TextStyle(
                   color: Colors.grey[700],
                   fontSize: 30,
@@ -51,7 +51,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
                       treatmentsRout,
                     ),
                   },
-              title: 'Treatments'),
+              title: 'הטיפולים שלי'),
           SizedBox(
             height: screen_height / 32.5,
           ),
@@ -67,12 +67,12 @@ class _CustomerProfileState extends State<CustomerProfile> {
                       borderRadius: BorderRadius.circular(20),
                       color: Colors.grey[200],
                     ),
-                    height: screen_height / 4,
+                    height: screen_height / 3,
                     width: screen_width,
                     child: Column(
                       children: [
                         Text(
-                          'Current Treatment',
+                          'הטיפול הנוכחי',
                           style: TextStyle(
                             color: Colors.grey[700],
                             fontSize: 30,
@@ -83,7 +83,7 @@ class _CustomerProfileState extends State<CustomerProfile> {
                           height: 3,
                         ),
                         Text(
-                          'watch sequential treatment videos',
+                          'צפה בסרטוני טיפול עוקבים',
                           style: TextStyle(
                             color: Colors.grey[700],
                           ),
@@ -121,13 +121,13 @@ class _CustomerProfileState extends State<CustomerProfile> {
     );
   }
 
-  Future<String> _getUserName() async{
+  Future<String> _getUserName() async {
     var firstName = await Service().getUserFirstName();
-    if(firstName.errorOccured!){
+    if (firstName.errorOccured!) {
       showErrorDialog(context, firstName.errorMessage!);
     }
     var lastName = await Service().getUserLastName();
-    if(lastName.errorOccured!){
+    if (lastName.errorOccured!) {
       showErrorDialog(context, lastName.errorMessage!);
     }
 

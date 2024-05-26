@@ -10,7 +10,6 @@ import 'package:injury_recovery/services/auth/auth_service.dart';
 import 'package:injury_recovery/utilities/show_error_dialog.dart';
 import 'package:flutter/material.dart';
 
-
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
@@ -37,7 +36,7 @@ class _LoginViewState extends State<LoginView> {
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     double screen_height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.grey[300],
@@ -46,7 +45,7 @@ class _LoginViewState extends State<LoginView> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: screen_height/32),
+                SizedBox(height: screen_height / 32),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
@@ -54,99 +53,94 @@ class _LoginViewState extends State<LoginView> {
                     width: 200,
                   ),
                 ),
-                SizedBox(height: screen_height/16.5),
-                
+                SizedBox(height: screen_height / 16.5),
+
                 Text(
-                  'Hello Again',
+                  'שלום',
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 60,
-                    fontWeight: FontWeight.bold, 
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: screen_height/16.5),
+                SizedBox(height: screen_height / 16.5),
 
                 Text(
-                  'Welcome back, you\'v been missed!',
+                  'ברוך שוב, התגעגענו !',
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 16,
                   ),
                 ),
-            
-                SizedBox(height: screen_height/32),
-            
+
+                SizedBox(height: screen_height / 32),
+
                 // user name textfield
                 MyTextField(
                   controller: _email,
-                  hintText: 'Email',
+                  hintText: 'דואר אלקטרוני',
                   obscureText: false,
                   enableSuggestions: false,
                   autocorrect: false,
                   keyboardType: TextInputType.emailAddress,
                   maxLines: 1,
                 ),
-            
-                SizedBox(height: screen_height/82),
-            
+
+                SizedBox(height: screen_height / 82),
+
                 // password text field
                 MyTextField(
                   controller: _password,
-                  hintText: 'Password',
+                  hintText: 'סיסמה',
                   obscureText: true,
                   enableSuggestions: false,
                   autocorrect: false,
                   keyboardType: TextInputType.visiblePassword,
                   maxLines: 1,
                 ),
-                        
+
                 // forgot password
-                 Padding(
+                Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       TextButton(
-                        onPressed: (){
+                        onPressed: () {
                           Navigator.pushNamed(context, resetPasswordRout);
                         },
                         child: const Text(
-                          'Forgot Password?',
+                          'שכחת את הסיסמה שלך ?',
                           style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold,  
-                            ),
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-            
-                SizedBox(height: screen_height/32),
-            
+
+                SizedBox(height: screen_height / 32),
+
                 // sign in button
                 MyButton(
-                    title: 'כניסה',
-                    onPressed: () async {
+                  title: 'כניסה',
+                  onPressed: () async {
                     final email = _email.text;
                     final password = _password.text;
                     var response = await Service().logIn(email, password);
-                    if(response.errorOccured!){ 
-                      print('sakljdslkajdslakd');
+                    if (response.errorOccured!) {
                       await showErrorDialog(context, response.errorMessage!);
-                    }else{
-                      if(email== 'asaadmoslem2000@gmail.com'){
-                          // user's email is verified 
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            mainRoute, 
-                            (route) => false
-                          );
-                        }else{
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            customerProfileRout, 
-                            (route) => false
-                          );
-                        }
+                    } else {
+                      if (email == 'asaadmoslem2000@gmail.com') {
+                        // user's email is verified
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            mainRoute, (route) => false);
+                      } else {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            customerProfileRout, (route) => false);
+                      }
                     }
                     /*else{
                       print('in else');
@@ -173,21 +167,21 @@ class _LoginViewState extends State<LoginView> {
                     }*/
                   },
                 ),
-            
-                SizedBox(height: screen_height/16.5),
-            
+
+                SizedBox(height: screen_height / 16.5),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Not registerd?',
+                        'עדיין לא נרשמת ?',
                         style: TextStyle(
                           color: Colors.grey[600],
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
-                          ),
+                        ),
                       ),
                       const SizedBox(width: 4),
                       TextButton(
@@ -198,10 +192,10 @@ class _LoginViewState extends State<LoginView> {
                           );
                         },
                         child: const Text(
-                          'Register Now',
+                          'הירשם כעת',
                           style: TextStyle(
                             color: Colors.blue,
-                            fontWeight: FontWeight.bold,  
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -217,21 +211,7 @@ class _LoginViewState extends State<LoginView> {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    /*try {
+/*try {
                       await AuthService.firebase().logIn(email: email, password: password);
                       final user = AuthService.firebase().currentUser;
                       if(user?.isEmailVerified?? false){ 

@@ -64,9 +64,9 @@ class _RegisterViewState extends State<RegisterView> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                getLogo(context,0.15),
+                getLogo(context, 0.15),
                 const Text(
-                  'Create Your Account',
+                  'יצירת החשבון שלך ',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 32,
@@ -75,7 +75,7 @@ class _RegisterViewState extends State<RegisterView> {
                 SizedBox(height: screen_height / 32),
                 MyTextField(
                   controller: _firstName,
-                  hintText: 'First Name',
+                  hintText: 'שם פרטי ',
                   obscureText: false,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -86,7 +86,7 @@ class _RegisterViewState extends State<RegisterView> {
 
                 MyTextField(
                   controller: _lastName,
-                  hintText: 'Last Name',
+                  hintText: 'שם משפחה',
                   obscureText: false,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -97,7 +97,7 @@ class _RegisterViewState extends State<RegisterView> {
 
                 MyTextField(
                   controller: _phoneNumber,
-                  hintText: 'Phone Number',
+                  hintText: 'מספר טלפון',
                   obscureText: false,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -108,7 +108,7 @@ class _RegisterViewState extends State<RegisterView> {
 
                 MyTextField(
                   controller: _email,
-                  hintText: 'Email',
+                  hintText: 'דואר אלקטרוני',
                   obscureText: false,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -121,7 +121,7 @@ class _RegisterViewState extends State<RegisterView> {
                 // password text field
                 MyTextField(
                   controller: _password,
-                  hintText: 'Password',
+                  hintText: 'סיסמה',
                   obscureText: true,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -135,7 +135,7 @@ class _RegisterViewState extends State<RegisterView> {
 
                 MyTextField(
                   controller: _confermed_password,
-                  hintText: 'Confirm Password',
+                  hintText: 'אישור סיסמה',
                   obscureText: true,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -150,20 +150,20 @@ class _RegisterViewState extends State<RegisterView> {
                   onPressed: () async {
                     await _register();
                   },
-                  title: 'Register',
+                  title: 'הרשמה',
                 ),
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: RowTextTextButtun(
-                    text1: 'Already registered ?',
+                    text1: 'כבר רשום ?',
                     onPresses: () {
                       Navigator.of(context).pushNamedAndRemoveUntil(
                         loginRoute,
                         (route) => false,
                       );
                     },
-                    button_text: 'Login Here',
+                    button_text: 'להתחבר',
                   ),
                 ),
               ],
@@ -175,7 +175,7 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
   Future<void> _register() async {
-        print('asasasas1');
+    print('asasasas1');
 
     final email = _email.text;
     final password = _password.text;
@@ -195,7 +195,7 @@ class _RegisterViewState extends State<RegisterView> {
     if (response.errorOccured!) {
       await showErrorDialog(context, response.errorMessage!);
     } else {
-      await showErrorDialog(context,' response.errorMessage!');
+      await showErrorDialog(context, ' response.errorMessage!');
       await AuthService.firebase().sendEmailVerification();
     }
   }

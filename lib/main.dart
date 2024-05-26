@@ -34,11 +34,8 @@ void main() {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [
-        Locale('he'),
-        Locale('en')
-      ],
-      locale: Locale('en', ''),
+      supportedLocales: [Locale('he'), Locale('en')],
+      locale: Locale('he', ''),
       routes: {
         loginRoute: (context) => const LoginView(),
         registerRoute: (context) => const RegisterView(),
@@ -76,7 +73,7 @@ class HomePage extends StatelessWidget {
                 return const VerifyEmailView();
               }
             } else {
-              return const CustomerProfile();
+              return const LoginView();
             }
           default:
             return const CircularProgressIndicator();
@@ -84,5 +81,4 @@ class HomePage extends StatelessWidget {
       },
     );
   }
-
 }
