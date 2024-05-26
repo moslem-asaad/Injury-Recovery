@@ -24,7 +24,7 @@ void main() async {
 
     test('UsersProfilesController.getUserTreatments returns correct treatments', () async {
 
-      List<Treatment> treatments = await usersProfilesController.getUserTreatments('ahmad1999@gmail.com');
+      List<Treatment> treatments = await usersProfilesController.getUserTreatments();
 
       expect(treatments, isNotEmpty); 
       expect(treatments.length, 2);
@@ -33,7 +33,7 @@ void main() async {
 
 
     test('UsersProfilesController.getUserTreatments returns correct treatments for another user', () async {
-      List<Treatment> treatments2 = await usersProfilesController.getUserTreatments('haitham2001@gmail.com');
+      List<Treatment> treatments2 = await usersProfilesController.getUserTreatments();
       expect(treatments2, isNotEmpty);
       expect(treatments2.length, 1);
 

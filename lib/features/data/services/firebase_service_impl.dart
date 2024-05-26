@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injury_recovery/features/data/services/auth_exceptions.dart';
 import 'package:injury_recovery/features/domain/entities/customer_user.dart';
 import 'package:injury_recovery/features/domain/entities/exercise_video.dart';
+import 'package:injury_recovery/features/domain/entities/feedback_request.dart';
 import 'package:injury_recovery/features/domain/entities/system_manager.dart';
 import 'package:injury_recovery/features/domain/entities/treatment.dart';
 import 'package:injury_recovery/features/domain/entities/user.dart';
@@ -40,26 +41,24 @@ class FirebaseServiceImpl{
           return await getLoggedInUser();
         }else{
           print('in else1');
-        throw UserNotLoggedInAuthException();
+        throw InternalFailureException("logIn: else clasue");
       }
-
     }on FirebaseAuthException catch (e){
       print('in else3');
       if (e.code == 'user-not-found'){
-        throw UserNotFoundAuthException();
+        throw ExpectedFailureException('user not found');
       }
       else if (e.code == 'wrong-password'){
-        throw WrongPasswordAuthException();
+        throw ExpectedFailureException('entered password is wrong');
       }else{
         print('in else4');
-        throw GenericAuthException();
+        throw InternalFailureException("logIn: FirebaseAuthException with unexpected e.code");
       }
-    } catch (_){
-      print('in else5');
-        throw GenericAuthException();
+    } catch (e){
+      print('logIn: in else5');
+      rethrow;
     }
   }
-
 
   Future<String> getSystemManagerEmail() async{
     try{
@@ -74,16 +73,15 @@ class FirebaseServiceImpl{
       }
       else{
         print("getSystemManagerEmail 4");
-        throw SystemManagerEmailIsNotDefined();
+        throw InternalFailureException('System Manager email is not defined');
       }
-    }on SystemManagerEmailIsNotDefined catch(_){
+    }on InternalFailureException catch(_){
         rethrow;
     } catch(_){
       print("getSystemManagerEmail 5");
-      throw GenericAuthException();
+      rethrow;
     }
   }
-
 
   Future<User> getLoggedInUser() async{
     try{
@@ -95,13 +93,13 @@ class FirebaseServiceImpl{
         return User.fromSnapshot(userId, userDocument);
       }
       else{
-        throw UserNotFoundAuthException();
+        throw InternalFailureException("logged in user can be found in firebase");
       }
-    }on UserNotFoundAuthException catch(e){
+    }on InternalFailureException catch(_){
         rethrow;
     } catch(_){
       print("getLoggedInUser GenericAuthException 1");
-      throw GenericAuthException();
+      rethrow;
     }
   }
 
@@ -110,7 +108,7 @@ class FirebaseServiceImpl{
       await FirebaseAuth.instance.signOut();
       return firebaseAuth.currentUser == null;
     }catch (e){
-        throw GenericAuthException();
+        rethrow;
     }
 
   }
@@ -133,25 +131,25 @@ class FirebaseServiceImpl{
         return await createUser(user);
       }
       else{
-        throw RegisterFailedException();
+        throw InternalFailureException("register: register has failed");
       }
 
     }on FirebaseAuthException catch(e){
       print("register FirebaseAuthException 1");
       if(e.code == 'weak-password'){
-        throw WeakPasswordAuthException();
+        throw ExpectedFailureException("password is weak");
       }else if (e.code == 'email-already-in-use'){
-        throw EmailAlreadyInUseAuthException();
+        throw ExpectedFailureException("email already in use");
       } else if (e.code == 'invalid-email'){
-        throw InvalidEmailAuthException();
+        throw ExpectedFailureException("invalid email");
       }else{
         print("register FirebaseAuthException 2");
         print(e.code);
-        throw GenericAuthException();
+        throw InternalFailureException("register: unexpected FirebaseAuthException e.code");
       }
     }catch(_){
       print("register GenericAuthException 1");
-      throw GenericAuthException();
+      rethrow;
     }
   }
   
@@ -171,11 +169,9 @@ class FirebaseServiceImpl{
       }
     }catch(_){
       print("createUser GenericAuthException 1");
-      throw GenericAuthException();
+      rethrow;
     }
   }
-
-
 
   Future<bool> createCategory(String categoryName, String categoryDescription) async{
     try{
@@ -191,9 +187,9 @@ class FirebaseServiceImpl{
         return true;
       }
       else{
-        throw CategoryAlreadyExistException();
+        throw ExpectedFailureException("Category name already exists");
       }
-    }on CategoryAlreadyExistException catch(_){
+    }on ExpectedFailureException catch(_){
       rethrow;
     } catch(e){
       print("createCategory general exception 1");
@@ -240,23 +236,24 @@ class FirebaseServiceImpl{
       DocumentSnapshot videoDocument = await videosCollection.doc(videoGlobalId.toString()).get();
 
       if(!videoDocument.exists){
-        ExerciseVideo exerciseVideo = ExerciseVideo(videoGlobalId, videoDownloadURL, videoSummary, videoDescription, "category1Name", 1);
+        ExerciseVideo exerciseVideo = ExerciseVideo(videoGlobalId, videoDownloadURL, videoSummary,
+         videoDescription, "category1Name", 1);
+
         videosCollection.doc(videoGlobalId.toString()).set(exerciseVideo.toJson());
         await setCounter(FirestoreTablesNames.exerciseVideos, videoGlobalId+1);
         return true;
       }
       else{
-        throw VideoAlreadyExistException();
+        throw InternalFailureException("createExerciseVideo: video id already exists");
       }
-    }on VideoAlreadyExistException catch(_){
+    }on InternalFailureException catch(_){
       rethrow;
     } catch(e){
       print("createExerciseVideo general exception 1");
       rethrow;
     }
   }
-
-
+  
   Future<List<ExerciseVideo>> getExerciseVideoList(List<int> videosGlobalIds) async{
       return List.from(videosGlobalIds.map((int videoId) async {return await getExerciseVideoById(videoId);}));
   }
@@ -270,16 +267,15 @@ class FirebaseServiceImpl{
         return ExerciseVideo.fromSnapshot(videoDocument);
       }
       else{
-        throw VideoDoesNotExistException();
+        throw InternalFailureException("createExerciseVideo: video id does not exists");
       }
-    }on VideoDoesNotExistException catch(_){
+    }on InternalFailureException catch(_){
       rethrow;
     } catch(e){
       print("getExerciseVideoById general exception 1");
       rethrow;
     }
   }
-
 
   Future<bool> customerUserExist(String customerUserEmail) async{
     try{
@@ -300,7 +296,7 @@ class FirebaseServiceImpl{
 
   Future<void> validateCustomerUserExists(String customerUserEmail) async{
     if(! await customerUserExist(customerUserEmail)){
-        throw CustomerUserDoesNotExistException();
+        throw ExpectedFailureException("entered user email does not exist");
     }
   }
 
@@ -331,12 +327,11 @@ class FirebaseServiceImpl{
     return true;
   }
 
-    Future<void> validateExerciseVideosExist(List<int> exerciseVideosIds) async{
+  Future<void> validateExerciseVideosExist(List<int> exerciseVideosIds) async{
     if(! await exerciseVideosExist(exerciseVideosIds)){
-        throw OneOrMoreExerciseVideoDoesNotExistException();
+       throw ExpectedFailureException("one or more exercise videos does not exist");
     }
   }
-
 
   Future<bool> createTreatment(String customerUserEmail, String treatmentDescription, List<int> exerciseVideosIds) async{
     try{
@@ -360,11 +355,9 @@ class FirebaseServiceImpl{
       }
       else{
         print("createTreatment 6");
-        throw TreatmentAlreadyExistException();
+        throw InternalFailureException("createTreatment: treatment id already exist");
       }
-    }on OneOrMoreExerciseVideoDoesNotExistException catch(_){
-      rethrow;
-    }on CustomerUserDoesNotExistException catch(_){
+    }on ExpectedFailureException catch(_){
       rethrow;
     } catch(e){
       print("createTreatment general exception 1");
@@ -372,32 +365,23 @@ class FirebaseServiceImpl{
     }
   }
 
-
   Future<List<Treatment>> getUserTreatments(String customerUserEmail) async{
     try{
-      print("getUserTreatments 1");
       validateCustomerUserExists(customerUserEmail);
-      print("getUserTreatments 2");
       final usersCollection =  firestore.collection(FirestoreTablesNames.treatments);
-      print("getUserTreatments 3");
       QuerySnapshot querySnapshot = await usersCollection.where("customerUserEmail", isEqualTo: customerUserEmail).get();
 
-      print("getUserTreatments 4");
       if(querySnapshot.docs.isNotEmpty){
-        print("getUserTreatments 5");
         List<Treatment> treatmentList = [];
-        print("getUserTreatments 51");
         for(QueryDocumentSnapshot queryDocumentSnapshot in  querySnapshot.docs){
-          treatmentList.add(Treatment.fromSnapshot(queryDocumentSnapshot));
+          treatmentList.add(await Treatment.fromSnapshot(queryDocumentSnapshot).setExerciseVideosList());
         }
-        print("getUserTreatments 52");
         return treatmentList;
       }
       else{
-        print("getUserTreatments 6");
         return [];
       }
-    }on CustomerUserDoesNotExistException catch(_){
+    }on ExpectedFailureException catch(_){
       rethrow;
     }catch(e){
       print("getUserTreatments general exception");
@@ -405,7 +389,211 @@ class FirebaseServiceImpl{
     }
   }
 
+  Future<bool> createFeedbackRequest(String customerUserEmail, int treatmentId,
+      int videoTreamentId, String? myVideoURL, String description) async {
+      try{
+        Treatment treatment = await getTreatmentById(treatmentId);
+        if(treatment.customerUserEmail != customerUserEmail){
+            throw InternalFailureException("current user does not have a treatment with this treatmentId");
+        }
 
+        if(!treatment.getvideosIdsList().contains(videoTreamentId)){
+            throw InternalFailureException("current treatment does not have a video with this video Id");
+        }
+
+        int feedbackRequestId = await getCounter(FirestoreTablesNames.feedbackRequests);
+        final feedbackRequestsCollection =  firestore.collection(FirestoreTablesNames.feedbackRequests);
+        DocumentSnapshot feedbackRequestDocument = await feedbackRequestsCollection.doc(feedbackRequestId.toString()).get(); 
+
+
+        if(!feedbackRequestDocument.exists){
+          FeedbackRequest feedbackRequest = FeedbackRequest(feedbackRequestId, treatmentId, videoTreamentId,
+          myVideoURL, description, customerUserEmail, null);
+          feedbackRequestsCollection.doc(feedbackRequestId.toString()).set(feedbackRequest.toJson());
+          await setCounter(FirestoreTablesNames.feedbackRequests, feedbackRequestId+1);
+          return true;
+        }
+        else{
+          throw InternalFailureException("createFeedbackRequest: feedbackRequestId already exists");
+        }
+      }on InternalFailureException catch(_){
+        rethrow;
+      } catch(e){
+        print("createFeedbackRequest general exception 1");
+        rethrow;
+      }
+  }
+
+  Future<List<FeedbackRequest>> getTreatmentFeedbackRequests(String customerUserEmail,
+   int treatmentId) async{
+    try{
+        Treatment treatment = await getTreatmentById(treatmentId);
+        if(treatment.customerUserEmail != customerUserEmail){
+            throw InternalFailureException("current user does not have a treatment with this treatmentId");
+        }
+
+
+      final feedbackRequestsCollection =  firestore.collection(FirestoreTablesNames.feedbackRequests);
+      QuerySnapshot querySnapshot = await feedbackRequestsCollection.where("treatmentGlobalId", isEqualTo: treatmentId).get();
+
+      if(querySnapshot.docs.isNotEmpty){
+        List<FeedbackRequest> feedbackRequestsList = [];
+        for(QueryDocumentSnapshot queryDocumentSnapshot in  querySnapshot.docs){
+          feedbackRequestsList.add(FeedbackRequest.fromSnapshot(queryDocumentSnapshot));
+        }
+        return feedbackRequestsList;
+      }
+      else{
+        return [];
+      }
+    }catch(e){
+      print("getTreatmentFeedbackRequests general exception");
+      rethrow;
+    }
+  }
+
+  Future<List<FeedbackRequest>> getUserFeedbackRequests(String customerUserEmail) async{
+    try{
+      final feedbackRequestsCollection =  firestore.collection(FirestoreTablesNames.feedbackRequests);
+      QuerySnapshot querySnapshot = await feedbackRequestsCollection.where("customerUserEmail", isEqualTo: customerUserEmail).get();
+
+      if(querySnapshot.docs.isNotEmpty){
+        List<FeedbackRequest> feedbackRequestsList = [];
+        for(QueryDocumentSnapshot queryDocumentSnapshot in  querySnapshot.docs){
+          feedbackRequestsList.add(FeedbackRequest.fromSnapshot(queryDocumentSnapshot));
+        }
+        return feedbackRequestsList;
+      }
+      else{
+        return [];
+      }
+    }catch(e){
+      print("getUserFeedbackRequests general exception");
+      rethrow;
+    }
+  }
+
+  Future<List<FeedbackRequest>> getAllUsersFeedbackRequests() async{
+    try{
+      final feedbackRequestsCollection =  firestore.collection(FirestoreTablesNames.feedbackRequests);
+      QuerySnapshot querySnapshot = await feedbackRequestsCollection.get();
+
+      if(querySnapshot.docs.isNotEmpty){
+        List<FeedbackRequest> feedbackRequestsList = [];
+        for(QueryDocumentSnapshot queryDocumentSnapshot in  querySnapshot.docs){
+          feedbackRequestsList.add(FeedbackRequest.fromSnapshot(queryDocumentSnapshot));
+        }
+        return feedbackRequestsList;
+      }
+      else{
+        return [];
+      }
+    }catch(e){
+      print("getUserFeedbackRequests general exception");
+      rethrow;
+    }
+  }
+
+  Future<FeedbackRequest> getFeedbackRequestbyId(int feedbackRequestId) async{
+    try{
+      final feedbackRequestCollection =  firestore.collection(FirestoreTablesNames.feedbackRequests);
+      DocumentSnapshot feedbackRequestDocument = await feedbackRequestCollection.doc(feedbackRequestId.toString()).get();
+
+      if(feedbackRequestDocument.exists){
+        return FeedbackRequest.fromSnapshot(feedbackRequestDocument);
+      }
+      else{
+        throw InternalFailureException("getFeedbackRequest: feedbackRequestId does not exists");
+      }
+    }on InternalFailureException catch(_){
+      rethrow;
+    } catch(e){
+      print("getFeedbackRequest general exception 1");
+      rethrow;
+    }
+  }
+
+  Future<bool> sendFeedbackResponse(int feedbackId, String response) async {
+    try{
+      FeedbackRequest feedbackRequest = await getFeedbackRequestbyId(feedbackId);
+      if(feedbackRequest.wasResponded()){
+        throw ExpectedFailureException("Feedback request was already responded");
+      }
+      feedbackRequest.setSystemManagerResponse(response);
+      updateFeedbackRequest(feedbackRequest);
+      return true;
+    }on InternalFailureException catch(_){
+      rethrow;
+    } catch(e){
+      print("sendFeedbackResponse general exception 1");
+      rethrow;
+    }
+  }
+
+  Future<bool> updateFeedbackRequest(FeedbackRequest feedbackRequest) async {
+    try{
+      final feedbackRequestsCollection =  firestore.collection(FirestoreTablesNames.feedbackRequests);
+      DocumentSnapshot feedbackRequestDocument = await feedbackRequestsCollection.doc(feedbackRequest.getFeedbackRequestId().toString()).get(); 
+
+      if(feedbackRequestDocument.exists){
+        feedbackRequestsCollection.doc(feedbackRequest.getFeedbackRequestId().toString()).update(feedbackRequest.toJson());
+        return true;
+      }
+      else{
+        throw InternalFailureException("updateFeedbackRequest: feedbackRequestId does not exists");
+      }
+    }on InternalFailureException catch(_){
+      rethrow;
+    } catch(e){
+      print("updateFeedbackRequest general exception 1");
+      rethrow;
+    }
+  }
+
+  Future<List<User>> getAllUsers() async{
+    try{
+      final usersCollection =  firestore.collection(FirestoreTablesNames.users);
+    
+      QuerySnapshot querySnapshot = await usersCollection.get();
+
+      if(querySnapshot.docs.isNotEmpty){
+        List<User> usersList = [];
+        for(QueryDocumentSnapshot queryDocumentSnapshot in  querySnapshot.docs){
+          usersList.add(User.fromSnapshotWithoutId(queryDocumentSnapshot));
+        }
+        return usersList;
+      }
+      else{
+        return [];
+      }
+    }catch(e){
+      print("getAllUsers general exception");
+      rethrow;
+    }
+  }
+
+  Future<Treatment> getTreatmentById(int treatmentId) async{
+    try{
+      final treatmentsCollection =  firestore.collection(FirestoreTablesNames.treatments);
+      DocumentSnapshot treatmentDocument = await treatmentsCollection.doc(treatmentId.toString()).get();
+
+      if(treatmentDocument.exists){
+        return await Treatment.fromSnapshot(treatmentDocument).setExerciseVideosList();
+      }
+      else{
+        throw InternalFailureException("getTreatmentById: treatmentId does not exists");
+      }
+    }on InternalFailureException catch(_){
+      rethrow;
+    } catch(e){
+      print("getTreatmentById general exception 1");
+      rethrow;
+    }
+  }
+  
+
+
+///////
 
 
 

@@ -3,12 +3,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:injury_recovery/features/domain/controllers/excercise_videos_controller.dart';
 import 'package:injury_recovery/features/domain/controllers/users_profiles_controller.dart';
 import 'package:injury_recovery/features/domain/entities/treatment.dart';
+import 'package:injury_recovery/features/domain/entities/user.dart';
+import 'package:injury_recovery/features/presentation/services/response.dart';
+import 'package:injury_recovery/features/presentation/services/service_layer.dart';
 import 'package:injury_recovery/services/auth/auth_service.dart';
 // ignore_for_file: avoid_print
 
 
-late UsersProfilesController usersProfilesController;
-late ExerciseVideosController exerciseVideosController;
+late Service service;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,31 +19,30 @@ void main() async {
   group('Acceptance Tests', ()  {
 
     setUp(() {
-      usersProfilesController = UsersProfilesController();
-      exerciseVideosController = ExerciseVideosController();
+      service = Service();
     });
 
     test1;
-    test2;
 
   });
 }
 
 var test1 = test('UsersProfilesController.getUserTreatments returns correct treatments', () async {
 
-      List<Treatment> treatments = await usersProfilesController.getUserTreatments('ahmad1999@gmail.com');
 
-      expect(treatments, isNotEmpty); 
-      expect(treatments.length, 2);
+      await service.logIn("asaadmoslem2000@gmail.com", "password123");
+      ResponseT<List<User>> response = await service.getAllUsers();
+      expect(response.errorOccured, false);
+      expect(response.val!.length, greaterThan(0));
+      expect(response.val!.length, greaterThan(1));
+      expect(response.val!.length, greaterThan(2));
+      expect(response.val![0].email, anyOf([
+    equals("asaadmoslem2000@gmail.com"),
+    equals("ahmad@hotmail.com")
+  ]));
 
     });
 
 
- var test2 = test('UsersProfilesController.getUserTreatments returns correct treatments for another user', () async {
-      List<Treatment> treatments2 = await usersProfilesController.getUserTreatments('haitham2001@gmail.com');
-      expect(treatments2, isNotEmpty);
-      expect(treatments2.length, 2);
-
-    });
 
 

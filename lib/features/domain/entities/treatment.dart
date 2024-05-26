@@ -18,6 +18,10 @@ class Treatment{
     return List.from(videosList.map((ExerciseVideo e){return e.getVideoGlobalId();}));
   }
 
+  List<int> getvideosIdsList(){
+    return videosIdsList!;
+  }
+
   Treatment(this.treatmentGlobalId, this.treatmentDescription, 
   this.videosIdsList, this.customerUserEmail);
 
@@ -28,8 +32,9 @@ class Treatment{
      snapshot["customerUserEmail"]);
    }
 
-   void setExerciseVideosList(FirebaseServiceImpl firebaseServiceImpl) async{
-      videosList = await firebaseServiceImpl.getExerciseVideoList(videosIdsList!);
+   Future<Treatment> setExerciseVideosList() async{
+      videosList = await FirebaseServiceImpl().getExerciseVideoList(videosIdsList!);
+      return this;
    }
 
    Map<String, dynamic> toJson() {

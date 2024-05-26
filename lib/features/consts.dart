@@ -5,4 +5,5 @@ class FirestoreTablesNames{
   static const String categories = "Categories";
   static const String treatments = "Treatments";
   static const String counters = "Counters";
+  static const String feedbackRequests = "FeedbackRequests";
 }
