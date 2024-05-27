@@ -45,8 +45,9 @@ class Service {
 
   Future<ResponseT<List<Treatment>>> getUserTreatments() async {
     try {
-      List<Treatment> treatments = await usersController.getUserTreatments('');
-      //List<Treatment> treatments = usersController.getUserTreatments1();
+      //List<Treatment> treatments = await usersController.getUserTreatments('moslem.asaad2000@gmail.com');
+      List<Treatment> treatments = usersController.getUserTreatments1();
+      print('getUserTreatments 40 ${treatments[0].treatmentDescription}');
       return ResponseT.empty(treatments);
     } catch (e) {
       return ResponseT(e.toString(), true);
@@ -71,7 +72,16 @@ class Service {
 
   Future<ResponseT<List<FeedbackRequest>>> getTreatmentFeedbackRequests(
       int treatmentId) async {
-    throw Exception();
+    FeedbackRequest feedbackRequest = FeedbackRequest(
+        1,
+        1,
+        1,
+        'https://firebasestorage.googleapis.com/v0/b/injury-recovery.appspot.com/o/videos%2F2024-03-14%2014%3A47%3A53.057595.mp4?alt=media&token=2853134c-c7be-4f5a-9e42-2675fc88c73e',
+        'i am in so much paaaaaaaaaain',
+        'moslem.asaad2000@gmail.com'
+        );
+      return ResponseT.empty([feedbackRequest,feedbackRequest]);
+    //throw Exception();
   }
 
   Future<ResponseT<List<FeedbackRequest>>> getMyFeedbackRequests() async {
@@ -88,12 +98,11 @@ class Service {
   }
 
   Future<ResponseT<String>> getUserFirstName() async {
-    try{
+    try {
       return ResponseT.empty('Moslem');
-    }catch(e){
+    } catch (e) {
       return ResponseT(e.toString(), true);
     }
-    
   }
 
   Future<ResponseT<String>> getUserLastName() async {
