@@ -4,6 +4,7 @@ import 'package:injury_recovery/components/menu_button.dart';
 import 'package:injury_recovery/features/presentation/services/response.dart';
 import 'package:injury_recovery/features/presentation/services/service_layer.dart';
 import 'package:injury_recovery/features/presentation/views/customer/treatment/treatment_view.dart';
+import 'package:injury_recovery/features/presentation/widgets/my_box_shadow.dart';
 import 'package:injury_recovery/features/presentation/widgets/treatments_images.dart';
 import 'package:injury_recovery/utilities/show_error_dialog.dart';
 import '../../../domain/entities/treatment.dart';
@@ -59,7 +60,7 @@ class _TreatmantsState extends State<Treatmants> {
               ),
             );
           }
-    });
+        });
   }
 
   treatmentWidget(Treatment treatment) {
@@ -72,6 +73,7 @@ class _TreatmantsState extends State<Treatmants> {
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(10),
           color: Colors.grey[200],
+          boxShadow: myBoxShadow(),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

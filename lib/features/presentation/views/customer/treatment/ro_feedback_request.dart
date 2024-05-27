@@ -3,6 +3,7 @@ import 'package:injury_recovery/components/menu_button.dart';
 import 'package:injury_recovery/constants/colors.dart';
 import 'package:injury_recovery/features/domain/entities/feedback_request.dart';
 import 'package:injury_recovery/features/presentation/widgets/logo_image.dart';
+import 'package:injury_recovery/features/presentation/widgets/my_box_shadow.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../../../components/my_text_field.dart';
@@ -65,23 +66,16 @@ class _RoFeedBackRequestState extends State<RoFeedBackRequest> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            //getLogo(context, 0.1),
-            SizedBox(
-              height: height * 0.05,
-            ),
-            const Row(
-              children: [
-                SizedBox(
-                  width: 25,
-                ),
-                Text(
-                  'תיאור הבעיה',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25.0),
+              child: Row(
+                children: [
+                  Text(
+                    'תיאור הבעיה',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             MyTextField(
               controller: _description,
@@ -94,41 +88,39 @@ class _RoFeedBackRequestState extends State<RoFeedBackRequest> {
               fillcolor: Colors.green.shade100,
             ),
             Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.4,
-                decoration: BoxDecoration(
-                  border: Border.all(color: my_blue, width: 10),
-                  //borderRadius: BorderRadius.circular(10),
-                ),
-                child: MyVideoPlayer(
-                  controller: _controller,
-                ),
+              padding: const EdgeInsets.all(20.0),
+              child: MyVideoPlayer(
+                controller: _controller,
               ),
             ),
-            const Row(
-              children: [
-                SizedBox(
-                  width: 25,
-                ),
-                Text(
-                  'התייחסות הפיזיותרפיסט',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25.0),
+              child: Row(
+                children: [
+                  Text(
+                    'התייחסות הפיזיותרפיסט',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            MyTextField(
-              controller: _response,
-              hintText: 'אין תשובה',
-              obscureText: false,
-              enableSuggestions: false,
-              autocorrect: false,
-              maxLines: null,
-              readOnly: true,
-              fillcolor: Colors.green.shade100,
+            Container(
+              constraints: BoxConstraints(
+                minHeight: height* 0.3, // Minimum height
+              ),
+              decoration: BoxDecoration(
+                boxShadow: myBoxShadow(color: my_green),
+              ),
+              child: MyTextField(
+                controller: _response,
+                hintText: 'אין תשובה',
+                obscureText: false,
+                enableSuggestions: false,
+                autocorrect: false,
+                maxLines: null,
+                readOnly: true,
+                fillcolor: my_green,
+              ),
             ),
           ],
         ),

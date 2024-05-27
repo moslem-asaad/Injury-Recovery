@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:injury_recovery/constants/colors.dart';
+import 'package:injury_recovery/features/presentation/widgets/my_box_shadow.dart';
 import 'package:smooth_video_progress/smooth_video_progress.dart';
 import 'package:video_player/video_player.dart';
 
@@ -19,11 +21,13 @@ class MyVideoPlayer extends StatefulWidget {
 class _MyVideoPlayerState extends State<MyVideoPlayer> {
   late bool is_play;
   late bool is_mute;
+  late bool show_buttons;
 
   @override
   void initState() {
-    is_play = true;
+    is_play = false;
     is_mute = false;
+    show_buttons = false;
     super.initState();
   }
 
@@ -45,16 +49,30 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
             widget.barButtons!=null?widget.barButtons!:Container(), // add bar buttons if needed
             Stack(
               children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  width: MediaQuery.of(context).size.width,
-                  child: VideoPlayer(
-                    widget.controller!,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.3,
+                      width: MediaQuery.of(context).size.width,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: myBoxShadow(),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: VideoPlayer(
+                          widget.controller!,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
-            _videoButtons(),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+              child: show_buttons? _videoButtons():Container(),
+            ),
           ],
         ),
       );
@@ -73,6 +91,11 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
       widget.controller!.play();
       setState(() {
         is_play = true;
+      });
+    }
+    if(!show_buttons){
+      setState(() {
+        show_buttons = true;
       });
     }
   }

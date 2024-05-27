@@ -4,6 +4,7 @@ import 'package:injury_recovery/constants/colors.dart' as co;
 import 'package:injury_recovery/features/presentation/views/customer/treatment/all_feedbacks.dart';
 import 'package:injury_recovery/features/presentation/views/customer/treatment/ro_feedback_request.dart';
 import 'package:injury_recovery/features/presentation/views/customer/treatment/videos_view.dart';
+import 'package:injury_recovery/features/presentation/widgets/logo_image.dart';
 import '../../../../domain/entities/treatment.dart';
 
 class TreatmentView extends StatefulWidget {
@@ -38,6 +39,14 @@ class _TreatmentViewState extends State<TreatmentView> {
       child: Scaffold(
         backgroundColor: co.backgraound,
         appBar: AppBar(
+          centerTitle: false,
+          title: Text('Treatment ${treatment.treatmentGlobalId}'),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal:25.0),
+              child: getLogo(context, 0.1),
+            ),
+          ],
           bottom: const TabBar(
             tabs: [
               Tab(
@@ -63,7 +72,6 @@ class _TreatmentViewState extends State<TreatmentView> {
             ],
             indicatorColor: Colors.blue,
           ),
-          title: Text('Treatment A'),
         ),
         body: TabBarView(
           children: [

@@ -12,8 +12,9 @@ import 'package:injury_recovery/features/presentation/widgets/my_video_player.da
 import 'package:injury_recovery/utilities/show_error_dialog.dart';
 import 'package:video_player/video_player.dart';
 
-class FeedbackRequest extends StatefulWidget {
+import '../../../widgets/logo_image.dart';
 
+class FeedbackRequest extends StatefulWidget {
   const FeedbackRequest(
       {super.key, required this.treatmentId, required this.videoId});
 
@@ -45,43 +46,54 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('feedback request')),
+      appBar: AppBar(
+        title: Text('Feedback Request'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: getLogo(context, 0.1),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            MyTextField(
-              controller: _description,
-              hintText: 'Description',
-              obscureText: false,
-              enableSuggestions: false,
-              autocorrect: false,
-              maxLines: null,
-              //keyboardType: TextInputType.emailAddress,
-            ),
-            RowTextTextButtun(
-              text1: 'provide your performe by',
-              onPresses: () {
-                _showOptions(context);
-              },
-              button_text: 'clicking here',
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.4,
-              child: MyVideoPlayer(
-                controller: _controller,
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            children: [
+              MyTextField(
+                controller: _description,
+                hintText: 'Description',
+                obscureText: false,
+                enableSuggestions: false,
+                autocorrect: false,
+                maxLines: null,
+                //keyboardType: TextInputType.emailAddress,
               ),
-              /*child: _videoURL != null
-                  ? _videoPlayerPreview()
-                  : Text('no video selected'),*/
-            ),
-            MyButton(
-              onPressed: () async {
-                //print('asdasd ${widget.videoId} ${_description.text} ${_videoURL}');
-                await sendFeedbackRequest();
-              },
-              title: 'Send your request',
-            ),
-          ],
+              RowTextTextButtun(
+                text1: 'provide your performe by',
+                onPresses: () {
+                  _showOptions(context);
+                },
+                button_text: 'clicking here',
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.4,
+                child: MyVideoPlayer(
+                  controller: _controller,
+                ),
+                /*child: _videoURL != null
+                    ? _videoPlayerPreview()
+                    : Text('no video selected'),*/
+              ),
+              MyButton(
+                onPressed: () async {
+                  //print('asdasd ${widget.videoId} ${_description.text} ${_videoURL}');
+                  await sendFeedbackRequest();
+                },
+                title: 'Send your request',
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -178,10 +190,9 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
       _description.text,
     );
 
-    if(response.errorOccured!){
+    if (response.errorOccured!) {
       await showErrorDialog(context, response.errorMessage!);
-    }
-    else{
+    } else {
       Navigator.pop(context);
     }
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:injury_recovery/features/domain/entities/feedback_request.dart';
 import 'package:injury_recovery/features/presentation/views/customer/treatment/ro_feedback_request.dart';
+import 'package:injury_recovery/features/presentation/widgets/my_box_shadow.dart';
 import 'package:injury_recovery/features/presentation/widgets/treatments_images.dart';
 
 import '../../../../../constants/colors.dart';
@@ -73,9 +74,11 @@ class _AllFeedbacksState extends State<AllFeedbacks> {
             height: height * 0.2,
             width: width * 0.9,
             decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(10),
-                color: backgraound),
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(10),
+              color: backgraound,
+              boxShadow: myBoxShadow(),
+            ),
             child: Row(
               children: [
                 Container(
@@ -132,7 +135,7 @@ class _AllFeedbacksState extends State<AllFeedbacks> {
                     height: width * 0.5,
                     width: width * 0.3,
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white,width: 5),
+                      border: Border.all(color: Colors.white, width: 5),
                       borderRadius: BorderRadius.circular(10),
                       //color: container_color1,
                     ),
