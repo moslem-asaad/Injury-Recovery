@@ -28,6 +28,7 @@ class Service {
     } on ExpectedFailureException catch (e){
         // this is the case where e.toString() is an expected message
         // so we can show its message to user
+        print(e.toString());
         return ResponseT(e.toString(), true);
     } on InternalFailureException catch (e){
       // this is the case where e.toString() is an INTERNAL expected message
@@ -48,6 +49,13 @@ class Service {
   Future<ResponseT<bool>> logIn(String email, String password) async {
     return await tryCatch<bool>(() async {
         return await usersController.logIn(email, password);
+    });
+  }
+
+
+  Future<ResponseT<bool>> cleanCollection(String collectionName) async {
+    return await tryCatch<bool>(() async {
+        return await usersController.cleanCollection(collectionName);
     });
   }
 
@@ -145,7 +153,13 @@ class Service {
     });
   }
   
+
+  void setIsTestExecution(bool flag){
+    usersController.setIsTestExecution(flag);
   }
+
+  }
+  
 
 
   /*

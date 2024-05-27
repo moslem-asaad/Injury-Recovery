@@ -19,7 +19,7 @@ class ExerciseVideosController{
     UsersProfilesController().validateNotNullOrEmptyString("Video Summary", videoSummary);
     UsersProfilesController().validateNotNullOrEmptyString("Video Description", videoDescription);
 
-    return firebaseService.createExerciseVideo(videoDownloadURL,
+    return await firebaseService.createExerciseVideo(videoDownloadURL,
      videoSummary, videoDescription);
   }
 
@@ -27,7 +27,7 @@ class ExerciseVideosController{
       UsersProfilesController().validatSystemManagerIsLoggedIn();
       UsersProfilesController().validateNotNullOrEmptyString("Video URL", videoURL);
 
-      return firebaseService.uploadVideo(videoURL, onProgress);
+      return await firebaseService.uploadVideo(videoURL, onProgress);
   }
 
 

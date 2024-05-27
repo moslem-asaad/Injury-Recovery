@@ -19,6 +19,19 @@ class FirebaseServiceImpl{
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+  bool isTestExecution = false;
+
+  void setIsTestExecution(bool flag){
+      isTestExecution = flag;
+  }
+
+  String getCollectionName(String collectionName){
+      String addition = "";
+      if(isTestExecution){
+        addition = "Test";
+      }
+      return addition+collectionName;
+  }
 
   FirebaseServiceImpl.internalConstructor();
 
@@ -36,43 +49,42 @@ class FirebaseServiceImpl{
 
   Future<User> logIn(String email, String password) async{
     try{
+
         UserCredential userCredential = await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
         if(userCredential.user?.uid != null){
           return await getLoggedInUser();
         }else{
-          print('in else1');
+
         throw InternalFailureException("logIn: else clasue");
       }
     }on FirebaseAuthException catch (e){
-      print('in else3');
+
       if (e.code == 'user-not-found'){
         throw ExpectedFailureException('user not found');
       }
       else if (e.code == 'wrong-password'){
         throw ExpectedFailureException('entered password is wrong');
       }else{
-        print('in else4');
-        throw InternalFailureException("logIn: FirebaseAuthException with unexpected e.code");
+
+      
+        throw InternalFailureException("logIn: FirebaseAuthException with unexpected e.code: ${e.code}");
       }
     } catch (e){
-      print('logIn: in else5');
+
       rethrow;
     }
   }
 
   Future<String> getSystemManagerEmail() async{
     try{
-      print("getSystemManagerEmail 1");
-      final systemManagerCollection =  firestore.collection(FirestoreTablesNames.systemManager);
+      final systemManagerCollection = firestore.collection(getCollectionName(FirestoreTablesNames.systemManager));
       DocumentSnapshot systemManagerEmailDocument = await systemManagerCollection.doc("1").get();
-      print("getSystemManagerEmail 2");
+
       if(systemManagerEmailDocument.exists){
-        print("getSystemManagerEmail 3");
         var snapshot = systemManagerEmailDocument.data() as Map<String, dynamic>;
         return snapshot["SystemManagerEmail"];
       }
       else{
-        print("getSystemManagerEmail 4");
         throw InternalFailureException('System Manager email is not defined');
       }
     }on InternalFailureException catch(_){
@@ -85,7 +97,7 @@ class FirebaseServiceImpl{
 
   Future<User> getLoggedInUser() async{
     try{
-      final usersCollection =  firestore.collection(FirestoreTablesNames.users);
+      final usersCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.users));
       final userId = await getCurrentUserId();
       DocumentSnapshot userDocument = await usersCollection.doc(userId).get();
 
@@ -115,17 +127,15 @@ class FirebaseServiceImpl{
 
   Future<bool> register(String email, String password, String firstName, String lastName, String phoneNumber) async{
     try{
+
+
       UserCredential userCredential = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
       if (userCredential.user?.uid != null){
-        print("register 1");
         String systemManagerEmail = await getSystemManagerEmail();
-        print("register 2");
         User user;
           if(email == systemManagerEmail){
-            print("register 3");
             user = SystemManager("", email, firstName, lastName, phoneNumber);
           }else{
-            print("register 4");
             user = CustomerUser("", email, firstName, lastName, phoneNumber);
           }
         return await createUser(user);
@@ -155,12 +165,11 @@ class FirebaseServiceImpl{
   
   Future<bool> createUser(User user) async{
     try{
-      final usersCollection =  firestore.collection(FirestoreTablesNames.users);
+      final usersCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.users));
       final userId = await getCurrentUserId();
       DocumentSnapshot userDocument = await usersCollection.doc(userId).get();
 
       if(!userDocument.exists){
-        print("createUser 1");
         usersCollection.doc(userId).set(user.toJson());
         return true;
       }
@@ -175,15 +184,14 @@ class FirebaseServiceImpl{
 
   Future<bool> createCategory(String categoryName, String categoryDescription) async{
     try{
-      final categoriesCollection =  firestore.collection(FirestoreTablesNames.categories);
+      final categoriesCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.categories));
       DocumentSnapshot categoryDocument = await categoriesCollection.doc(categoryName).get();
 
       if(!categoryDocument.exists){
-        print("createCategory 1");
-        int categoryId = await getCounter(FirestoreTablesNames.categories);
+        int categoryId = await getCounter(getCollectionName(FirestoreTablesNames.categories));
         Category category = Category(categoryId, categoryName, categoryDescription, ["1","2","3","4"]);
         categoriesCollection.doc(categoryName).set(category.toJson());
-        await setCounter(FirestoreTablesNames.categories, categoryId+1);
+        await setCounter(getCollectionName(FirestoreTablesNames.categories), categoryId+1);
         return true;
       }
       else{
@@ -199,14 +207,14 @@ class FirebaseServiceImpl{
 
   Future<int> getCounter(String counterName) async{
     DocumentSnapshot documentSnapshot =
-        await firestore.collection(FirestoreTablesNames.counters).doc(counterName).get();
+        await firestore.collection(getCollectionName(FirestoreTablesNames.counters)).doc(counterName).get();
 
     int counterValue = documentSnapshot.exists ? documentSnapshot['counter'] : 1;
     return counterValue;
   }
 
   Future<void> setCounter(String counterName, int newCounterValue) async{
-    await firestore.collection(FirestoreTablesNames.counters).doc(
+    await firestore.collection(getCollectionName(FirestoreTablesNames.counters)).doc(
       counterName).set({'counter': newCounterValue});
   }
 
@@ -231,8 +239,8 @@ class FirebaseServiceImpl{
   Future<bool> createExerciseVideo(String videoDownloadURL, String videoSummary, String videoDescription) async {
 
     try{
-      int videoGlobalId = await getCounter(FirestoreTablesNames.exerciseVideos);
-      final videosCollection =  firestore.collection(FirestoreTablesNames.exerciseVideos);
+      int videoGlobalId = await getCounter(getCollectionName(FirestoreTablesNames.exerciseVideos));
+      final videosCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.exerciseVideos));
       DocumentSnapshot videoDocument = await videosCollection.doc(videoGlobalId.toString()).get();
 
       if(!videoDocument.exists){
@@ -240,7 +248,7 @@ class FirebaseServiceImpl{
          videoDescription, "category1Name", 1);
 
         videosCollection.doc(videoGlobalId.toString()).set(exerciseVideo.toJson());
-        await setCounter(FirestoreTablesNames.exerciseVideos, videoGlobalId+1);
+        await setCounter(getCollectionName(FirestoreTablesNames.exerciseVideos), videoGlobalId+1);
         return true;
       }
       else{
@@ -255,12 +263,18 @@ class FirebaseServiceImpl{
   }
   
   Future<List<ExerciseVideo>> getExerciseVideoList(List<int> videosGlobalIds) async{
-      return List.from(videosGlobalIds.map((int videoId) async {return await getExerciseVideoById(videoId);}));
+      List<ExerciseVideo> list = [];
+      for(int i=0; i<videosGlobalIds.length; i++){
+        list.add(await getExerciseVideoById(videosGlobalIds[i]));
+      }
+      return list;
+
+      //return List.from(videosGlobalIds.map((int videoId) async {return await getExerciseVideoById(videoId);}));
   }
 
   Future<ExerciseVideo> getExerciseVideoById(int videoGlobalId) async{
     try{
-      final videosCollection =  firestore.collection(FirestoreTablesNames.exerciseVideos);
+      final videosCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.exerciseVideos));
       DocumentSnapshot videoDocument = await videosCollection.doc(videoGlobalId.toString()).get();
 
       if(videoDocument.exists){
@@ -279,7 +293,7 @@ class FirebaseServiceImpl{
 
   Future<bool> customerUserExist(String customerUserEmail) async{
     try{
-      final usersCollection =  firestore.collection(FirestoreTablesNames.users);
+      final usersCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.users));
       QuerySnapshot querySnapshot = await usersCollection.where("email", isEqualTo: customerUserEmail).get();
 
       if(querySnapshot.docs.isNotEmpty){
@@ -303,7 +317,7 @@ class FirebaseServiceImpl{
   Future<bool> exerciseVideoExist(int exerciseVideoGlobalID) async{
     try{
 
-      final exerciseVideosCollection =  firestore.collection(FirestoreTablesNames.exerciseVideos);
+      final exerciseVideosCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.exerciseVideos));
       DocumentSnapshot videoDocument = await exerciseVideosCollection.doc(exerciseVideoGlobalID.toString()).get();
 
       if(videoDocument.exists){
@@ -335,31 +349,23 @@ class FirebaseServiceImpl{
 
   Future<bool> createTreatment(String customerUserEmail, String treatmentDescription, List<int> exerciseVideosIds) async{
     try{
-      print("createTreatment 1");
-      validateCustomerUserExists(customerUserEmail);
-      print("createTreatment 2");
-      validateExerciseVideosExist(exerciseVideosIds);
-      print("createTreatment 3");
+      await validateCustomerUserExists(customerUserEmail);
+      await validateExerciseVideosExist(exerciseVideosIds);
 
-      int treatmentGlobalId = await getCounter(FirestoreTablesNames.treatments);
-      final treatmentsCollection =  firestore.collection(FirestoreTablesNames.treatments);
+      int treatmentGlobalId = await getCounter(getCollectionName(FirestoreTablesNames.treatments));
+      final treatmentsCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.treatments));
       DocumentSnapshot treatmentDocument = await treatmentsCollection.doc(treatmentGlobalId.toString()).get();
-
-      print("createTreatment 4");
+      
       if(!treatmentDocument.exists){
-        print("createTreatment 5");
         Treatment treatment = Treatment(treatmentGlobalId, treatmentDescription, exerciseVideosIds, customerUserEmail);
         treatmentsCollection.doc(treatmentGlobalId.toString()).set(treatment.toJson());
-        await setCounter(FirestoreTablesNames.treatments, treatmentGlobalId+1);
+        await setCounter(getCollectionName(FirestoreTablesNames.treatments), treatmentGlobalId+1);
         return true;
       }
       else{
-        print("createTreatment 6");
         throw InternalFailureException("createTreatment: treatment id already exist");
       }
-    }on ExpectedFailureException catch(_){
-      rethrow;
-    } catch(e){
+    }catch(e){
       print("createTreatment general exception 1");
       rethrow;
     }
@@ -367,13 +373,13 @@ class FirebaseServiceImpl{
 
   Future<List<Treatment>> getUserTreatments(String customerUserEmail) async{
     try{
-      validateCustomerUserExists(customerUserEmail);
-      final usersCollection =  firestore.collection(FirestoreTablesNames.treatments);
+      await validateCustomerUserExists(customerUserEmail);
+      final usersCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.treatments));
       QuerySnapshot querySnapshot = await usersCollection.where("customerUserEmail", isEqualTo: customerUserEmail).get();
-
       if(querySnapshot.docs.isNotEmpty){
         List<Treatment> treatmentList = [];
         for(QueryDocumentSnapshot queryDocumentSnapshot in  querySnapshot.docs){
+
           treatmentList.add(await Treatment.fromSnapshot(queryDocumentSnapshot).setExerciseVideosList());
         }
         return treatmentList;
@@ -384,7 +390,7 @@ class FirebaseServiceImpl{
     }on ExpectedFailureException catch(_){
       rethrow;
     }catch(e){
-      print("getUserTreatments general exception");
+        print("getUserTreatments 1");
       rethrow;
     }
   }
@@ -401,8 +407,8 @@ class FirebaseServiceImpl{
             throw InternalFailureException("current treatment does not have a video with this video Id");
         }
 
-        int feedbackRequestId = await getCounter(FirestoreTablesNames.feedbackRequests);
-        final feedbackRequestsCollection =  firestore.collection(FirestoreTablesNames.feedbackRequests);
+        int feedbackRequestId = await getCounter(getCollectionName(FirestoreTablesNames.feedbackRequests));
+        final feedbackRequestsCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.feedbackRequests));
         DocumentSnapshot feedbackRequestDocument = await feedbackRequestsCollection.doc(feedbackRequestId.toString()).get(); 
 
 
@@ -410,7 +416,7 @@ class FirebaseServiceImpl{
           FeedbackRequest feedbackRequest = FeedbackRequest(feedbackRequestId, treatmentId, videoTreamentId,
           myVideoURL, description, customerUserEmail, null);
           feedbackRequestsCollection.doc(feedbackRequestId.toString()).set(feedbackRequest.toJson());
-          await setCounter(FirestoreTablesNames.feedbackRequests, feedbackRequestId+1);
+          await setCounter(getCollectionName(FirestoreTablesNames.feedbackRequests), feedbackRequestId+1);
           return true;
         }
         else{
@@ -433,7 +439,7 @@ class FirebaseServiceImpl{
         }
 
 
-      final feedbackRequestsCollection =  firestore.collection(FirestoreTablesNames.feedbackRequests);
+      final feedbackRequestsCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.feedbackRequests));
       QuerySnapshot querySnapshot = await feedbackRequestsCollection.where("treatmentGlobalId", isEqualTo: treatmentId).get();
 
       if(querySnapshot.docs.isNotEmpty){
@@ -454,7 +460,7 @@ class FirebaseServiceImpl{
 
   Future<List<FeedbackRequest>> getUserFeedbackRequests(String customerUserEmail) async{
     try{
-      final feedbackRequestsCollection =  firestore.collection(FirestoreTablesNames.feedbackRequests);
+      final feedbackRequestsCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.feedbackRequests));
       QuerySnapshot querySnapshot = await feedbackRequestsCollection.where("customerUserEmail", isEqualTo: customerUserEmail).get();
 
       if(querySnapshot.docs.isNotEmpty){
@@ -475,7 +481,7 @@ class FirebaseServiceImpl{
 
   Future<List<FeedbackRequest>> getAllUsersFeedbackRequests() async{
     try{
-      final feedbackRequestsCollection =  firestore.collection(FirestoreTablesNames.feedbackRequests);
+      final feedbackRequestsCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.feedbackRequests));
       QuerySnapshot querySnapshot = await feedbackRequestsCollection.get();
 
       if(querySnapshot.docs.isNotEmpty){
@@ -496,7 +502,7 @@ class FirebaseServiceImpl{
 
   Future<FeedbackRequest> getFeedbackRequestbyId(int feedbackRequestId) async{
     try{
-      final feedbackRequestCollection =  firestore.collection(FirestoreTablesNames.feedbackRequests);
+      final feedbackRequestCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.feedbackRequests));
       DocumentSnapshot feedbackRequestDocument = await feedbackRequestCollection.doc(feedbackRequestId.toString()).get();
 
       if(feedbackRequestDocument.exists){
@@ -532,7 +538,7 @@ class FirebaseServiceImpl{
 
   Future<bool> updateFeedbackRequest(FeedbackRequest feedbackRequest) async {
     try{
-      final feedbackRequestsCollection =  firestore.collection(FirestoreTablesNames.feedbackRequests);
+      final feedbackRequestsCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.feedbackRequests));
       DocumentSnapshot feedbackRequestDocument = await feedbackRequestsCollection.doc(feedbackRequest.getFeedbackRequestId().toString()).get(); 
 
       if(feedbackRequestDocument.exists){
@@ -552,7 +558,7 @@ class FirebaseServiceImpl{
 
   Future<List<User>> getAllUsers() async{
     try{
-      final usersCollection =  firestore.collection(FirestoreTablesNames.users);
+      final usersCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.users));
     
       QuerySnapshot querySnapshot = await usersCollection.get();
 
@@ -574,7 +580,7 @@ class FirebaseServiceImpl{
 
   Future<Treatment> getTreatmentById(int treatmentId) async{
     try{
-      final treatmentsCollection =  firestore.collection(FirestoreTablesNames.treatments);
+      final treatmentsCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.treatments));
       DocumentSnapshot treatmentDocument = await treatmentsCollection.doc(treatmentId.toString()).get();
 
       if(treatmentDocument.exists){
@@ -587,6 +593,30 @@ class FirebaseServiceImpl{
       rethrow;
     } catch(e){
       print("getTreatmentById general exception 1");
+      rethrow;
+    }
+  }
+
+  Future<bool> cleanCollection(String collectionName) async{
+    try{
+      final collection =  firestore.collection(getCollectionName(collectionName));
+      QuerySnapshot querySnapshot = await collection.get();
+
+      if(querySnapshot.docs.isNotEmpty){
+        for(QueryDocumentSnapshot queryDocumentSnapshot in  querySnapshot.docs){
+
+           await queryDocumentSnapshot.reference.delete();
+        }
+      }
+
+      final countersCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.counters));
+      DocumentSnapshot collectionDocument = await countersCollection.doc(getCollectionName(collectionName)).get();
+      if(collectionDocument.exists){
+         await collectionDocument.reference.delete();
+      }
+      return true;
+    }catch(e){
+      print("cleanCollection general exception");
       rethrow;
     }
   }

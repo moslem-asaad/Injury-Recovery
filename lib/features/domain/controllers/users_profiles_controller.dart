@@ -71,20 +71,19 @@ class UsersProfilesController{
           throw ExpectedFailureException("First and Last Name should contain letters only");
       }
 
-    return firebaseService.register(email, password, firstName, lastName, phoneNumber);
+    return await firebaseService.register(email, password, firstName, lastName, phoneNumber);
   }
 
 
   Future<bool> createTreatment(String customerUserEmail, String treatmentDescription,
    List<int> exerciseVideosIds) async{
-
     validateNotNullOrEmptyString("Treatment Description",treatmentDescription);
     validateNotNullOrEmptyString("Customer User Email",customerUserEmail);
     if(exerciseVideosIds.isEmpty){
       throw ExpectedFailureException("you can't create Treatment without any Exercise Video");
     }
     validatSystemManagerIsLoggedIn();
-    return firebaseService.createTreatment(customerUserEmail,
+    return await firebaseService.createTreatment(customerUserEmail,
      treatmentDescription, exerciseVideosIds);
   }
 
@@ -92,7 +91,7 @@ class UsersProfilesController{
   Future<List<Treatment>> getUserTreatments() async{
 
     validatCustomerUserIsLoggedIn();
-    return firebaseService.getUserTreatments(loggedInUser!.getEmail());
+    return await firebaseService.getUserTreatments(loggedInUser!.getEmail());
   }
 
   Future<bool> sendFeedbackRequest(int treatmentId, int videoTreamentId,
@@ -100,7 +99,7 @@ class UsersProfilesController{
 
     validateNotNullOrEmptyString("Feedback Request Description",description);
     validatCustomerUserIsLoggedIn();
-    return firebaseService.createFeedbackRequest(loggedInUser!.getEmail(), treatmentId,
+    return await firebaseService.createFeedbackRequest(loggedInUser!.getEmail(), treatmentId,
      videoTreamentId, myVideoURL, description);
   }
 
@@ -111,22 +110,22 @@ class UsersProfilesController{
 
   Future<List<FeedbackRequest>> getTreatmentFeedbackRequests(int treatmentId) async {
     validatCustomerUserIsLoggedIn();
-    return firebaseService.getTreatmentFeedbackRequests(loggedInUser!.getEmail(), treatmentId);
+    return await firebaseService.getTreatmentFeedbackRequests(loggedInUser!.getEmail(), treatmentId);
   }
 
   Future<List<FeedbackRequest>> getMyFeedbackRequests() async {
     validatCustomerUserIsLoggedIn();
-    return firebaseService.getUserFeedbackRequests(loggedInUser!.getEmail());
+    return await firebaseService.getUserFeedbackRequests(loggedInUser!.getEmail());
   }
 
   Future<List<FeedbackRequest>> getAllUsersFeedbackRequests() async {
     validatSystemManagerIsLoggedIn();
-    return firebaseService.getAllUsersFeedbackRequests();
+    return await firebaseService.getAllUsersFeedbackRequests();
   }
 
-    Future<List<User>> getAllUsers() async {
+  Future<List<User>> getAllUsers() async {
     validatSystemManagerIsLoggedIn();
-    return firebaseService.getAllUsers();
+    return await firebaseService.getAllUsers();
   }
 
   Future<bool> sendFeedbackResponse(
@@ -134,7 +133,14 @@ class UsersProfilesController{
 
     validateNotNullOrEmptyString("Feedback Respnose",response);
     validatSystemManagerIsLoggedIn();
-    return firebaseService.sendFeedbackResponse(feedbackId, response);
+    return await firebaseService.sendFeedbackResponse(feedbackId, response);
+  }
+
+  Future<bool> cleanCollection(String collectionName) async {
+    return await firebaseService.cleanCollection(collectionName);
+  }
+  void setIsTestExecution(bool flag){
+    firebaseService.setIsTestExecution(flag);
   }
   
 
@@ -169,7 +175,7 @@ class UsersProfilesController{
     }
   }
 
-    bool customerUserIsLoggedIn(){
+  bool customerUserIsLoggedIn(){
     if(loggedInUser != null){
         return true;
     }
