@@ -73,7 +73,7 @@ class HomePage extends StatelessWidget {
                 return const VerifyEmailView();
               }
             } else {
-              return const LoginView();
+              return const CustomerProfile();
             }
           default:
             return const CircularProgressIndicator();
