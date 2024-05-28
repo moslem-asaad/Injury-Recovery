@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:injury_recovery/components/my_button.dart';
 import 'package:injury_recovery/components/my_text_field.dart';
+import 'package:injury_recovery/constants/colors.dart';
 import 'package:injury_recovery/constants/routes.dart';
 import 'package:injury_recovery/services/auth/auth_exceptions.dart';
 import 'package:injury_recovery/services/auth/auth_service.dart';
@@ -31,53 +33,52 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      backgroundColor: Colors.grey[300],
+      backgroundColor: backgraound,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: Text(
-              'Enter your Email, we will send you a password reset link.',
+              'הזן את כתובת הדואר האלקטרוני שלך, אנו נשלח לך קישור לאיפוס סיסמה.',
               style: TextStyle(
                 color: Colors.grey[700],
                 fontSize: 20,
-                fontWeight: FontWeight.bold, 
+                fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
             ),
           ),
-
           const SizedBox(height: 15),
           MyTextField(
             controller: _email,
-            hintText: 'Email',
+            hintText: 'דואר אלקטרוני',
             obscureText: false,
             enableSuggestions: false,
             autocorrect: false,
             keyboardType: TextInputType.emailAddress,
+            maxLines: 1,
           ),
-          
           const SizedBox(height: 15),
-          MaterialButton(
-            onPressed: () async{
+          MyButton(
+            title: 'איפוס סיסמה',
+            onPressed: () async {
               final email = _email.text;
-              try{
+              try {
                 await AuthService.firebase().resetPassword(email: email);
-                Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
-              }on InvalidEmailAuthException{
-                await showErrorDialog(context, 'Invalid Email');
-              } on UserNotFoundAuthException{
-                await showErrorDialog(context, 'User Not Found');
-              } on GenericAuthException{
-                await showErrorDialog(context, 'Authintication Error');
-              } on MissingEmailAuthException{
-                await showErrorDialog(context, 'Email is Missed');
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(loginRoute, (route) => false);
+              } on InvalidEmailAuthException {
+                await showErrorDialog(context, 'דואר אלקטרוני לא חוקי');
+              } on UserNotFoundAuthException {
+                await showErrorDialog(context, 'משתמש לא נמצא');
+              } on GenericAuthException {
+                await showErrorDialog(context, 'שגיה, נסה עוד פעם');
+              } on MissingEmailAuthException {
+                await showErrorDialog(context, 'לא נמצה דואר כזה');
               }
-            }, 
-            child: const Text('Reset Password'),
-            color: Colors.grey[500],
-          ),
+            },
+          )
         ],
       ),
     );

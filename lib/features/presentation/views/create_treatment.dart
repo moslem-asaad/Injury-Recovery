@@ -55,6 +55,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
             enableSuggestions: false,
             autocorrect: false,
             keyboardType: TextInputType.name,
+            maxLines: null,
           ),
           SizedBox(height: screen_height / 82),
           MyTextField(
@@ -64,6 +65,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
             enableSuggestions: false,
             autocorrect: false,
             keyboardType: TextInputType.name,
+            maxLines: null,
           ),
           SizedBox(height: screen_height / 82),
           MyTextField(
@@ -73,6 +75,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
             enableSuggestions: false,
             autocorrect: false,
             keyboardType: TextInputType.url,
+            maxLines: null,
           ),
           SizedBox(height: screen_height / 82),
           MyTextField(
@@ -82,6 +85,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
             enableSuggestions: false,
             autocorrect: false,
             keyboardType: TextInputType.text,
+            maxLines: null,
           ),
           MyButton(
             onPressed: () async {

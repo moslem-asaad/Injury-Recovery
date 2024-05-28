@@ -48,6 +48,11 @@ dependencies:
   video_player: ^2.8.2
   native_device_orientation: ^2.0.3
   auto_orientation: ^2.3.1
+  flutter_localizations:
+    sdk: flutter
+  smooth_video_progress: ^0.0.4
+  youtube_player_flutter: ^9.0.1
+  video_thumbnail: ^0.5.3
 
 dev_dependencies:
   flutter_test:
@@ -66,8 +71,7 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - images/ball_cure.png
-
+    - images/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

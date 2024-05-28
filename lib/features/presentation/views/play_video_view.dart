@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:injury_recovery/components/video_player_preview.dart';
+import 'package:injury_recovery/features/presentation/views/customer/treatment/video_player_preview.dart';
 import 'package:injury_recovery/services/store/store_date.dart';
 import 'package:video_player/video_player.dart';
 

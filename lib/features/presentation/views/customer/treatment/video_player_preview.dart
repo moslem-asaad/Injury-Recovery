@@ -1,18 +1,26 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:injury_recovery/constants/routes.dart';
+import 'package:injury_recovery/features/presentation/views/customer/treatment/feedback_request.dart';
 import 'package:injury_recovery/features/presentation/views/land_scape_view.dart';
+import 'package:injury_recovery/features/presentation/widgets/check_box.dart';
+import 'package:injury_recovery/features/presentation/widgets/my_video_player.dart';
 import 'package:video_player/video_player.dart';
+import 'package:injury_recovery/constants/colors.dart' as co;
 
 class VideoPlayerPreview extends StatefulWidget {
-  const VideoPlayerPreview({
+  VideoPlayerPreview({
     super.key,
-    required this.controller,
+    this.controller,
     required this.videoURL,
+    this.onHorizontalDragEnd,
   });
 
   final VideoPlayerController? controller;
   final String? videoURL;
+  Function(DragEndDetails)? onHorizontalDragEnd;
 
   @override
   State<VideoPlayerPreview> createState() => _VideoPlayerPreviewState();
@@ -21,21 +29,28 @@ class VideoPlayerPreview extends StatefulWidget {
 class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
   String? _videoURL;
   VideoPlayerController? _controller;
-  String? _downloadURL;
   bool _showVideoButtons = false;
   Timer? _timer;
 
   @override
   void initState() {
-    _controller = widget.controller;
+    if (widget.controller != null) {
+      _controller = widget.controller;
+    } else {
+      _controller = VideoPlayerController.networkUrl(Uri.parse(_videoURL!));
+    }
     _videoURL = widget.videoURL;
     //_controller!.initialize().then((_) => setState(() {}));
     super.initState();
+    /*_controller = VideoPlayerController.networkUrl(Uri.parse(_videoURL!));
+    _controller!.setLooping(true);
+    _controller!.initialize().then((_) => setState(() {}));*/
+    _controller!.play();
   }
 
   @override
   void dispose() {
-    _controller?.dispose();
+    //_controller?.dispose();
     _timer?.cancel();
     super.dispose();
   }
@@ -43,18 +58,42 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height,
-          ),
-          child: Center(
-            child: _videoURL != null
-                ? _videoPlayerPreview()
-                : const Text('No Video is Selected'),
-          ),
+      backgroundColor: co.backgraound,
+      body: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width,
+          maxHeight: MediaQuery.of(context).size.height,
         ),
+        child: Center(
+          child: _videoURL != null
+              ? _myVideoPlayer()
+              : const Text('No Video is Selected'),
+        ),
+      ),
+    );
+  }
+
+  Widget _myVideoPlayer() {
+    return Container(
+      child: Column(
+        children: [
+          /*ButtonBar(
+            children: [
+              OutlinedButton(
+                  onPressed: () {
+                    _controller!.pause();
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => FeedbackRequest(),
+                    ));
+                  },
+                  child: Text('feedback')),
+            ],
+          ),*/
+          MyVideoPlayer(
+            controller: _controller,
+            onHorizontalDragEnd: widget.onHorizontalDragEnd,
+          ),
+        ],
       ),
     );
   }
@@ -63,18 +102,32 @@ class _VideoPlayerPreviewState extends State<VideoPlayerPreview> {
     if (_controller != null) {
       return Column(
         children: [
+          /*ButtonBar(
+            children: [
+              OutlinedButton(
+                  onPressed: () {
+                    _controller!.pause();
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => FeedbackRequest(),
+                    ));
+                  },
+                  child: Text('feedback')),
+            ],
+          ),*/
           GestureDetector(
+            onHorizontalDragEnd:
+                widget.onHorizontalDragEnd ?? widget.onHorizontalDragEnd,
             onTap: () {
               _handleTap();
             },
-            onDoubleTap: (){
+            onDoubleTap: () {
               _onDoubleTap();
             },
             child: Stack(
               children: [
                 SizedBox(
                   width: _controller!.value.size.width / 2,
-                  height: 300,
+                  height: MediaQuery.of(context).size.height * 0.3,
                   child: VideoPlayer(_controller!),
                 ),
               ],

@@ -7,4 +7,5 @@ const uploadVideoRout = '/upload-video/';
 const gallaryRout = '/gallary/';
 const customerProfileRout = '/customer-profile/';
 const treatmentsRout = '/treatments/';
+const feedbackRequestRout = '/feedback-request/';
 const createTreatmentRoute = '/create-treatment/';
