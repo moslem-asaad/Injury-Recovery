@@ -3,7 +3,7 @@ import 'package:injury_recovery/constants/colors.dart';
 import 'package:injury_recovery/features/presentation/views/customer/treatment/feedback_request.dart';
 import 'package:injury_recovery/features/presentation/widgets/my_video_player.dart';
 import 'package:video_player/video_player.dart';
-
+import 'package:injury_recovery/features/presentation/widgets/treatments_images.dart';
 import '../../../../domain/entities/exercise_video.dart';
 import '../../../widgets/video_navigation_button.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:injury_recovery/constants/colors.dart' as co;
-import 'package:injury_recovery/features/presentation/views/customer/treatment/all_feedbacks.dart';
+import 'package:injury_recovery/features/presentation/views/customer/treatment/all_treatment_feedbacks.dart';
 import 'package:injury_recovery/features/presentation/views/customer/treatment/ro_feedback_request.dart';
 import 'package:injury_recovery/features/presentation/views/customer/treatment/videos_view.dart';
 import 'package:injury_recovery/features/presentation/widgets/logo_image.dart';
@@ -112,7 +112,7 @@ class _TreatmentViewState extends State<TreatmentView> {
   Widget feedbackBarView() {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return AllFeedbacks(treatmentId: widget.treatment.treatmentGlobalId);
+    return AllTreatmentFeedbacks(treatmentId: widget.treatment.treatmentGlobalId);
     /*return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(25.0),

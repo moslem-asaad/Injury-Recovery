@@ -8,15 +8,15 @@ import '../../../../../constants/colors.dart';
 import '../../../../../utilities/show_error_dialog.dart';
 import '../../../services/service_layer.dart';
 
-class AllFeedbacks extends StatefulWidget {
+class AllTreatmentFeedbacks extends StatefulWidget {
   final int? treatmentId;
-  const AllFeedbacks({super.key, required this.treatmentId});
+  const AllTreatmentFeedbacks({super.key, required this.treatmentId});
 
   @override
-  State<AllFeedbacks> createState() => _AllFeedbacksState();
+  State<AllTreatmentFeedbacks> createState() => _AllTreatmentFeedbacksState();
 }
 
-class _AllFeedbacksState extends State<AllFeedbacks> {
+class _AllTreatmentFeedbacksState extends State<AllTreatmentFeedbacks> {
   late Future<List<FeedbackRequest>> futureFeedbacks;
 
   @override

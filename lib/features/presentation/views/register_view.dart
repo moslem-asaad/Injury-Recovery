@@ -53,12 +53,6 @@ class _RegisterViewState extends State<RegisterView> {
     double screen_height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: co.backgraound,
-      /*appBar: AppBar(
-        title: Center(
-          child: Text('Register'),
-        ),
-        foregroundColor: Colors.white,
-      ),*/
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -175,8 +169,6 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
   Future<void> _register() async {
-    print('asasasas1');
-
     final email = _email.text;
     final password = _password.text;
     final confermed_password = _confermed_password.text;
@@ -191,11 +183,9 @@ class _RegisterViewState extends State<RegisterView> {
       lastName,
       phoneNumber,
     );
-    print('asasasas');
     if (response.errorOccured!) {
       await showErrorDialog(context, response.errorMessage!);
     } else {
-      await showErrorDialog(context, ' response.errorMessage!');
       await AuthService.firebase().sendEmailVerification();
     }
   }

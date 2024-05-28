@@ -2,11 +2,10 @@ import 'dart:ui';
 
 import 'package:injury_recovery/components/my_button.dart';
 import 'package:injury_recovery/components/my_text_field.dart';
+import 'package:injury_recovery/constants/colors.dart';
 import 'package:injury_recovery/constants/routes.dart';
-import 'package:injury_recovery/features/presentation/services/response.dart';
 import 'package:injury_recovery/features/presentation/services/service_layer.dart';
-import 'package:injury_recovery/services/auth/auth_exceptions.dart';
-import 'package:injury_recovery/services/auth/auth_service.dart';
+import 'package:injury_recovery/features/presentation/widgets/logo_image.dart';
 import 'package:injury_recovery/utilities/show_error_dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -39,20 +38,13 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     double screen_height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: backgraound,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: screen_height / 32),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.asset(
-                    'images/ball_cure.png',
-                    width: 200,
-                  ),
-                ),
+                getLogo(context, 0.15),
                 SizedBox(height: screen_height / 16.5),
 
                 Text(
