@@ -19,7 +19,7 @@ class MenuButton extends StatelessWidget {
     return AppBar(
       title: Text(title),
       actions: [
-        getLogo(context,0.05),
+        getLogo(context,0.1),
         _menuButtons(context),
       ],
     );

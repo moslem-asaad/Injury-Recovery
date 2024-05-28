@@ -1,4 +1,3 @@
-
 import 'package:injury_recovery/components/menu_button.dart';
 import 'package:injury_recovery/components/my_button.dart';
 import 'package:injury_recovery/constants/routes.dart';
@@ -20,29 +19,31 @@ class _MainViewState extends State<MainView> {
       body: Column(
         children: [
           const SizedBox(height: 150),
-            MyButton(
+          MyButton(
               onPressed: () async {
                 Navigator.of(context).pushNamed(uploadVideoRout);
-              }, 
-              title: 'upload video'
-            ),
-            MyButton(
-              onPressed:() async{
+              },
+              title: 'upload video'),
+          MyButton(
+              onPressed: () async {
                 Navigator.of(context).pushNamed(gallaryRout);
-              }, 
-              title: 'Gallary'
-            ),
+              },
+              title: 'Gallary'),
+          MyButton(
+              onPressed: () async {
+                Navigator.of(context).pushNamed(createTreatmentRoute);
+              },
+              title: 'Create Treatment'),
         ],
       ),
     );
   }
 }
 
-
-Future<bool> showLogOutDialog(BuildContext context){
+Future<bool> showLogOutDialog(BuildContext context) {
   return showDialog<bool>(
     context: context,
-    builder:(context){
+    builder: (context) {
       return AlertDialog(
         backgroundColor: Colors.blue,
         title: const Text(
@@ -54,40 +55,40 @@ Future<bool> showLogOutDialog(BuildContext context){
         ),
         content: const Text(
           'Are you sure you want to sign out?',
-           style: TextStyle(
+          style: TextStyle(
             fontSize: Checkbox.width,
             color: Colors.white,
           ),
         ),
         actions: [
           TextButton(
-            onPressed: (){
+            onPressed: () {
               Navigator.of(context).pop(false);
-          }, 
+            },
             style: TextButton.styleFrom(
               foregroundColor: Colors.white,
               backgroundColor: Color.fromARGB(35, 0, 0, 0),
               textStyle: const TextStyle(
                 fontWeight: FontWeight.bold,
-                ),
               ),
+            ),
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: (){
+            onPressed: () {
               Navigator.of(context).pop(true);
-          }, 
+            },
             style: TextButton.styleFrom(
               foregroundColor: Colors.white,
               backgroundColor: Color.fromARGB(35, 0, 0, 0),
               textStyle: const TextStyle(
                 fontWeight: FontWeight.bold,
-                ),
               ),
+            ),
             child: const Text('Log out'),
           ),
         ],
       );
     },
-  ).then((value) => value?? false);
+  ).then((value) => value ?? false);
 }

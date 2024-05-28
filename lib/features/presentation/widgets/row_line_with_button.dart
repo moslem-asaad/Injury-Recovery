@@ -30,7 +30,7 @@ class _RowTextTextButtunState extends State<RowTextTextButtun> {
           child: Text(
             widget.button_text,
             style: const TextStyle(
-              color: my_green,
+              color: my_blue,
               fontWeight: FontWeight.bold,
             ),
           ),

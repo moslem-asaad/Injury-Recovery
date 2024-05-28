@@ -353,7 +353,7 @@ class FirebaseServiceImpl{
       print("createTreatment 4");
       if(!treatmentDocument.exists){
         print("createTreatment 5");
-        Treatment treatment = Treatment(treatmentGlobalId, treatmentDescription, exerciseVideosIds, customerUserEmail);
+        Treatment treatment = Treatment(treatmentGlobalId, treatmentDescription, exerciseVideosIds, customerUserEmail,);
         treatmentsCollection.doc(treatmentGlobalId.toString()).set(treatment.toJson());
         await setCounter(FirestoreTablesNames.treatments, treatmentGlobalId+1);
         return true;
@@ -390,7 +390,7 @@ class FirebaseServiceImpl{
         for(QueryDocumentSnapshot queryDocumentSnapshot in  querySnapshot.docs){
           treatmentList.add(Treatment.fromSnapshot(queryDocumentSnapshot));
         }
-        print("getUserTreatments 52");
+        print("getUserTreatments 52 ${treatmentList[0].treatmentDescription}");
         return treatmentList;
       }
       else{

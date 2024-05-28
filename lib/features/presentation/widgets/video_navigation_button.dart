@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:injury_recovery/constants/colors.dart';
 import '../../domain/entities/exercise_video.dart';
 
 class VideoNavigationButtons extends StatefulWidget {
@@ -31,16 +32,19 @@ class _VideoNavigationButtonsState extends State<VideoNavigationButtons> {
           },
           child: Column(
             children: [
-              Container(
-                width: 20,
-                height: 20,
-                margin: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.black),
-                  color: index == widget.currentIndex
-                      ? Colors.blue
-                      : Colors.transparent,
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 25.0),
+                child: Container(
+                  width: 15,
+                  height: 15,
+                  margin: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.black),
+                    color: index == widget.currentIndex
+                        ? my_blue
+                        : Colors.transparent,
+                  ),
                 ),
               ),
             ],
