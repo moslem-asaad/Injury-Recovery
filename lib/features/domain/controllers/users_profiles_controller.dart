@@ -8,19 +8,18 @@ import '../entities/treatment.dart';
 import '../entities/user.dart';
 
 
-class UsersProfilesController{
 
-  static final UsersProfilesController _instance = UsersProfilesController.internalConstructor();
+class UsersProfilesController {
+  static final UsersProfilesController _instance =
+      UsersProfilesController.internalConstructor();
   FirebaseServiceImpl firebaseService = FirebaseServiceImpl();
   bool? isSystemManagerLoggedIn = false;
   CustomerUser? loggedInUser;
   SystemManager? loggedInSystemManager;
 
-
-
   UsersProfilesController.internalConstructor();
 
-  factory UsersProfilesController(){
+  factory UsersProfilesController() {
     return _instance;
   }
 
@@ -43,7 +42,7 @@ class UsersProfilesController{
   Future<bool> logOut() async {
       validatUserIsLoggedIn();
       bool logOutSucceeded = await firebaseService.logOut();
-      if(logOutSucceeded){
+      if (logOutSucceeded) {
         loggedInUser = null;
         loggedInSystemManager = null;
         isSystemManagerLoggedIn = false;
@@ -74,7 +73,6 @@ class UsersProfilesController{
     return await firebaseService.register(email, password, firstName, lastName, phoneNumber);
   }
 
-
   Future<bool> createTreatment(String customerUserEmail, String treatmentDescription,
    List<int> exerciseVideosIds) async{
     validateNotNullOrEmptyString("Treatment Description",treatmentDescription);
@@ -86,7 +84,6 @@ class UsersProfilesController{
     return await firebaseService.createTreatment(customerUserEmail,
      treatmentDescription, exerciseVideosIds);
   }
-
 
   Future<List<Treatment>> getUserTreatments() async{
 
@@ -232,4 +229,49 @@ bool containsOnlyLetters(String input) {
   return regex.hasMatch(input);
 }
 
+
+  /*List<Treatment> getUserTreatments1() {
+    List<Treatment> l = [];
+
+    Treatment t = Treatment(
+        1, 'treatmentDescription', [1, 2, 3], 'moslem.asaad2000@gmail.com');
+    t.videosList = [
+      ExerciseVideo(
+          1,
+          "https://firebasestorage.googleapis.com/v0/b/injury-recovery.appspot.com/o/videos%2FScreen_Recording_20200822-001856_PUBG_MOBILE%5B1%5D.mp4?alt=media&token=84cfdd70-b2b9-4bb1-b934-8ba771c48b01",
+          'videoSummary',
+          'videoDescription',
+          '',
+          1),
+          ExerciseVideo(
+          2,
+          "https://firebasestorage.googleapis.com/v0/b/injury-recovery.appspot.com/o/videos%2F2024-03-04%2011%3A14%3A12.550336.mp4?alt=media&token=9b31310a-7a1a-42fc-b379-b44aa1b59343",
+          'videoSummary',
+          'videoDescription',
+          '',
+          2),
+          ExerciseVideo(
+          3,
+          "https://firebasestorage.googleapis.com/v0/b/injury-recovery.appspot.com/o/videos%2F2024-03-04%2011%3A13%3A13.819039.mp4?alt=media&token=cefbbee2-90b7-4554-a86f-488516408b18",
+          'videoSummary',
+          'videoDescription saiodjsaiodjsioadjiosajdoiasjdioaxmcosancuenovnasklcnsaklcmioqemvdmsnvdsicoewmklcsa oiwemfkc ioasl;,edkc ioasndoisnadionqeioc ',
+          '',
+          3),
+          ExerciseVideo(
+          4,
+          "https://firebasestorage.googleapis.com/v0/b/injury-recovery.appspot.com/o/videos%2F2024-03-14%2014%3A53%3A01.139339.mp4?alt=media&token=ca004a0c-994f-45ac-99b7-ea0ded12f8ff",
+          'videoSummary',
+          'videoDescription',
+          '',
+          4),
+    ];
+    l.add(t);
+   
+    return l;
+  }*/
+
+  Future<void> SendFeedbackRequest(int treatmentId, int videoTreamentId,
+      String? myVideiURL, String description) {
+    throw Exception('${treatmentId} $videoTreamentId $description $myVideiURL');
+  }
 }

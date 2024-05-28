@@ -1,3 +1,4 @@
+import 'package:injury_recovery/constants/colors.dart';
 import 'package:injury_recovery/constants/routes.dart';
 import 'package:injury_recovery/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -13,17 +14,22 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: backgraound,
       appBar: AppBar(
-        title: const Center(child: Text('Verify email')),
-        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
-        backgroundColor: Colors.grey,
-      ),
+          title: const Center(
+        child: Text('אימות דואר אלקטרוני',
+            style: TextStyle(
+              fontSize: 30,
+              height: 1.5,
+            )),
+      )),
       body: Column(
         children: [
-          const SizedBox(height: 25,),
+          const SizedBox(
+            height: 25,
+          ),
           Text(
-            "We've sent you an email verification. Please open it to verify your account.",
+            "שלחנו לך אימות דואר אלקטרוני. אנא פתח אותו כדי לאמת את החשבון שלך.",
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.grey[700],
@@ -34,7 +40,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
           ),
           const SizedBox(height: 20),
           Text(
-            "If you haven't received the email yet, press the button below.",
+            "אם עדיין לא קיבלת את הדואר האלקטרוני, לחץ על הלחצן שלהלן.",
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.grey[700],
@@ -50,7 +56,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
             },
             style: TextButton.styleFrom(
               foregroundColor: Colors.white,
-              backgroundColor: Colors.black,
+              backgroundColor: my_green,
               disabledBackgroundColor: Colors.grey,
               textStyle: const TextStyle(
                 fontWeight: FontWeight.bold,
@@ -58,7 +64,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
             ),
             icon: const Icon(Icons.email),
             label: const Text(
-              'Send Email Verification',
+              'שלח אימות דואר אלקטרוני',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -74,7 +80,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Email is verified?',
+                  'הדואר האלקטרוני מאומת?',
                   style: TextStyle(
                     color: Colors.grey[600],
                     fontWeight: FontWeight.bold,
@@ -90,9 +96,9 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
                     );
                   },
                   child: const Text(
-                    'Login Here',
+                    'להתחבר',
                     style: TextStyle(
-                        color: Colors.blue,
+                        color: my_blue,
                         fontWeight: FontWeight.bold,
                         fontSize: 20),
                   ),

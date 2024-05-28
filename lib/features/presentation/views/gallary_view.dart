@@ -2,6 +2,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:injury_recovery/components/menu_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:injury_recovery/constants/colors.dart';
 import 'package:injury_recovery/features/presentation/views/play_video_view.dart';
 
 class GallaryView extends StatefulWidget {
@@ -23,7 +24,7 @@ class _GallaryViewState extends State<GallaryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MenuButton(title: 'Gallary').bar(context),
+      appBar: const MenuButton(title: 'גלריה').bar(context),
       backgroundColor: Colors.white,
       body: Center(
         child: Padding(
@@ -65,11 +66,9 @@ class _GallaryViewState extends State<GallaryView> {
                             width: double.infinity,
                             height: 60,
                             decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.grey),
+                              border: Border.all(color: Colors.grey),
                               borderRadius: BorderRadius.circular(10),
-                              color: Colors
-                                  .grey[300],
+                              color: Colors.grey[300],
                             ),
                             child: Row(
                               children: [
@@ -79,19 +78,17 @@ class _GallaryViewState extends State<GallaryView> {
                                 Text(
                                   '${video['id']}- ${video['name']}',
                                   style: const TextStyle(
-                                      color: Colors.black,
+                                      color: my_blue,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18),
                                 ),
                                 const Spacer(),
                                 Container(
                                   decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.grey),
-                                      borderRadius: BorderRadius.circular(
-                                          15), 
+                                      border: Border.all(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(15),
                                       color: Colors.grey[200]),
-                                      height: 40,
+                                  height: 40,
                                   child: TextButton.icon(
                                     onPressed: () {
                                       Navigator.of(context).push(
@@ -108,11 +105,11 @@ class _GallaryViewState extends State<GallaryView> {
                                     },
                                     icon: const Icon(
                                       Icons.play_arrow_rounded,
-                                      color: Colors.black,
+                                      color: my_green,
                                     ),
                                     label: const Text(
-                                      'Play Video',
-                                      style: TextStyle(color: Colors.black),
+                                      'הפעלה',
+                                      style: TextStyle(color: Colors.white),
                                     ),
                                   ),
                                 ),

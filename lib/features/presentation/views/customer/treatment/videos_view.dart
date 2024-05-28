@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:injury_recovery/constants/colors.dart';
 import 'package:injury_recovery/features/presentation/views/customer/treatment/feedback_request.dart';
 import 'package:injury_recovery/features/presentation/widgets/my_video_player.dart';
 import 'package:video_player/video_player.dart';
-
+import 'package:injury_recovery/features/presentation/widgets/treatments_images.dart';
 import '../../../../domain/entities/exercise_video.dart';
 import '../../../widgets/video_navigation_button.dart';
 
@@ -108,32 +109,45 @@ class _VideosViewState extends State<VideosView> {
           itemCount: widget.videos.length,
           onPageChanged: _onPageChanged,
           itemBuilder: (context, index) {
-            print('aaaaaa $index');
-            /*return VideoPlayerPreview(
-              videoURL: widget.videos[index].videoUrl,
-              controller: _controller,
-              onHorizontalDragEnd: _onHorizontalDragEnd,
-            );*/
-            _controller.play();
             _controller.setLooping(true);
-
+            _controller.play();
             return MyVideoPlayer(
               controller: _controller,
               onHorizontalDragEnd: _onHorizontalDragEnd,
-              barButtons: ButtonBar(
-                children: [
-                  OutlinedButton(
+              barButtons: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ButtonBar(
+                  children: [
+                    ElevatedButton.icon(
                       onPressed: () {
                         _controller.pause();
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => FeedbackRequest(
-                            treatmentId: widget.treatmentId,
-                            videoId: widget.videos[index].videoGlobalId!,
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => FeedbackRequest(
+                              treatmentId: widget.treatmentId,
+                              videoId: widget.videos[index].videoGlobalId!,
+                            ),
                           ),
-                        ));
+                        );
                       },
-                      child: Text('feedback')),
-                ],
+                      style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(my_green),
+                        minimumSize: MaterialStatePropertyAll(Size(10,50)),
+
+                      ),
+                      icon: const Icon(
+                        Icons.feedback_outlined,
+                        color: backgraound,
+                      ),
+                      label: const Text(
+                        'Feedback',
+                        style: TextStyle(
+                          color: backgraound,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },
@@ -142,8 +156,8 @@ class _VideosViewState extends State<VideosView> {
           bottom: MediaQuery.of(context).size.height * 0,
           left: 0,
           right: 0,
-          child: Container(
-            color: Colors.green,
+          child: SizedBox(
+            //color: Colors.green,
             height: MediaQuery.of(context).size.height * 0.57,
             child: SingleChildScrollView(
               child: Column(
@@ -155,9 +169,9 @@ class _VideosViewState extends State<VideosView> {
                     onPageChanged: _onPageChanged2,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child:
-                        Text(widget.videos[_currentPageIndex].videoDescription!),
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Text(
+                        widget.videos[_currentPageIndex].videoDescription!),
                   ),
                 ],
               ),

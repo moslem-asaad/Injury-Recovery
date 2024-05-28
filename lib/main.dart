@@ -18,6 +18,7 @@ import 'package:injury_recovery/features/presentation/views/upload_video_view.da
 import 'package:injury_recovery/features/presentation/views/verify_email_view.dart';
 
 import 'features/domain/entities/customer_user.dart';
+import 'features/presentation/views/create_treatment.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,11 +35,8 @@ void main() {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [
-        Locale('he'),
-        Locale('en')
-      ],
-      locale: Locale('en', ''),
+      supportedLocales: [Locale('he'), Locale('en')],
+      locale: Locale('he', ''),
       routes: {
         loginRoute: (context) => const LoginView(),
         registerRoute: (context) => const RegisterView(),
@@ -49,7 +47,7 @@ void main() {
         gallaryRout: (context) => const GallaryView(),
         customerProfileRout: (context) => const CustomerProfile(),
         treatmentsRout: (context) => const Treatmants(),
-        //feedbackRequestRout:(context) => const FeedbackRequest(treatmentId: ,),
+        createTreatmentRoute: (context) => const CreateTreatments(),
       },
     ),
   );
@@ -76,7 +74,7 @@ class HomePage extends StatelessWidget {
                 return const VerifyEmailView();
               }
             } else {
-              return const CustomerProfile();
+              return const LoginView();
             }
           default:
             return const CircularProgressIndicator();
@@ -84,5 +82,4 @@ class HomePage extends StatelessWidget {
       },
     );
   }
-
 }
