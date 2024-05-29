@@ -186,7 +186,8 @@ class _RegisterViewState extends State<RegisterView> {
     if (response.errorOccured!) {
       await showErrorDialog(context, response.errorMessage!);
     } else {
-      await AuthService.firebase().sendEmailVerification();
+      //await AuthService.firebase().sendEmailVerification();
+      Navigator.pushNamed(context, loginRoute);
     }
   }
   /*try {

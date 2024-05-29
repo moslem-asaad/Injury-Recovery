@@ -4,8 +4,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injury_recovery/components/my_button.dart';
+import 'package:injury_recovery/features/presentation/widgets/my_video_player.dart';
 import 'package:injury_recovery/services/store/store_date.dart';
+import 'package:injury_recovery/utilities/show_error_dialog.dart';
 import 'package:video_player/video_player.dart';
+
+import '../../services/service_layer.dart';
 
 class UploadVideoView extends StatefulWidget {
   const UploadVideoView({super.key});
@@ -21,6 +25,8 @@ class _UploadVideoViewState extends State<UploadVideoView> {
   bool _showVideoButtons = false;
   Timer? _timer;
   String? _videoName;
+  String? _description;
+  String? _summary;
   double _uploadProgress = 0;
 
   @override
@@ -106,7 +112,8 @@ class _UploadVideoViewState extends State<UploadVideoView> {
       }
       return Column(
         children: [
-          GestureDetector(
+          MyVideoPlayer(controller: _controller),
+          /*GestureDetector(
             onTap: () {
               _handleTap();
             },
@@ -121,7 +128,7 @@ class _UploadVideoViewState extends State<UploadVideoView> {
                 if (_showVideoButtons) _videoProgress(),
               ],
             ),
-          ),
+          ),*/
           MyButton(
             onPressed: _uploadVideo,
             title: ('Upload'),
@@ -239,18 +246,32 @@ class _UploadVideoViewState extends State<UploadVideoView> {
   }
 
   void _uploadVideo() async {
-    _videoName = await _askForVideoName();
+     List<String?>? res = (await _askForVideoName());
+    _videoName = res![0];
+    _description = res[1];
+    _summary = res[2];
     if (_videoName != null && _videoURL != null) {
       setState(() {
         _uploadProgress = 0; // Reset progress before starting upload
       });
-      _downloadURL = await StoreData().uploadVideo(_videoURL!, (progress) {
+
+    var response = await Service().uploadVideo(_videoURL!, (progress) {
         setState(() {
           _uploadProgress = progress * 100; // Convert to percentage
         });
       });
+    _downloadURL = response.val!;
+      /*_downloadURL = await StoreData().uploadVideo(_videoURL!, (progress) {
+        setState(() {
+          _uploadProgress = progress * 100; // Convert to percentage
+        });
+      });*/
       //_downloadURL = await StoreData().uploadVideo(_videoURL!);
-      await StoreData().saveVideoData(_downloadURL!, _videoName!);
+      var response2 = await Service().createExerciseVideo(_downloadURL!,_description!,_summary!);
+      if(response2.errorOccured!){
+        await showErrorDialog(context, response2.errorMessage!);
+      }
+      //await StoreData().saveVideoData(_downloadURL!, _videoName!);
       setState(() {
         //_controller!.pause();
         //_videoURL = null;
@@ -258,22 +279,38 @@ class _UploadVideoViewState extends State<UploadVideoView> {
     }
   }
 
-  Future<String?> _askForVideoName() async {
-    return showDialog<String>(
+  Future<List<String?>?> _askForVideoName() async {
+    return showDialog<List<String?>>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Enter Video Name'),
-          content: TextField(
-            onChanged: (value) {
-              _videoName = value;
-            },
-            decoration: InputDecoration(hintText: 'Video Name'),
+          content: Column(
+            children: [
+              TextField(
+                onChanged: (value) {
+                  _videoName = value;
+                },
+                decoration: InputDecoration(hintText: 'Video Name'),
+              ),
+              TextField(
+                onChanged: (value) {
+                  _description = value;
+                },
+                decoration: InputDecoration(hintText: 'Video Description'),
+              ),
+              TextField(
+                onChanged: (value) {
+                  _summary = value;
+                },
+                decoration: InputDecoration(hintText: 'Video Summary'),
+              ),
+            ],
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(_videoName);
+                Navigator.of(context).pop([_videoName,_description,_summary]);
               },
               child: Text('OK'),
             ),

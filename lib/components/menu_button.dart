@@ -4,6 +4,9 @@ import 'package:injury_recovery/enums/menu_action.dart';
 import 'package:injury_recovery/features/presentation/widgets/logo_image.dart';
 import 'package:injury_recovery/services/auth/auth_service.dart';
 import 'package:injury_recovery/features/presentation/views/main_view.dart';
+import 'package:injury_recovery/utilities/show_error_dialog.dart';
+
+import '../features/presentation/services/service_layer.dart';
 
 class MenuButton extends StatelessWidget {
   const MenuButton({super.key, required this.title});
@@ -19,7 +22,7 @@ class MenuButton extends StatelessWidget {
     return AppBar(
       title: Text(title),
       actions: [
-        getLogo(context,0.1),
+        getLogo(context, 0.1),
         _menuButtons(context),
       ],
     );
@@ -32,9 +35,14 @@ class MenuButton extends StatelessWidget {
           case MenuAction.logout:
             final shouldLogout = await showLogOutDialog(context);
             if (shouldLogout) {
-              await AuthService.firebase().logOut();
-              Navigator.of(context)
-                  .pushNamedAndRemoveUntil(loginRoute, (_) => false);
+              //await AuthService.firebase().logOut();
+              var response = await Service().logout();
+              if (response.errorOccured!) {
+                await showErrorDialog(context, response.errorMessage!);
+              } else {
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(loginRoute, (_) => false);
+              }
             }
         }
       },

@@ -52,6 +52,13 @@ class Service {
     });
   }
 
+  Future<ResponseT<User>> getLoggedInUser() async {
+    return await tryCatch<User>(() async {
+        return await usersController.getLoggedInUser();
+    });
+  }
+
+
 
   Future<ResponseT<bool>> cleanCollection(String collectionName) async {
     return await tryCatch<bool>(() async {
@@ -79,7 +86,7 @@ class Service {
     });
   }
   
-  Future<ResponseT<bool>> createTreatment(String customerUserEmail,
+  Future<ResponseT<bool>> createTreatment(String customerUserEmail,//todo: add treatmant name
       String treatmentDescription, List<int> exerciseVideosIds) async {
     return await tryCatch<bool>(() async {
         return await usersController.createTreatment(customerUserEmail, treatmentDescription, exerciseVideosIds);

@@ -39,6 +39,17 @@ class UsersProfilesController {
       return true;
   }
 
+  Future<User> getLoggedInUser() async{
+    User user = await firebaseService.getLoggedInUser();
+      if(user.isSystemManager){
+        loggedInSystemManager =  SystemManager(user.userId!, user.email, user.firstName!, user.lastName!, user.phoneNumber!);
+        isSystemManagerLoggedIn = true;
+      }else{
+        loggedInUser =  CustomerUser(user.userId!, user.email, user.firstName!, user.lastName!, user.phoneNumber!);
+      }
+    return user;
+  }
+
   Future<bool> logOut() async {
       validatUserIsLoggedIn();
       bool logOutSucceeded = await firebaseService.logOut();
