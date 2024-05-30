@@ -9,3 +9,4 @@ const customerProfileRout = '/customer-profile/';
 const treatmentsRout = '/treatments/';
 const feedbackRequestRout = '/feedback-request/';
 const createTreatmentRoute = '/create-treatment/';
+const usersFeedbacksRout = '/users-feedbacks/';

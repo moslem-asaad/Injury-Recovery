@@ -3,7 +3,7 @@ import 'package:injury_recovery/constants/routes.dart';
 import 'package:injury_recovery/enums/menu_action.dart';
 import 'package:injury_recovery/features/presentation/widgets/logo_image.dart';
 import 'package:injury_recovery/services/auth/auth_service.dart';
-import 'package:injury_recovery/features/presentation/views/main_view.dart';
+import 'package:injury_recovery/features/presentation/views/system_manager/main_view.dart';
 import 'package:injury_recovery/utilities/show_error_dialog.dart';
 
 import '../features/presentation/services/service_layer.dart';

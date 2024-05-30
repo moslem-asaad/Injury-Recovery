@@ -3,7 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:injury_recovery/components/my_button.dart';
 import 'package:injury_recovery/components/my_text_field.dart';
 import 'package:injury_recovery/constants/routes.dart';
-import 'package:injury_recovery/features/presentation/widgets/my_dialog.dart';
+import 'package:injury_recovery/features/presentation/services/service_layer.dart';
+import 'package:injury_recovery/utilities/show_error_dialog.dart';
 
 class CreateTreatments extends StatefulWidget {
   const CreateTreatments({super.key});
@@ -83,8 +84,8 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
           ),
           SizedBox(height: screen_height / 82),*/
                 TextButton(
-                  onPressed: () {
-                    _getVideosIds();
+                  onPressed: () async {
+                    videos = (await _getVideosIds());
                   },
                   child: Text('videos ids'),
                 ),
@@ -99,7 +100,14 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
                 ),
                 MyButton(
                   onPressed: () async {
-                    Scaffold();
+                    var response = await Service().createTreatment(
+                        _user_name.text, _treatment_discription.text, videos);
+
+                    if(response.errorOccured!){
+                      await showErrorDialog(context, response.errorMessage!);
+                    }else{
+                      Navigator.pop(context);
+                    }
                   },
                   title: 'Crerate Treatment',
                 ),
@@ -111,49 +119,58 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
     );
   }
 
-  Future<List<int?>?> _getVideosIds() async {
-    int _fieldCount = 5;
-    return showDialog<List<int?>>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Videos IDs'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Display existing text fields
-                for (int i = 0; i < _fieldCount; i++)
-                  TextField(
-                    onChanged: (value) {
-                      // Update the value in the list as the user types
-                      // You can access it using _controllers[i].text
-                      videos[i] = value as int;
-                    },
-                    decoration: InputDecoration(
-                      hintText: 'Video ${i + 1} ID',
+  Future<List<int>> _getVideosIds() async {
+    int _fieldCount = 1;
+    List<int> videos = [];
+
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('Videos IDs'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Display existing text fields
+                  for (int i = 0; i < _fieldCount; i++)
+                    TextField(
+                      onChanged: (value) {
+                        // Update the value in the list as the user types
+                        // You can access it using _controllers[i].text
+                        videos.add(int.tryParse(value)!);
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Video ${i + 1} ID',
+                      ),
                     ),
+                  // Add button to create new text fields
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        _fieldCount++;
+                      });
+                    },
+                    child: const Text('Add'),
                   ),
-                // Add button to create new text fields
-                ElevatedButton(
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
                   onPressed: () {
-                    setState(() {
-                      _fieldCount++;
-                    });
+                    Navigator.of(context).pop();
                   },
-                  child: const Text('Add'),
+                  child: Text('OK'),
                 ),
               ],
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(videos);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        });
+            );
+          },
+        );
+      },
+    );
+
+    return videos;
   }
 
   void _addField(int _fieldCount) {

@@ -77,7 +77,7 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
         ),
       );
     } else {
-      return const CircularProgressIndicator();
+      return const Text('there is no video to display');
     }
   }
 

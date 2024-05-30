@@ -26,14 +26,14 @@ class _MainViewState extends State<MainView> {
               title: 'upload video'),
           MyButton(
               onPressed: () async {
-                Navigator.of(context).pushNamed(gallaryRout);
-              },
-              title: 'Gallary'),
-          MyButton(
-              onPressed: () async {
                 Navigator.of(context).pushNamed(createTreatmentRoute);
               },
               title: 'Create Treatment'),
+          MyButton(
+              onPressed: () async {
+                Navigator.of(context).pushNamed(usersFeedbacksRout);
+              },
+              title: 'Users Feedbacks'),
         ],
       ),
     );
