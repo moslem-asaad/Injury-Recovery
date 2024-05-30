@@ -1,7 +1,10 @@
 import 'package:injury_recovery/components/menu_button.dart';
 import 'package:injury_recovery/components/my_button.dart';
+import 'package:injury_recovery/constants/colors.dart';
 import 'package:injury_recovery/constants/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:injury_recovery/features/presentation/widgets/my_container_button.dart';
+import 'package:injury_recovery/features/presentation/widgets/treatments_images.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -14,12 +17,27 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: backgraound,
       appBar: MenuButton(title: 'Main UI').bar(context),
       body: Column(
         children: [
-          const SizedBox(height: 150),
-          MyButton(
+          //const SizedBox(height: 150),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: _uploadVideo(context),
+              ),
+              _createTreatment(context),
+            ],
+          ),
+          
+          Row(
+            children: [
+              _userFeedbacks(context),
+            ],
+          ),
+          /*MyButton(
               onPressed: () async {
                 Navigator.of(context).pushNamed(uploadVideoRout);
               },
@@ -33,11 +51,49 @@ class _MainViewState extends State<MainView> {
               onPressed: () async {
                 Navigator.of(context).pushNamed(usersFeedbacksRout);
               },
-              title: 'Users Feedbacks'),
+              title: 'Users Feedbacks'),*/
         ],
       ),
     );
   }
+}
+
+Widget _uploadVideo(BuildContext context) {
+  return MyContainerButton(
+    context,
+    my_green,
+    () {
+      Navigator.of(context).pushNamed(uploadVideoRout);
+    },
+    'Upload Video ',
+    getToMainUI(context, 0.1, 1),
+  );
+}
+
+Widget _createTreatment(BuildContext context) {
+  return MyContainerButton(
+    context,
+    my_green,
+    () {
+      Navigator.of(context).pushNamed(createTreatmentRoute);
+    },
+    'Create Treatment ',
+    getToMainUI(context, 0.1, 2),
+  );
+}
+
+Widget _userFeedbacks(BuildContext context) {
+  return Expanded(
+    child: MyContainerButton(
+      context,
+      my_blue,
+      () {
+        Navigator.of(context).pushNamed(usersFeedbacksRout);
+      },
+      'Users Feedbacks ',
+      getToMainUI(context, 0.1, 3),
+    ),
+  );
 }
 
 Future<bool> showLogOutDialog(BuildContext context) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-getImage(BuildContext context,double ratio,int index) {
+ClipRRect getImage(BuildContext context,double ratio,int index) {
   return ClipRRect(
     borderRadius: BorderRadius.circular(10),
     child: Image.asset(
@@ -10,7 +10,7 @@ getImage(BuildContext context,double ratio,int index) {
   );
 }
 
-getthumpnail(BuildContext context,double ratio,int index) {
+ClipRRect getthumpnail(BuildContext context,double ratio,int index) {
   return ClipRRect(
     borderRadius: BorderRadius.circular(10),
     child: Image.asset(
@@ -20,7 +20,7 @@ getthumpnail(BuildContext context,double ratio,int index) {
   );
 }
 
-getQuesionalizingimage(BuildContext context,double ratio,int index) {
+ClipRRect getQuesionalizingimage(BuildContext context,double ratio,int index) {
   return ClipRRect(
     borderRadius: BorderRadius.circular(10),
     child: Image.asset(
@@ -30,7 +30,7 @@ getQuesionalizingimage(BuildContext context,double ratio,int index) {
   );
 }
 
-getGif(BuildContext context,double ratio,int index,String name) {
+ClipRRect getGif(BuildContext context,double ratio,int index,String name) {
   return ClipRRect(
     borderRadius: BorderRadius.circular(10),
     child: Image.asset(
@@ -40,11 +40,21 @@ getGif(BuildContext context,double ratio,int index,String name) {
   );
 }
 
-getTherapyIcon(BuildContext context,double ratio,int index,String name) {
+ClipRRect getTherapyIcon(BuildContext context,double ratio,int index,String name) {
   return ClipRRect(
     borderRadius: BorderRadius.circular(10),
     child: Image.asset(
       'images/${name}.png',
+      width: MediaQuery.of(context).size.height * ratio,
+    ),
+  );
+}
+
+ClipRRect getToMainUI(BuildContext context,double ratio,int index) {
+  return ClipRRect(
+    borderRadius: BorderRadius.circular(10),
+    child: Image.asset(
+      'images/main$index.png',
       width: MediaQuery.of(context).size.height * ratio,
     ),
   );
