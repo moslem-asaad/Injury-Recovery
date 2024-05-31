@@ -154,9 +154,9 @@ class Service {
     });
   }
 
-  Future<ResponseT<String>> uploadVideo(String videoURL, Function(double)? onProgress) async {
+  Future<ResponseT<String>> uploadVideo(String videoURL, String path ,Function(double)? onProgress) async {
     return await tryCatch<String>(() async {
-        return await exerciseVideosController.uploadVideo(videoURL, onProgress);
+        return await exerciseVideosController.uploadVideo(videoURL,path ,onProgress);
     });
   }
   

@@ -219,8 +219,9 @@ class FirebaseServiceImpl{
   }
 
   Future<String> uploadVideo(
-      String videoURL, Function(double)? onProgress) async {
-    Reference ref = firebaseStorage.ref().child('/videos/${DateTime.now()}.mp4');
+      String videoURL, String path,Function(double)? onProgress) async {
+        print('sendFeedbackRequestt path $path');
+    Reference ref = firebaseStorage.ref().child('/$path/${DateTime.now()}.mp4');
     UploadTask uploadTask = ref.putFile(File(videoURL));
 
     uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
@@ -233,6 +234,8 @@ class FirebaseServiceImpl{
     await uploadTask;
     //await ref.putFile(File(videoURL));
     String downloadURL = await ref.getDownloadURL();
+            print('sendFeedbackRequestt downloadURL $downloadURL');
+
     return downloadURL;
   }
 

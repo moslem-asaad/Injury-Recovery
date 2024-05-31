@@ -29,6 +29,8 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
   late final TextEditingController _description;
   String? _videoURL;
   VideoPlayerController? _controller;
+  String? _downloadURL;
+  double _uploadProgress = 0;
 
   @override
   void initState() {
@@ -92,6 +94,15 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
                 },
                 title: 'Send your request',
               ),
+              SizedBox(height: 20),
+              LinearProgressIndicator(
+                value: _uploadProgress / 100,
+                minHeight: 10,
+                backgroundColor: Colors.grey,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+              ),
+              SizedBox(height: 10),
+              Text('${_uploadProgress.toStringAsFixed(2)}% Uploaded'),
             ],
           ),
         ),
@@ -183,17 +194,36 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
   }
 
   Future<void> sendFeedbackRequest() async {
-    var response = await Service().sendFeedbackRequest(
-      widget.treatmentId,
-      widget.videoId,
-      _videoURL,
-      _description.text,
-    );
+    if (_videoURL != null) {
+      setState(() {
+        _uploadProgress = 0; // Reset progress before starting upload
+      });
+    print('sendFeedbackRequestt videoURL $_videoURL');
 
-    if (response.errorOccured!) {
-      await showErrorDialog(context, response.errorMessage!);
-    } else {
-      Navigator.pop(context);
+      var response1 = await Service().uploadVideo(_videoURL!, 'customersVideos',
+          (progress) {
+        setState(() {
+          _uploadProgress = progress * 100; // Convert to percentage
+        });
+      });
+
+      if(response1.errorOccured!){
+        await showErrorDialog(context, response1.errorMessage!);
+      }
+      _downloadURL = response1.val!;
+      print('sendFeedbackRequestt download $_downloadURL');
+      var response2 = await Service().sendFeedbackRequest(
+        widget.treatmentId,
+        widget.videoId,
+        _downloadURL,
+        _description.text,
+      );
+
+      if (response2.errorOccured!) {
+        await showErrorDialog(context, response2.errorMessage!);
+      } else {
+        Navigator.pop(context);
+      }
     }
   }
 }

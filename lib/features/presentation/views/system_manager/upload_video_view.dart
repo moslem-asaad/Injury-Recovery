@@ -255,7 +255,7 @@ class _UploadVideoViewState extends State<UploadVideoView> {
         _uploadProgress = 0; // Reset progress before starting upload
       });
 
-    var response = await Service().uploadVideo(_videoURL!, (progress) {
+    var response = await Service().uploadVideo(_videoURL!,'videos' ,(progress) {
         setState(() {
           _uploadProgress = progress * 100; // Convert to percentage
         });

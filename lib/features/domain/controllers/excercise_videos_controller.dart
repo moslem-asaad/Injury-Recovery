@@ -23,11 +23,11 @@ class ExerciseVideosController{
      videoSummary, videoDescription);
   }
 
-  Future<String> uploadVideo(String videoURL, Function(double)? onProgress) async {
-      UsersProfilesController().validatSystemManagerIsLoggedIn();
+  Future<String> uploadVideo(String videoURL, String path,Function(double)? onProgress) async {
+      //UsersProfilesController().validatSystemManagerIsLoggedIn();
       UsersProfilesController().validateNotNullOrEmptyString("Video URL", videoURL);
 
-      return await firebaseService.uploadVideo(videoURL, onProgress);
+      return await firebaseService.uploadVideo(videoURL, path,onProgress);
   }
 
 
