@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:injury_recovery/components/my_button.dart';
 import 'package:injury_recovery/components/my_text_field.dart';
+import 'package:injury_recovery/constants/colors.dart';
 import 'package:injury_recovery/constants/routes.dart';
 import 'package:injury_recovery/features/presentation/services/service_layer.dart';
+import 'package:injury_recovery/features/presentation/views/system_manager/exercise_videos.dart';
 import 'package:injury_recovery/utilities/show_error_dialog.dart';
 
 class CreateTreatments extends StatefulWidget {
@@ -42,7 +44,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
   Widget build(BuildContext context) {
     double screen_height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: backgraound,
       appBar: AppBar(
         title: const Center(child: Text('Create Treatment')),
         foregroundColor: Colors.black,
@@ -83,12 +85,23 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
             maxLines: null,
           ),
           SizedBox(height: screen_height / 82),*/
-                TextButton(
-                  onPressed: () async {
-                    videos = (await _getVideosIds());
-                  },
-                  child: Text('videos ids'),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          videos = await Navigator.of(context)
+                              .push(MaterialPageRoute(
+                            builder: (context) => ExerciseVideos(),
+                          )); //videos = (await _getVideosIds());
+                        },
+                        child: Text('pick treatment videos'),
+                      ),
+                    ),
+                  ],
                 ),
+                SizedBox(height: screen_height / 82),
                 MyTextField(
                   controller: _treatment_discription,
                   hintText: 'Treatment Discription',
@@ -103,9 +116,9 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
                     var response = await Service().createTreatment(
                         _user_name.text, _treatment_discription.text, videos);
 
-                    if(response.errorOccured!){
+                    if (response.errorOccured!) {
                       await showErrorDialog(context, response.errorMessage!);
-                    }else{
+                    } else {
                       Navigator.pop(context);
                     }
                   },

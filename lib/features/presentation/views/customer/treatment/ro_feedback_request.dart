@@ -28,6 +28,8 @@ class RoFeedBackRequest extends StatefulWidget {
 class _RoFeedBackRequestState extends State<RoFeedBackRequest> {
   late final TextEditingController _description;
   late final TextEditingController _response;
+  late bool _isOriginalVideoVisible;
+  late bool _isPerformanceVideoVisible;
   String? _performanceVideoURL;
   VideoPlayerController? _controller;
   String? feedbackDesc;
@@ -39,6 +41,8 @@ class _RoFeedBackRequestState extends State<RoFeedBackRequest> {
 
   @override
   void initState() {
+    _isOriginalVideoVisible = false;
+    _isPerformanceVideoVisible = true;
     isSystemManager = _isSystemManager();
     feedbackDesc = widget.feedbackRequest.feedbackRequestDescription;
     _description = TextEditingController();
@@ -111,10 +115,48 @@ class _RoFeedBackRequestState extends State<RoFeedBackRequest> {
                     readOnly: true,
                     fillcolor: Colors.green.shade100,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: MyVideoPlayer(
-                      controller: _controller,
+                  ButtonBar(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _isPerformanceVideoVisible =
+                                !_isPerformanceVideoVisible;
+                          });
+                        },
+                        icon: Icon(Icons.minimize),
+                      ),
+                    ],
+                  ),
+                  Visibility(
+                    visible: _isPerformanceVideoVisible,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: MyVideoPlayer(
+                        controller: _controller,
+                      ),
+                    ),
+                  ),
+                  ButtonBar(
+                    children: [
+                      TextButton.icon(
+                        onPressed: () {
+                          setState(() {
+                            _isOriginalVideoVisible = !_isOriginalVideoVisible;
+                          });
+                        },
+                        icon: arrow_direction(),
+                        label: label_content(),
+                      ),
+                    ],
+                  ),
+                  Visibility(
+                    visible: _isOriginalVideoVisible,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: MyVideoPlayer(
+                        controller: _controller,
+                      ),
                     ),
                   ),
                   const Padding(
@@ -166,6 +208,34 @@ class _RoFeedBackRequestState extends State<RoFeedBackRequest> {
         }
       },
     );
+  }
+
+  Icon arrow_direction() {
+    if (_isOriginalVideoVisible) {
+      return Icon(
+        Icons.arrow_downward_rounded,
+        color: my_blue,
+      );
+    } else {
+      return Icon(
+        Icons.arrow_upward_rounded,
+        color: my_blue,
+      );
+    }
+  }
+
+  Text label_content() {
+    if (_isOriginalVideoVisible) {
+      return Text(
+        'show original video',
+        style: TextStyle(color: my_blue),
+      );
+    } else {
+      return Text(
+        'hide original video',
+        style: TextStyle(color: my_blue),
+      );
+    }
   }
 
   /*bool _canRespose() {

@@ -31,10 +31,12 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
   VideoPlayerController? _controller;
   String? _downloadURL;
   double _uploadProgress = 0;
+  late bool _uploadProgressVisibile;
 
   @override
   void initState() {
     _description = TextEditingController();
+    _uploadProgressVisibile = false;
     super.initState();
   }
 
@@ -95,14 +97,20 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
                 title: 'Send your request',
               ),
               SizedBox(height: 20),
-              LinearProgressIndicator(
-                value: _uploadProgress / 100,
-                minHeight: 10,
-                backgroundColor: Colors.grey,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+              Visibility(
+                visible: _uploadProgressVisibile,
+                child: LinearProgressIndicator(
+                  value: _uploadProgress / 100,
+                  minHeight: 10,
+                  backgroundColor: Colors.grey,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                ),
               ),
               SizedBox(height: 10),
-              Text('${_uploadProgress.toStringAsFixed(2)}% Uploaded'),
+              Visibility(
+                visible: _uploadProgressVisibile,
+                child: Text('${_uploadProgress.toStringAsFixed(2)}% Uploaded'),
+              ),
             ],
           ),
         ),
@@ -196,9 +204,10 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
   Future<void> sendFeedbackRequest() async {
     if (_videoURL != null) {
       setState(() {
+        _uploadProgressVisibile = !_uploadProgressVisibile;
         _uploadProgress = 0; // Reset progress before starting upload
       });
-    print('sendFeedbackRequestt videoURL $_videoURL');
+      print('sendFeedbackRequestt videoURL $_videoURL');
 
       var response1 = await Service().uploadVideo(_videoURL!, 'customersVideos',
           (progress) {
@@ -207,7 +216,7 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
         });
       });
 
-      if(response1.errorOccured!){
+      if (response1.errorOccured!) {
         await showErrorDialog(context, response1.errorMessage!);
       }
       _downloadURL = response1.val!;
@@ -223,6 +232,20 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
         await showErrorDialog(context, response2.errorMessage!);
       } else {
         Navigator.pop(context);
+        showMyDialog(context, 'feedback sent succefully');
+      }
+    }else{
+       var response2 = await Service().sendFeedbackRequest(
+        widget.treatmentId,
+        widget.videoId,
+        _downloadURL,
+        _description.text,
+      );
+      if (response2.errorOccured!) {
+        await showErrorDialog(context, response2.errorMessage!);
+      } else {
+        Navigator.pop(context);
+        showMyDialog(context, 'feedback sent succefully');
       }
     }
   }

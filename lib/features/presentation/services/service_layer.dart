@@ -7,6 +7,7 @@ import 'package:injury_recovery/features/domain/entities/feedback_request.dart';
 import 'package:injury_recovery/features/domain/entities/treatment.dart';
 import 'package:injury_recovery/features/presentation/services/response.dart';
 
+import '../../domain/entities/exercise_video.dart';
 import '../../domain/entities/user.dart';
 
 class Service {
@@ -157,6 +158,12 @@ class Service {
   Future<ResponseT<String>> uploadVideo(String videoURL, String path ,Function(double)? onProgress) async {
     return await tryCatch<String>(() async {
         return await exerciseVideosController.uploadVideo(videoURL,path ,onProgress);
+    });
+  }
+
+  Future<ResponseT<List<ExerciseVideo>>> getAllExerciseVideos() async {
+    return await tryCatch<List<ExerciseVideo>>(() async {
+        return await exerciseVideosController.getAllExerciseVideos();
     });
   }
   

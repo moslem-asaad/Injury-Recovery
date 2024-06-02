@@ -1,5 +1,6 @@
 import 'dart:async';
 import '../../data/services/firebase_service_impl.dart';
+import '../entities/exercise_video.dart';
 import 'users_profiles_controller.dart';
 
 class ExerciseVideosController{
@@ -28,6 +29,11 @@ class ExerciseVideosController{
       UsersProfilesController().validateNotNullOrEmptyString("Video URL", videoURL);
 
       return await firebaseService.uploadVideo(videoURL, path,onProgress);
+  }
+
+  Future<List<ExerciseVideo>> getAllExerciseVideos() async{
+  //validatSystemManagerIsLoggedIn();
+    return await firebaseService.getAllExerciseVideos();
   }
 
 

@@ -220,7 +220,6 @@ class FirebaseServiceImpl{
 
   Future<String> uploadVideo(
       String videoURL, String path,Function(double)? onProgress) async {
-        print('sendFeedbackRequestt path $path');
     Reference ref = firebaseStorage.ref().child('/$path/${DateTime.now()}.mp4');
     UploadTask uploadTask = ref.putFile(File(videoURL));
 
@@ -577,6 +576,27 @@ class FirebaseServiceImpl{
       }
     }catch(e){
       print("getAllUsers general exception");
+      rethrow;
+    }
+  }
+
+  Future<List<ExerciseVideo>> getAllExerciseVideos() async{
+    try{
+      final exerciseVideosCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.exerciseVideos));
+      QuerySnapshot querySnapshot = await exerciseVideosCollection.get();
+
+      if(querySnapshot.docs.isNotEmpty){
+        List<ExerciseVideo> exerciseVideos = [];
+        for(QueryDocumentSnapshot queryDocumentSnapshot in  querySnapshot.docs){
+          exerciseVideos.add(ExerciseVideo.fromSnapshot(queryDocumentSnapshot));
+        }
+        return exerciseVideos;
+      }
+      else{
+        return [];
+      }
+    }catch(e){
+      print("getAllExerciseVideos general exception");
       rethrow;
     }
   }
