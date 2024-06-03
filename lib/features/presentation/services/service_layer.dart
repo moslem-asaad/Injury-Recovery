@@ -87,10 +87,10 @@ class Service {
     });
   }
   
-  Future<ResponseT<bool>> createTreatment(String customerUserEmail,//todo: add treatmant name
+  Future<ResponseT<bool>> createTreatment(String customerUserEmail, String treatmentName,
       String treatmentDescription, List<int> exerciseVideosIds) async {
     return await tryCatch<bool>(() async {
-        return await usersController.createTreatment(customerUserEmail, treatmentDescription, exerciseVideosIds);
+        return await usersController.createTreatment(customerUserEmail,treatmentName, treatmentDescription, exerciseVideosIds);
     });
   }
 

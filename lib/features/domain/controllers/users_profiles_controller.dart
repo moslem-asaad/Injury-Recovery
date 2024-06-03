@@ -84,15 +84,16 @@ class UsersProfilesController {
     return await firebaseService.register(email, password, firstName, lastName, phoneNumber);
   }
 
-  Future<bool> createTreatment(String customerUserEmail, String treatmentDescription,
+  Future<bool> createTreatment(String customerUserEmail, String treatmentName, String treatmentDescription,
    List<int> exerciseVideosIds) async{
+    validateNotNullOrEmptyString("Treatment Name",treatmentName);
     validateNotNullOrEmptyString("Treatment Description",treatmentDescription);
     validateNotNullOrEmptyString("Customer User Email",customerUserEmail);
     if(exerciseVideosIds.isEmpty){
       throw ExpectedFailureException("you can't create Treatment without any Exercise Video");
     }
     validatSystemManagerIsLoggedIn();
-    return await firebaseService.createTreatment(customerUserEmail,
+    return await firebaseService.createTreatment(customerUserEmail, treatmentName,
      treatmentDescription, exerciseVideosIds);
   }
 
