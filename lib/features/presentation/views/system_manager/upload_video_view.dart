@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injury_recovery/components/my_button.dart';
+import 'package:injury_recovery/features/presentation/widgets/Loading_page.dart';
 import 'package:injury_recovery/features/presentation/widgets/my_video_player.dart';
 import 'package:injury_recovery/services/store/store_date.dart';
 import 'package:injury_recovery/utilities/show_error_dialog.dart';
@@ -145,7 +146,7 @@ class _UploadVideoViewState extends State<UploadVideoView> {
         ],
       );
     } else {
-      return const CircularProgressIndicator();
+      return Loading(context);
     }
   }
 

@@ -166,6 +166,12 @@ class Service {
         return await exerciseVideosController.getAllExerciseVideos();
     });
   }
+
+  Future<ResponseT<ExerciseVideo>> getExerciseVideoById(int videoId) async {
+    return await tryCatch<ExerciseVideo>(() async {
+        return await exerciseVideosController.getExerciseVideoById(videoId);
+    });
+  }
   
 
   void setIsTestExecution(bool flag){

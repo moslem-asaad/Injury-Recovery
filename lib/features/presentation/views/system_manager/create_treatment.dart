@@ -21,6 +21,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
   //late final TextEditingController _video_url;
   late final TextEditingController _treatment_discription;
   late List<int> videos;
+  int videosLength = 0;
 
   void initState() {
     _treatment_name = TextEditingController();
@@ -95,9 +96,18 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
                               .push(MaterialPageRoute(
                             builder: (context) => ExerciseVideos(),
                           )); //videos = (await _getVideosIds());
+                          setState(() {
+                            num_videos();
+                          });
                         },
                         child: Text('pick treatment videos'),
                       ),
+                    ),
+                    Visibility(
+                      child: Text(
+                        '${num_videos()} סרטונים נבחרו',
+                      ),
+                      visible: videos.isNotEmpty,
                     ),
                   ],
                 ),
@@ -130,6 +140,13 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
         ),
       ),
     );
+  }
+
+  int num_videos(){
+    setState(() {
+      videosLength = videos.length;
+    });
+    return videosLength;
   }
 
   Future<List<int>> _getVideosIds() async {

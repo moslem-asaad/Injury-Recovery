@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injury_recovery/components/menu_button.dart';
+import 'package:injury_recovery/features/presentation/widgets/Loading_page.dart';
 
 import '../../../../constants/colors.dart';
 import '../../../../utilities/show_error_dialog.dart';
@@ -18,6 +19,7 @@ class UsersFeedbacksView extends StatefulWidget {
 
 class _UsersFeedbacksViewState extends State<UsersFeedbacksView> {
   late Future<List<FeedbackRequest>> futureFeedbacks;
+  int image_index = 0;
 
   @override
   void initState() {
@@ -41,7 +43,7 @@ class _UsersFeedbacksViewState extends State<UsersFeedbacksView> {
       future: futureFeedbacks,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return Loading(context);
         } else if (snapshot.hasError) {
           showErrorDialog(context, '${snapshot.error}');
           return Text('Error: ${snapshot.error}');
@@ -62,9 +64,14 @@ class _UsersFeedbacksViewState extends State<UsersFeedbacksView> {
     );
   }
 
+  void increment_image_indx() {
+    image_index = ((image_index + 1) % 5) + 1;
+  }
+
   Widget feedbackWidget(FeedbackRequest feedback) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    increment_image_indx();
     return Padding(
       padding: EdgeInsets.all(25),
       child: Column(
@@ -158,7 +165,7 @@ class _UsersFeedbacksViewState extends State<UsersFeedbacksView> {
                       //color: container_color1,
                       //boxShadow: myBoxShadow(color: my_green),
                     ),
-                    child: getthumpnail(context, 0.5, 1),
+                    child: getthumpnail(context, 0.5, image_index),
                   ),
                 )
               ],

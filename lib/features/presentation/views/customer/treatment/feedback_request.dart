@@ -7,6 +7,7 @@ import 'package:injury_recovery/components/my_button.dart';
 import 'package:injury_recovery/components/my_text_field.dart';
 import 'package:injury_recovery/features/presentation/services/service_layer.dart';
 import 'package:injury_recovery/features/presentation/views/customer/treatment/video_player_preview.dart';
+import 'package:injury_recovery/features/presentation/widgets/Loading_page.dart';
 import 'package:injury_recovery/features/presentation/widgets/row_line_with_button.dart';
 import 'package:injury_recovery/features/presentation/widgets/my_video_player.dart';
 import 'package:injury_recovery/utilities/show_error_dialog.dart';
@@ -197,7 +198,7 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
         ),
       );
     } else {
-      return const CircularProgressIndicator();
+      return Loading(context);
     }
   }
 
@@ -207,7 +208,6 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
         _uploadProgressVisibile = !_uploadProgressVisibile;
         _uploadProgress = 0; // Reset progress before starting upload
       });
-      print('sendFeedbackRequestt videoURL $_videoURL');
 
       var response1 = await Service().uploadVideo(_videoURL!, 'customersVideos',
           (progress) {
@@ -220,7 +220,6 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
         await showErrorDialog(context, response1.errorMessage!);
       }
       _downloadURL = response1.val!;
-      print('sendFeedbackRequestt download $_downloadURL');
       var response2 = await Service().sendFeedbackRequest(
         widget.treatmentId,
         widget.videoId,
