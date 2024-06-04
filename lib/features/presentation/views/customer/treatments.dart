@@ -50,7 +50,7 @@ class _TreatmantsState extends State<Treatmants> {
           } else {
             var treatments = snapshot.data!;
             return Scaffold(
-              appBar: const MenuButton(title: 'Treatments').bar(context),
+              appBar: const MenuButton(title: 'טיפולים שלי').bar(context),
               backgroundColor: Colors.white,
               body: SingleChildScrollView(
                 child: Column(
@@ -94,22 +94,8 @@ class _TreatmantsState extends State<Treatmants> {
               child: Row(
                 children: [
                   Text(
-                    treatment.treatmentGlobalId!.toString(),
+                    treatment.treatmentName!.toString(),
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                children: [
-                  Text(
-                    'Duration: 30 mins',
-                    style: TextStyle(fontSize: 17),
                   ),
                 ],
               ),
@@ -137,14 +123,17 @@ class _TreatmantsState extends State<Treatmants> {
                         border: Border.all(color: Colors.black),
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.white,
+                        boxShadow: myBoxShadow(),
                       ),
                       width: MediaQuery.of(context).size.width * 0.5,
                       height: MediaQuery.of(context).size.height * 0.06,
                       child: const Center(
                         child: Text(
-                          'Start Treatment',
+                          'התחל טיפול',
                           style: TextStyle(
                             color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
                           ),
                         ),
                       ),

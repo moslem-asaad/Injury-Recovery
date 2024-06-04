@@ -47,7 +47,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
     return Scaffold(
       backgroundColor: backgraound,
       appBar: AppBar(
-        title: const Center(child: Text('Create Treatment')),
+        title: const Center(child: Text('יצירת טיפול')),
         foregroundColor: Colors.black,
         backgroundColor: Colors.grey,
       ),
@@ -58,7 +58,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
               children: [
                 MyTextField(
                   controller: _treatment_name,
-                  hintText: 'Treatment Name',
+                  hintText: 'שם טיפול',
                   obscureText: false,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -68,7 +68,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
                 SizedBox(height: screen_height / 82),
                 MyTextField(
                   controller: _user_name,
-                  hintText: 'User Name',
+                  hintText: 'שם משתמש',
                   obscureText: false,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -100,7 +100,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
                             num_videos();
                           });
                         },
-                        child: Text('pick treatment videos'),
+                        child: Text('בחר סרטוני טיפול'),
                       ),
                     ),
                     Visibility(
@@ -114,7 +114,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
                 SizedBox(height: screen_height / 82),
                 MyTextField(
                   controller: _treatment_discription,
-                  hintText: 'Treatment Discription',
+                  hintText: 'תיאור הטיפול',
                   obscureText: false,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -132,7 +132,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
                       Navigator.pop(context);
                     }
                   },
-                  title: 'Crerate Treatment',
+                  title: 'צור טיפול',
                 ),
               ],
             ),

@@ -72,98 +72,123 @@ class _AllUserFeedbacksState extends State<AllUserFeedbacks> {
   Widget feedbackWidget(FeedbackRequest feedback) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    increment_image_indx();
-    return Padding(
-      padding: EdgeInsets.all(25),
-      child: Column(
-        children: [
-          Container(
-            height: height * 0.25,
-            width: width * 0.9,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(10),
-              color: backgraound,
-              boxShadow: myBoxShadow(),
-            ),
-            child: Row(
+
+    return FutureBuilder<String>(
+      future: getTreatmentNameById(feedback.treatmentGlobalId!),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          String treatmentName = snapshot.data ?? '';
+          increment_image_indx();
+          return Padding(
+            padding: EdgeInsets.all(25),
+            child: Column(
               children: [
                 Container(
-                  width: width * 0.5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      //mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: Text(
-                            'Treatment ${feedback.treatmentGlobalId}',
-                            style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                          ),
-                        ),
-                        Text(
-                          'Feedback on video ${feedback.exerciseVideoGlobalId}',
-                          style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                        Text(
-                          'Feedback Status : ${_getFeedbackStatus(feedback.systemManagerResponse)}',
-                          style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.normal,
-                              color: Color.fromARGB(244, 107, 107, 107)),
-                        ),
-                        SizedBox(
-                          height: height * 0.03,
-                        ),
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => RoFeedBackRequest(
-                                feedbackRequest: feedback,
+                  height: height * 0.25,
+                  width: width * 0.9,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10),
+                    color: backgraound,
+                    boxShadow: myBoxShadow(),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: width * 0.5,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Center(
+                                child: Text(
+                                  '$treatmentName',
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
                               ),
-                            ));
-                          },
-                          icon: const Icon(
-                            Icons.arrow_back_sharp,
-                            color: Colors.black,
-                          ),
-                          label: const Text(
-                            'review the request',
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
+                              Text(
+                                'Feedback on video ${feedback.exerciseVideoGlobalId}',
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                              Text(
+                                'Feedback Status : ${_getFeedbackStatus(feedback.systemManagerResponse)}',
+                                style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.normal,
+                                    color: Color.fromARGB(244, 107, 107, 107)),
+                              ),
+                              SizedBox(
+                                height: height * 0.03,
+                              ),
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => RoFeedBackRequest(
+                                      feedbackRequest: feedback,
+                                    ),
+                                  ));
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_back_sharp,
+                                  color: Colors.black,
+                                ),
+                                label: const Text(
+                                  'review the request',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          height: width * 0.4,
+                          width: width * 0.3,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white, width: 1),
+                            borderRadius: BorderRadius.circular(10),
+                            //color: container_color1,
+                            //boxShadow: myBoxShadow(color: my_green),
+                          ),
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: getthumpnail(context, 0.25, image_index),
+                              ),
+                              Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Text(
+                                  '${_filterCreatedTime(feedback.timeCreated)}',
+                                  style: TextStyle(fontSize: 10),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    height: width * 0.4,
-                    width: width * 0.3,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white, width: 1),
-                      borderRadius: BorderRadius.circular(10),
-                      //color: container_color1,
-                      //boxShadow: myBoxShadow(color: my_green),
-                    ),
-                    child: getthumpnail(context, 0.5, image_index),
-                  ),
-                )
               ],
             ),
-          ),
-        ],
-      ),
+          );
+        }
+      },
     );
   }
 
@@ -173,5 +198,19 @@ class _AllUserFeedbacksState extends State<AllUserFeedbacks> {
     } else {
       return 'not answerd yet';
     }
+  }
+
+  Future<String> getTreatmentNameById(int treatmentId) async {
+    var response = await Service().getTreatmentNameById(treatmentId);
+    if (response.errorOccured!) {
+      await showErrorDialog(context, response.errorMessage!);
+      return '';
+    } else {
+      return response.val!;
+    }
+  }
+
+  String _filterCreatedTime(DateTime createdTime) {
+    return '${createdTime.hour}:${createdTime.minute} ${createdTime.day}-${createdTime.month}-${createdTime.year}';
   }
 }

@@ -86,6 +86,12 @@ class Service {
         return await usersController.getAllUsers();
     });
   }
+
+  Future<ResponseT<User>> getCustomerUserByEmail(String email) async{
+    return await tryCatch<User>(() async {
+        return await usersController.getCustomerUserByEmail(email);
+    });
+  }
   
   Future<ResponseT<bool>> createTreatment(String customerUserEmail, String treatmentName,
       String treatmentDescription, List<int> exerciseVideosIds) async {
@@ -170,6 +176,12 @@ class Service {
   Future<ResponseT<ExerciseVideo>> getExerciseVideoById(int videoId) async {
     return await tryCatch<ExerciseVideo>(() async {
         return await exerciseVideosController.getExerciseVideoById(videoId);
+    });
+  }
+
+  Future<ResponseT<String>> getTreatmentNameById(int treatmentId) async{
+    return await tryCatch<String>(() async {
+        return usersController.getTreatmentNameById(treatmentId);
     });
   }
   

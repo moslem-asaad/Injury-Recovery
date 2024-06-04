@@ -49,6 +49,7 @@ class _AllTreatmentFeedbacksState extends State<AllTreatmentFeedbacks> {
           return Text('Error: ${snapshot.error}');
         } else {
           var feedbacks = snapshot.data!;
+          feedbacks.sort((a, b) => a.timeCreated.compareTo(b.timeCreated));
           return Scaffold(
             backgroundColor: Colors.white,
             body: SingleChildScrollView(
@@ -97,7 +98,7 @@ class _AllTreatmentFeedbacksState extends State<AllTreatmentFeedbacks> {
                       children: [
                         Expanded(
                           child: Text(
-                            'Feedback on video ${feedback.exerciseVideoGlobalId}',
+                            'משוב על סרטון ${feedback.exerciseVideoGlobalId}',
                             style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -106,7 +107,7 @@ class _AllTreatmentFeedbacksState extends State<AllTreatmentFeedbacks> {
                         ),
                         Expanded(
                           child: Text(
-                            'Feedback Status : ${_getFeedbackStatus(feedback.systemManagerResponse)}',
+                            'מצב המשוב : ${_getFeedbackStatus(feedback.systemManagerResponse)}',
                             style: const TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.normal,
@@ -130,7 +131,7 @@ class _AllTreatmentFeedbacksState extends State<AllTreatmentFeedbacks> {
                               color: Colors.black,
                             ),
                             label: const Text(
-                              'review the request',
+                              'עיין בבקשה',
                               style: TextStyle(
                                 color: Colors.black,
                               ),
@@ -151,8 +152,14 @@ class _AllTreatmentFeedbacksState extends State<AllTreatmentFeedbacks> {
                       borderRadius: BorderRadius.circular(10),
                       //color: container_color1,
                     ),
-                    child: Expanded(
-                        child: getthumpnail(context, 0.25, image_index)),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: getthumpnail(context, 0.25, image_index),
+                        ),
+                        Align(alignment: Alignment.bottomLeft,child: Text('${_filterCreatedTime(feedback.timeCreated)}',style: TextStyle(fontSize: 10),)),
+                      ],
+                    ),
                   ),
                 )
               ],
@@ -165,9 +172,13 @@ class _AllTreatmentFeedbacksState extends State<AllTreatmentFeedbacks> {
 
   String _getFeedbackStatus(String? systemManagerResponse) {
     if (systemManagerResponse != null) {
-      return 'answered';
+      return 'נענה';
     } else {
-      return 'not answerd yet';
+      return 'טרם נענה';
     }
+  }
+
+  String _filterCreatedTime(DateTime createdTime){
+    return '${createdTime.hour}:${createdTime.minute} ${createdTime.day}-${createdTime.month}-${createdTime.year}';
   }
 }

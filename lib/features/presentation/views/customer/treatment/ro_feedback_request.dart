@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:injury_recovery/components/menu_button.dart';
 import 'package:injury_recovery/components/my_button.dart';
@@ -15,6 +17,7 @@ import 'package:video_player/video_player.dart';
 
 import '../../../../../components/my_text_field.dart';
 import '../../../../../constants/routes.dart';
+import '../../../../domain/entities/user.dart';
 import '../../../widgets/my_video_player.dart';
 
 class RoFeedBackRequest extends StatefulWidget {
@@ -125,125 +128,146 @@ class _RoFeedBackRequestState extends State<RoFeedBackRequest> {
                 showErrorDialog(context, '${snapshot.error}');
                 return Text('Error: ${snapshot.error}');
               } else {
-                return Scaffold(
-                  appBar: const MenuButton(title: 'feeback view').bar(context),
-                  body: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 25.0),
-                          child: Row(
-                            children: [
-                              Text(
-                                'תיאור הבעיה',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ),
-                        MyTextField(
-                          controller: _description,
-                          hintText: 'הבעיה שלי',
-                          obscureText: false,
-                          enableSuggestions: false,
-                          autocorrect: false,
-                          maxLines: null,
-                          readOnly: true,
-                          fillcolor: Colors.green.shade100,
-                        ),
-                        ButtonBar(
+                return FutureBuilder<User>(
+                  future:
+                      getUserByEmail(widget.feedbackRequest.customerUserEmail!),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      sleep(
+                        Duration(milliseconds: 100),
+                      );
+                    }
+                    String firstName = snapshot.data!.firstName ?? '';
+                    String lastName = snapshot.data!.lastName ?? '';
+                    return Scaffold(
+                      appBar:
+                          const MenuButton(title: 'feeback view').bar(context),
+                      body: SingleChildScrollView(
+                        child: Column(
                           children: [
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _isPerformanceVideoVisible =
-                                      !_isPerformanceVideoVisible;
-                                });
-                              },
-                              icon: Icon(Icons.minimize),
+                            Visibility(
+                              child: Text('בקשת המשתמש : $firstName $lastName'),
+                              visible: _ismanager,
                             ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 25.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'תיאור הבעיה',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            MyTextField(
+                              controller: _description,
+                              hintText: 'הבעיה שלי',
+                              obscureText: false,
+                              enableSuggestions: false,
+                              autocorrect: false,
+                              maxLines: null,
+                              readOnly: true,
+                              fillcolor: Colors.green.shade100,
+                            ),
+                            ButtonBar(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _isPerformanceVideoVisible =
+                                          !_isPerformanceVideoVisible;
+                                    });
+                                  },
+                                  icon: Icon(Icons.minimize),
+                                ),
+                              ],
+                            ),
+                            Visibility(
+                              visible: _isPerformanceVideoVisible,
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: MyVideoPlayer(
+                                  controller: _controller,
+                                ),
+                              ),
+                            ),
+                            ButtonBar(
+                              children: [
+                                TextButton.icon(
+                                  onPressed: () {
+                                    setState(() {
+                                      _isOriginalVideoVisible =
+                                          !_isOriginalVideoVisible;
+                                    });
+                                  },
+                                  icon: arrow_direction(),
+                                  label: label_content(),
+                                ),
+                              ],
+                            ),
+                            Visibility(
+                              visible: _isOriginalVideoVisible,
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: MyVideoPlayer(
+                                  controller: _exerciseVideoController,
+                                ),
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 25.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'התייחסות הפיזיותרפיסט',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            MyTextField(
+                              controller: _response,
+                              hintText: 'אין תשובה',
+                              obscureText: false,
+                              enableSuggestions: false,
+                              autocorrect: false,
+                              maxLines: null,
+                              readOnly:
+                                  !(_ismanager && (_response.text.isEmpty)),
+                              fillcolor: my_green,
+                            ),
+                            if (_ismanager && (_response.text.isEmpty))
+                              MyButton(
+                                onPressed: () async {
+                                  var response =
+                                      await Service().sendFeedbackResponse(
+                                    widget.feedbackRequest.feedbackRequestId!,
+                                    _response.text,
+                                  );
+                                  if (response.errorOccured!) {
+                                    await showErrorDialog(
+                                        context, response.errorMessage!);
+                                  } else {
+                                    await showMyDialog(
+                                        context, 'response sent succefully');
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    Navigator.pushNamed(
+                                        context, usersFeedbacksRout);
+                                  }
+                                },
+                                title: 'send response',
+                              ),
                           ],
                         ),
-                        Visibility(
-                          visible: _isPerformanceVideoVisible,
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: MyVideoPlayer(
-                              controller: _controller,
-                            ),
-                          ),
-                        ),
-                        ButtonBar(
-                          children: [
-                            TextButton.icon(
-                              onPressed: () {
-                                setState(() {
-                                  _isOriginalVideoVisible =
-                                      !_isOriginalVideoVisible;
-                                });
-                              },
-                              icon: arrow_direction(),
-                              label: label_content(),
-                            ),
-                          ],
-                        ),
-                        Visibility(
-                          visible: _isOriginalVideoVisible,
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: MyVideoPlayer(
-                              controller: _exerciseVideoController,
-                            ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 25.0),
-                          child: Row(
-                            children: [
-                              Text(
-                                'התייחסות הפיזיותרפיסט',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ),
-                        MyTextField(
-                          controller: _response,
-                          hintText: 'אין תשובה',
-                          obscureText: false,
-                          enableSuggestions: false,
-                          autocorrect: false,
-                          maxLines: null,
-                          readOnly: !(_ismanager && (_response.text.isEmpty)),
-                          fillcolor: my_green,
-                        ),
-                        if (_ismanager && (_response.text.isEmpty))
-                          MyButton(
-                            onPressed: () async {
-                              var response =
-                                  await Service().sendFeedbackResponse(
-                                widget.feedbackRequest.feedbackRequestId!,
-                                _response.text,
-                              );
-                              if (response.errorOccured!) {
-                                await showErrorDialog(
-                                    context, response.errorMessage!);
-                              } else {
-                                await showMyDialog(
-                                    context, 'response sent succefully');
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                                Navigator.pushNamed(
-                                    context, usersFeedbacksRout);
-                              }
-                            },
-                            title: 'send response',
-                          ),
-                      ],
-                    ),
-                  ),
+                      ),
+                    );
+                  },
                 );
               }
             },
@@ -278,6 +302,16 @@ class _RoFeedBackRequestState extends State<RoFeedBackRequest> {
         'show original video',
         style: TextStyle(color: my_blue),
       );
+    }
+  }
+
+  Future<User> getUserByEmail(String userEmail) async {
+    var response = await Service().getCustomerUserByEmail(userEmail);
+    if (response.errorOccured!) {
+      await showErrorDialog(context, response.errorMessage!);
+      return response.val!;
+    } else {
+      return response.val!;
     }
   }
 

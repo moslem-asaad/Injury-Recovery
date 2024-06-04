@@ -52,7 +52,7 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feedback Request'),
+        title: Text('בקשת משוב'),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -75,11 +75,11 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
                 //keyboardType: TextInputType.emailAddress,
               ),
               RowTextTextButtun(
-                text1: 'provide your performe by',
+                text1: 'ספק את הביצועים שלך על ידי',
                 onPresses: () {
                   _showOptions(context);
                 },
-                button_text: 'clicking here',
+                button_text: 'לחיצה כאן',
               ),
               Container(
                 height: MediaQuery.of(context).size.height * 0.4,
@@ -95,7 +95,7 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
                   //print('asdasd ${widget.videoId} ${_description.text} ${_videoURL}');
                   await sendFeedbackRequest();
                 },
-                title: 'Send your request',
+                title: 'שליחת הבקשה',
               ),
               SizedBox(height: 20),
               Visibility(
@@ -154,7 +154,7 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
             children: <Widget>[
               ListTile(
                 leading: Icon(Icons.image),
-                title: Text('Open Gallary'),
+                title: Text('פתח את הגלריה'),
                 onTap: () {
                   _pickVideo(0);
                   Navigator.pop(context);
@@ -162,7 +162,7 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
               ),
               ListTile(
                 leading: Icon(Icons.camera_alt),
-                title: Text('Open Camera'),
+                title: Text('פתח את המצלמה'),
                 onTap: () {
                   _pickVideo(1);
                   Navigator.pop(context);

@@ -293,6 +293,26 @@ class FirebaseServiceImpl{
     }
   }
 
+    Future<User> getCustomerUserByEmail(String email) async{
+    try{
+      final usersCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.users));
+      QuerySnapshot querySnapshot = await usersCollection.where("email", isEqualTo: email).get();
+      if(querySnapshot.docs.isNotEmpty){
+              print('aaaaaaaaaaaaaa: $email');
+
+        return User.fromSnapshotWithoutId(querySnapshot.docs.single);
+      }
+      else{
+        throw InternalFailureException("getCustomerUserByEmail: email does not exists");
+      }
+    }on InternalFailureException catch(_){
+      rethrow;
+    } catch(e){
+      print("getExerciseVideoById general exception");
+      rethrow;
+    }
+  }
+
   Future<bool> customerUserExist(String customerUserEmail) async{
     try{
       final usersCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.users));
@@ -309,6 +329,7 @@ class FirebaseServiceImpl{
       rethrow;
     }
   }
+
 
   Future<void> validateCustomerUserExists(String customerUserEmail) async{
     if(! await customerUserExist(customerUserEmail)){

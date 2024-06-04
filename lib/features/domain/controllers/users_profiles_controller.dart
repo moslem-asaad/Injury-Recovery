@@ -112,6 +112,10 @@ class UsersProfilesController {
      videoTreamentId, myVideoURL, description);
   }
 
+  Future<String> getTreatmentNameById(int treatmentId) async{
+    return (await firebaseService.getTreatmentById(treatmentId)).treatmentName!;
+  }
+
 
 
 
@@ -148,6 +152,14 @@ class UsersProfilesController {
   Future<bool> cleanCollection(String collectionName) async {
     return await firebaseService.cleanCollection(collectionName);
   }
+
+  Future<User> getCustomerUserByEmail(String email) async{
+    validatUserIsLoggedIn();
+    validateNotNullOrEmptyString('User Email', email);
+    return await firebaseService.getCustomerUserByEmail(email);
+  }
+
+
   void setIsTestExecution(bool flag){
     firebaseService.setIsTestExecution(flag);
   }
