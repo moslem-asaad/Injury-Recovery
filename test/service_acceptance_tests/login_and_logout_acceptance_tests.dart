@@ -5,64 +5,12 @@ import 'package:injury_recovery/features/domain/entities/user.dart';
 import 'package:injury_recovery/features/presentation/services/response.dart';
 import 'package:injury_recovery/features/presentation/services/service_layer.dart';
 import 'package:injury_recovery/services/auth/auth_service.dart';
+import 'acceptance_tests_consts_and_helper_functions.dart';
 // ignore_for_file: avoid_print
 
 
 late Service service;
 
- const systemManagerEmail = "system_manager_test@hotmail.com";
- const systemManagerPass = "systemManagerPass123";
- const systemManagerFirstName = "System";
- const systemManagerLastName = "Manager";
- const systemManagerPhoneNumber = "0548362290";
-
- const customerUser1Email = "customer_user_1_test@hotmail.com";
- const customerUser1Pass = "customerUser1Pass5673";
- const customerUser1FirstName = "UserOneFirstName";
- const customerUser1LastName = "UserOneLastName";
- const customerUser1PhoneNumber = "0588125290";
-
- const customerUser2Email = "customer_user_2_test@hotmail.com";
- const customerUser2Pass = "customerUser2Pass5673278";
- const customerUser2FirstName = "UserTwoFirstName";
- const customerUser2LastName = "UserTwoLastName";
- const customerUser2PhoneNumber = "0536562440";
-
- const customerUser3Email = "customer_user_3_test@hotmail.com";
- const customerUser3Pass = "customerUser3Pass5674269";
- const customerUser3FirstName = "UserThreeFirstName";
- const customerUser3LastName = "UserThreeLastName";
- const customerUser3PhoneNumber = "0521167790";
-
-void loginAndLogOutSetUp() async{
-        ResponseT<bool> response = await service.register(systemManagerEmail, systemManagerPass,
-              systemManagerPass, systemManagerFirstName, systemManagerLastName,
-                systemManagerPhoneNumber);
-        
-        expect(response.errorOccured, false);
-        expect(response.val, true);
-
-        response = await service.register(customerUser1Email, customerUser1Pass,
-              customerUser1Pass, customerUser1FirstName, customerUser1LastName,
-                customerUser1PhoneNumber);
-
-        expect(response.errorOccured, false);
-        expect(response.val, true);
-
-        response = await service.register(customerUser2Email, customerUser2Pass,
-              customerUser2Pass, customerUser2FirstName, customerUser2LastName,
-                customerUser2PhoneNumber);
-
-        expect(response.errorOccured, false);
-        expect(response.val, true);
-
-        response = await service.register(customerUser3Email, customerUser3Pass,
-              customerUser3Pass, customerUser3FirstName, customerUser3LastName,
-                customerUser3PhoneNumber);
-
-        expect(response.errorOccured, false);
-        expect(response.val, true);
-}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -83,7 +31,7 @@ void main() async {
   });
 
 
-  group('Acceptance Tests', ()  {
+  group('Login and Logout Acceptance Tests', ()  {
 
     test1;
     test2;

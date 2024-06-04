@@ -9,6 +9,7 @@ class FeedbackRequest{
   String? feedbackRequestDescription;
   String? customerUserEmail;
   String? systemManagerResponse;
+  DateTime timeCreated;
 
 
   int? getFeedbackRequestId(){
@@ -25,14 +26,15 @@ class FeedbackRequest{
 
   FeedbackRequest(this.feedbackRequestId, this.treatmentGlobalId,
    this.exerciseVideoGlobalId, this.performanceVideoDownloadURL,
-    this.feedbackRequestDescription, this.customerUserEmail, this.systemManagerResponse);
+    this.feedbackRequestDescription, this.customerUserEmail, this.systemManagerResponse, this.timeCreated);
 
 
   factory FeedbackRequest.fromSnapshot(DocumentSnapshot documentSnapshot){
     var snapshot = documentSnapshot.data() as Map<String, dynamic>;
     return FeedbackRequest(snapshot["feedbackRequestId"], snapshot["treatmentGlobalId"],
      snapshot["exerciseVideoGlobalId"], snapshot["performanceVideoDownloadURL"],
-     snapshot["feedbackRequestDescription"], snapshot["customerUserEmail"], snapshot["systemManagerResponse"]);
+     snapshot["feedbackRequestDescription"], snapshot["customerUserEmail"],
+      snapshot["systemManagerResponse"], DateTime.parse(snapshot["timeCreated"]));
    }
 
    Map<String, dynamic> toJson() {
@@ -43,7 +45,8 @@ class FeedbackRequest{
       "performanceVideoDownloadURL": performanceVideoDownloadURL,
       "feedbackRequestDescription": feedbackRequestDescription,
       "customerUserEmail": customerUserEmail,
-      "systemManagerResponse": systemManagerResponse
+      "systemManagerResponse": systemManagerResponse,
+      'timeCreated': timeCreated.toIso8601String()
     };
    }
   

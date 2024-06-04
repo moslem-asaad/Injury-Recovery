@@ -124,7 +124,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
                 MyButton(
                   onPressed: () async {
                     var response = await Service().createTreatment(
-                        _user_name.text, _treatment_discription.text, videos);
+                        _user_name.text, _treatment_name.text, _treatment_discription.text, videos);
 
                     if (response.errorOccured!) {
                       await showErrorDialog(context, response.errorMessage!);
