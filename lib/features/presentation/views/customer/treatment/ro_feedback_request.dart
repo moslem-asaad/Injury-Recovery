@@ -133,27 +133,25 @@ class _RoFeedBackRequestState extends State<RoFeedBackRequest> {
                       getUserByEmail(widget.feedbackRequest.customerUserEmail!),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      sleep(
-                        Duration(milliseconds: 1000),
-                      );
                       //print('object');
                     }
+                    
                     /*while(snapshot.data==null){
                       print('ooooo');
                       if(snapshot.data!=null) break;
                     }*/
-                    String firstName = snapshot.data!.firstName ?? '';
-                    String lastName = snapshot.data!.lastName ?? '';
+                   // String firstName = snapshot.data!.firstName ?? '';
+                  //  String lastName = snapshot.data!.lastName ?? '';
                     return Scaffold(
                       appBar:
                           const MenuButton(title: 'משוב').bar(context),
                       body: SingleChildScrollView(
                         child: Column(
                           children: [
-                            Visibility(
+                           /* Visibility(
                               child: Text('בקשת המשתמש : $firstName $lastName'),
                               visible: _ismanager,
-                            ),
+                            ),*/
                             const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 25.0),
                               child: Row(
@@ -243,10 +241,10 @@ class _RoFeedBackRequestState extends State<RoFeedBackRequest> {
                               autocorrect: false,
                               maxLines: null,
                               readOnly:
-                                  !(_ismanager && (_response.text.isEmpty)),
+                                  !(_ismanager && !(widget.feedbackRequest.wasResponded())),
                               fillcolor: my_green,
                             ),
-                            if (_ismanager && (_response.text.isEmpty))
+                            if (_ismanager && !(widget.feedbackRequest.wasResponded()))
                               MyButton(
                                 onPressed: () async {
                                   var response =
