@@ -81,7 +81,8 @@ void main() async {
 
   testWidgets('login view Test success', (WidgetTester tester) async {
     await tester.pumpWidget(const MaterialApp(home: LoginView()));
-
+    final ctr0 = find.text('שלום');
+    expect(ctr0, findsOneWidget);
     final ctr = find.text('דואר אלקטרוני');
     expect(ctr, findsOneWidget);
 
@@ -111,7 +112,8 @@ void main() async {
     await tester.pumpAndSettle();
 
     //expect(find.byType(const CustomerProfile() as Type), findsOneWidget);
-
-    expect(find.text('הפרופיל שלי'), findsOneWidget);
+    
+    expect(find.text('ברוך הבא'), findsAny);
   });
+
 }

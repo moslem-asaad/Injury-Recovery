@@ -28,7 +28,6 @@ class UsersProfilesController {
       validateNotNullOrEmptyString("Email",email);
       validateNotNullOrEmptyString("Password",password);
       validatUserIsNotLoggedIn();
-
       User user = await firebaseService.logIn(email,password);
       if(user.isSystemManager){
           loggedInSystemManager =  SystemManager(user.userId!, user.email, user.firstName!, user.lastName!, user.phoneNumber!);

@@ -37,6 +37,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     double screen_height = MediaQuery.of(context).size.height;
+         print("login testt");
     return Scaffold(
       backgroundColor: backgraound,
       body: SafeArea(
@@ -119,10 +120,16 @@ class _LoginViewState extends State<LoginView> {
                 MyButton(
                   title: 'כניסה',
                   onPressed: () async {
+                     print("login testt: ");
+
                     final email = _email.text;
                     final password = _password.text;
+                                         print("login testt: $email $password");
+
                     var response = await Service().logIn(email, password);
                     if (response.errorOccured!) {
+                        print("login testt: ${response.errorMessage!}");
+
                       await showErrorDialog(context, response.errorMessage!);
                     } else {
                       if (email == 'asaadmoslem2000@gmail.com') {

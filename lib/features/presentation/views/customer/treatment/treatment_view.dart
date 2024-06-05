@@ -34,6 +34,7 @@ class _TreatmentViewState extends State<TreatmentView> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    print('treatment testt ${treatment.videosIdsList}');
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -86,6 +87,8 @@ class _TreatmentViewState extends State<TreatmentView> {
   Widget videosBarView() {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+        print('treatment testt1 ${treatment.videosList!.length}');
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

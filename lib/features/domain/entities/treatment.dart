@@ -37,6 +37,10 @@ class Treatment{
       return this;
    }
 
+   void forTestSetExerciseVideosList(List<ExerciseVideo> videos){
+    videosList = videos;
+   }
+
    Map<String, dynamic> toJson() {
     return {
       "treatmentGlobalId":treatmentGlobalId,
