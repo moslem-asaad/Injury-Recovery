@@ -134,14 +134,19 @@ class _RoFeedBackRequestState extends State<RoFeedBackRequest> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       sleep(
-                        Duration(milliseconds: 100),
+                        Duration(milliseconds: 1000),
                       );
+                      //print('object');
                     }
+                    /*while(snapshot.data==null){
+                      print('ooooo');
+                      if(snapshot.data!=null) break;
+                    }*/
                     String firstName = snapshot.data!.firstName ?? '';
                     String lastName = snapshot.data!.lastName ?? '';
                     return Scaffold(
                       appBar:
-                          const MenuButton(title: 'feeback view').bar(context),
+                          const MenuButton(title: 'משוב').bar(context),
                       body: SingleChildScrollView(
                         child: Column(
                           children: [
@@ -294,12 +299,12 @@ class _RoFeedBackRequestState extends State<RoFeedBackRequest> {
   Text label_content() {
     if (_isOriginalVideoVisible) {
       return Text(
-        'hide original video',
+        'הסתרת התרגיל המקורי',
         style: TextStyle(color: my_blue),
       );
     } else {
       return Text(
-        'show original video',
+        'הצגת התרגיל המקורי',
         style: TextStyle(color: my_blue),
       );
     }

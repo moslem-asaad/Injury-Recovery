@@ -115,14 +115,14 @@ class _AllUserFeedbacksState extends State<AllUserFeedbacks> {
                                 ),
                               ),
                               Text(
-                                'Feedback on video ${feedback.exerciseVideoGlobalId}',
+                                'תגובה על סרטון ${feedback.exerciseVideoGlobalId}',
                                 style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black),
                               ),
                               Text(
-                                'Feedback Status : ${_getFeedbackStatus(feedback.systemManagerResponse)}',
+                                'מצב המשוב : ${_getFeedbackStatus(feedback.systemManagerResponse)}',
                                 style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.normal,
@@ -144,7 +144,7 @@ class _AllUserFeedbacksState extends State<AllUserFeedbacks> {
                                   color: Colors.black,
                                 ),
                                 label: const Text(
-                                  'review the request',
+                                  'עיון בבקשה',
                                   style: TextStyle(
                                     color: Colors.black,
                                   ),
@@ -194,9 +194,9 @@ class _AllUserFeedbacksState extends State<AllUserFeedbacks> {
 
   String _getFeedbackStatus(String? systemManagerResponse) {
     if (systemManagerResponse != null) {
-      return 'answered';
+      return 'נענה';
     } else {
-      return 'not answerd yet';
+      return 'טרם נענה';
     }
   }
 
