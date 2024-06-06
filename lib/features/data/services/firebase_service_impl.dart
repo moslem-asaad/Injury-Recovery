@@ -293,6 +293,26 @@ class FirebaseServiceImpl{
     }
   }
 
+    Future<User> getCustomerUserByEmail(String email) async{
+    try{
+      final usersCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.users));
+      QuerySnapshot querySnapshot = await usersCollection.where("email", isEqualTo: email).get();
+      if(querySnapshot.docs.isNotEmpty){
+              print('aaaaaaaaaaaaaa: $email');
+
+        return User.fromSnapshotWithoutId(querySnapshot.docs.single);
+      }
+      else{
+        throw InternalFailureException("getCustomerUserByEmail: email does not exists");
+      }
+    }on InternalFailureException catch(_){
+      rethrow;
+    } catch(e){
+      print("getExerciseVideoById general exception");
+      rethrow;
+    }
+  }
+
   Future<bool> customerUserExist(String customerUserEmail) async{
     try{
       final usersCollection =  firestore.collection(getCollectionName(FirestoreTablesNames.users));
@@ -309,6 +329,7 @@ class FirebaseServiceImpl{
       rethrow;
     }
   }
+
 
   Future<void> validateCustomerUserExists(String customerUserEmail) async{
     if(! await customerUserExist(customerUserEmail)){
@@ -349,7 +370,7 @@ class FirebaseServiceImpl{
     }
   }
 
-  Future<bool> createTreatment(String customerUserEmail, String treatmentDescription, List<int> exerciseVideosIds) async{
+  Future<bool> createTreatment(String customerUserEmail, String treatmentName, String treatmentDescription, List<int> exerciseVideosIds) async{
     try{
       await validateCustomerUserExists(customerUserEmail);
       await validateExerciseVideosExist(exerciseVideosIds);
@@ -359,7 +380,7 @@ class FirebaseServiceImpl{
       DocumentSnapshot treatmentDocument = await treatmentsCollection.doc(treatmentGlobalId.toString()).get();
       
       if(!treatmentDocument.exists){
-        Treatment treatment = Treatment(treatmentGlobalId, treatmentDescription, exerciseVideosIds, customerUserEmail);
+        Treatment treatment = Treatment(treatmentName, treatmentGlobalId, treatmentDescription, exerciseVideosIds, customerUserEmail);
         treatmentsCollection.doc(treatmentGlobalId.toString()).set(treatment.toJson());
         await setCounter(getCollectionName(FirestoreTablesNames.treatments), treatmentGlobalId+1);
         return true;
@@ -416,7 +437,7 @@ class FirebaseServiceImpl{
 
         if(!feedbackRequestDocument.exists){
           FeedbackRequest feedbackRequest = FeedbackRequest(feedbackRequestId, treatmentId, videoTreamentId,
-          myVideoURL, description, customerUserEmail, null);
+          myVideoURL, description, customerUserEmail, null, DateTime.now());
           feedbackRequestsCollection.doc(feedbackRequestId.toString()).set(feedbackRequest.toJson());
           await setCounter(getCollectionName(FirestoreTablesNames.feedbackRequests), feedbackRequestId+1);
           return true;
@@ -528,7 +549,7 @@ class FirebaseServiceImpl{
         throw ExpectedFailureException("Feedback request was already responded");
       }
       feedbackRequest.setSystemManagerResponse(response);
-      updateFeedbackRequest(feedbackRequest);
+      await updateFeedbackRequest(feedbackRequest);
       return true;
     }on InternalFailureException catch(_){
       rethrow;
@@ -544,7 +565,7 @@ class FirebaseServiceImpl{
       DocumentSnapshot feedbackRequestDocument = await feedbackRequestsCollection.doc(feedbackRequest.getFeedbackRequestId().toString()).get(); 
 
       if(feedbackRequestDocument.exists){
-        feedbackRequestsCollection.doc(feedbackRequest.getFeedbackRequestId().toString()).update(feedbackRequest.toJson());
+        await feedbackRequestsCollection.doc(feedbackRequest.getFeedbackRequestId().toString()).update(feedbackRequest.toJson());
         return true;
       }
       else{

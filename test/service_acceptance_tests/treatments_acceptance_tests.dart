@@ -2,149 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:injury_recovery/features/consts.dart';
 import 'package:injury_recovery/features/domain/entities/exercise_video.dart';
-import 'package:injury_recovery/features/domain/entities/feedback_request.dart';
 import 'package:injury_recovery/features/domain/entities/treatment.dart';
-import 'package:injury_recovery/features/domain/entities/user.dart';
 import 'package:injury_recovery/features/presentation/services/response.dart';
 import 'package:injury_recovery/features/presentation/services/service_layer.dart';
 import 'package:injury_recovery/services/auth/auth_service.dart';
+
+import 'acceptance_tests_consts_and_helper_functions.dart';
 // ignore_for_file: avoid_print
 
 
 late Service service;
 
- const systemManagerEmail = "system_manager_test@hotmail.com";
- const systemManagerPass = "systemManagerPass123";
- const systemManagerFirstName = "System";
- const systemManagerLastName = "Manager";
- const systemManagerPhoneNumber = "0548362290";
-
- const customerUser1Email = "customer_user_1_test@hotmail.com";
- const customerUser1Pass = "customerUser1Pass5673";
- const customerUser1FirstName = "UserOneFirstName";
- const customerUser1LastName = "UserOneLastName";
- const customerUser1PhoneNumber = "0588125290";
-
- const customerUser2Email = "customer_user_2_test@hotmail.com";
- const customerUser2Pass = "customerUser2Pass5673278";
- const customerUser2FirstName = "UserTwoFirstName";
- const customerUser2LastName = "UserTwoLastName";
- const customerUser2PhoneNumber = "0536562440";
-
- const customerUser3Email = "customer_user_3_test@hotmail.com";
- const customerUser3Pass = "customerUser3Pass5674269";
- const customerUser3FirstName = "UserThreeFirstName";
- const customerUser3LastName = "UserThreeLastName";
- const customerUser3PhoneNumber = "0521167790";
-
-/////// videos
- const video1DownloadUrl = "https://video1_download_url";
- const video1Summary = "video1 Summary";
- const video1Description = "video1 Description";
-
-
- const video2DownloadUrl = "https://video2_download_url";
- const video2Summary = "video2 Summary";
- const video2Description = "video2 Description";
-
-
-
- const video3DownloadUrl = "https://video3_download_url";
- const video3Summary = "video3 Summary";
- const video3Description = "video3 Description";
-
-
- const video4DownloadUrl = "https://video4_download_url";
- const video4Summary = "video4 Summary";
- const video4Description = "video4 Description";
-
-
-/////// treatments
-/// 1
- const treatment1CustomerUser = "customer_user_1_test@hotmail.com";
- const treatment1videosIds = [1];
- const treatment1Description = "treatment1Description";
-
- /// 2
- const treatment2CustomerUser = "customer_user_1_test@hotmail.com";
- const treatment2videosIds = [2,4];
- const treatment2Description = "treatment2Description";
-
-
-/// 3
- const treatment3CustomerUser = "customer_user_2_test@hotmail.com";
- const treatment3videosIds = [1,3];
- const treatment3Description = "treatment3Description";
-
-
-/// 4
- const treatment4CustomerUser = "customer_user_3_test@hotmail.com";
- const treatment4videosIds = [1,2,3,4];
- const treatment4Description = "treatment4Description";
-
-
-void loginAndLogOutSetUp() async{
-        ResponseT<bool> response = await service.register(systemManagerEmail, systemManagerPass,
-              systemManagerPass, systemManagerFirstName, systemManagerLastName,
-                systemManagerPhoneNumber);
-        
-        expect(response.errorOccured, false);
-        expect(response.val, true);
-
-        response = await service.register(customerUser1Email, customerUser1Pass,
-              customerUser1Pass, customerUser1FirstName, customerUser1LastName,
-                customerUser1PhoneNumber);
-
-        expect(response.errorOccured, false);
-        expect(response.val, true);
-
-        response = await service.register(customerUser2Email, customerUser2Pass,
-              customerUser2Pass, customerUser2FirstName, customerUser2LastName,
-                customerUser2PhoneNumber);
-
-        expect(response.errorOccured, false);
-        expect(response.val, true);
-
-        response = await service.register(customerUser3Email, customerUser3Pass,
-              customerUser3Pass, customerUser3FirstName, customerUser3LastName,
-                customerUser3PhoneNumber);
-
-        expect(response.errorOccured, false);
-        expect(response.val, true);
-}
-
-Future<bool> createExerciseVideosToUseInTreatment() async{
-
-    ResponseT<bool> response = await service.logIn(systemManagerEmail, systemManagerPass);
-    expect(response.errorOccured, false);
-    expect(response.val, true);
-
-    //1
-    response = await service.createExerciseVideo(video1DownloadUrl,video1Summary, video1Description);
-    expect(response.errorOccured, false);
-    expect(response.val, true);
-
-    //2
-    response = await service.createExerciseVideo(video2DownloadUrl,video2Summary, video2Description);
-    expect(response.errorOccured, false);
-    expect(response.val, true);
-
-    //3
-    response = await service.createExerciseVideo(video3DownloadUrl,video3Summary, video3Description);
-    expect(response.errorOccured, false);
-    expect(response.val, true);
-
-    //4
-    response = await service.createExerciseVideo(video1DownloadUrl,video4Summary, video4Description);
-    expect(response.errorOccured, false);
-    expect(response.val, true);
-
-    response = await service.logout();
-    expect(response.errorOccured, false);
-    expect(response.val, true);
-    return true;
-
-}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -163,13 +31,14 @@ void main() async {
       await createExerciseVideosToUseInTreatment();
   });
 
-  tearDownAll(() {
-
+  tearDownAll(() async {
+      await service.cleanCollection(FirestoreTablesNames.exerciseVideos);
+      await service.cleanCollection(FirestoreTablesNames.treatments);
      
   });
 
 
-  group('Acceptance Tests', ()  {
+  group('Treatments Acceptance Tests', ()  {
 
     test1;
     test2;
@@ -189,7 +58,7 @@ var test1 = test('create Treatment base test', () async {
     expect(response.val, true);
 
 
-    response = await service.createTreatment(treatment1CustomerUser,
+    response = await service.createTreatment(treatment1CustomerUser,treatment1Name,
      treatment1Description, treatment1videosIds);
      
     expect(response.errorOccured, false);
@@ -234,7 +103,7 @@ var test2 = test('create another Treatment for the same user', () async {
     expect(response.errorOccured, false);
     expect(response.val, true);
 
-    response = await service.createTreatment(treatment2CustomerUser,
+    response = await service.createTreatment(treatment2CustomerUser,treatment2Name,
      treatment2Description, treatment2videosIds);
      
     expect(response.errorOccured, false);
@@ -289,7 +158,7 @@ var test2 = test('create another Treatment for the same user', () async {
 
     });
 
-var test3 = test('other users dont have anu treatments yet', () async {
+var test3 = test('other users dont have any treatments yet', () async {
 
     ResponseT<bool> response = await service.logIn(customerUser2Email, customerUser2Pass);
     expect(response.errorOccured, false);
@@ -341,13 +210,13 @@ var test4 = test('create Treatment for other 2 users', () async {
     expect(response.errorOccured, false);
     expect(response.val, true);
 
-    response = await service.createTreatment(treatment3CustomerUser,
+    response = await service.createTreatment(treatment3CustomerUser,treatment3Name,
      treatment3Description, treatment3videosIds);
     expect(response.errorOccured, false);
     expect(response.val, true);
 
 
-    response = await service.createTreatment(treatment4CustomerUser,
+    response = await service.createTreatment(treatment4CustomerUser,treatment4Name,
     treatment4Description, treatment4videosIds);
     expect(response.errorOccured, false);
     expect(response.val, true);
@@ -470,7 +339,7 @@ var test6 = test('create Treatment with not existing user fail', () async {
     expect(response.val, true);
 
 
-    response = await service.createTreatment("${treatment1CustomerUser}extra56",
+    response = await service.createTreatment("${treatment1CustomerUser}extra56",treatment1Name,
      treatment1Description, treatment1videosIds);
      
     expect(response.errorOccured, true);
@@ -483,14 +352,14 @@ var test6 = test('create Treatment with not existing user fail', () async {
     
     });
 
-var test7 = test('create Treatment with out any video  fail', () async {
+var test7 = test('create Treatment with out any video fail', () async {
 
   ResponseT<bool> response = await service.logIn(systemManagerEmail, systemManagerPass);
     expect(response.errorOccured, false);
     expect(response.val, true);
 
 
-    response = await service.createTreatment(treatment1CustomerUser,
+    response = await service.createTreatment(treatment1CustomerUser,treatment1Name,
      treatment1Description, []);
      
     expect(response.errorOccured, true);

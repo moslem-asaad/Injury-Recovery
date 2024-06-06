@@ -8,7 +8,7 @@ import 'package:injury_recovery/services/auth/auth_service.dart';
 void main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   AuthService.firebase().initialize();
-  Treatment treatment = Treatment(7,"כל תרגיל 4 פעמים",[1,2],"moslem.asaad2000@gmail.com");
+  Treatment treatment = Treatment("טיפול הכתף ",7,"כל תרגיל 4 פעמים",[1,2],"moslem.asaad2000@gmail.com");
   ExerciseVideo v1 = ExerciseVideo(1, 'https://firebasestorage.googleapis.com/v0/b/injury-recovery.appspot.com/o/videos%2F2024-05-29%2017%3A15%3A35.686336.mp4?alt=media&token=68d74580-f5c4-425c-86b0-1c769c8e3697'
     , 'ghh', 'sss', 'category1Name', 1);
 

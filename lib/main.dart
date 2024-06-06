@@ -14,6 +14,9 @@ import 'package:injury_recovery/features/presentation/views/system_manager/main_
 import 'package:injury_recovery/features/presentation/views/register_view.dart';
 import 'package:injury_recovery/features/presentation/views/reset_password_view.dart';
 import 'package:injury_recovery/features/presentation/views/verify_email_view.dart';
+import 'package:injury_recovery/features/presentation/widgets/treatments_images.dart';
+
+import 'features/presentation/widgets/Loading_page.dart';
 
 
 void main() {
@@ -79,13 +82,13 @@ class HomePage extends StatelessWidget {
                         return const CustomerProfile();
                       }
                     }
-                  default:return const CircularProgressIndicator();
+                  default:return getGif(context, 5, 1, 'LoadingLogo');
                 }
               },
             );
 
           default:
-            return const CircularProgressIndicator();
+            return Loading(context);
         }
       },
     );

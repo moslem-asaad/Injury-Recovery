@@ -41,7 +41,7 @@ class _TreatmentViewState extends State<TreatmentView> {
         backgroundColor: co.backgraound,
         appBar: AppBar(
           centerTitle: false,
-          title: Text('Treatment ${treatment.treatmentGlobalId}'),
+          title: Text('${treatment.treatmentName}'),
           actions: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal:25.0),
@@ -52,7 +52,7 @@ class _TreatmentViewState extends State<TreatmentView> {
             tabs: [
               Tab(
                 child: Text(
-                  'Videos',
+                  'תרגילים',
                   style: TextStyle(
                     color: co.text_color,
                     fontSize: 20,
@@ -62,7 +62,7 @@ class _TreatmentViewState extends State<TreatmentView> {
               ),
               Tab(
                 child: Text(
-                  'Feedback Request',
+                  'בקשות משוב',
                   style: TextStyle(
                     color: co.text_color,
                     fontSize: 18,
@@ -113,72 +113,6 @@ class _TreatmentViewState extends State<TreatmentView> {
   }
 
   Widget feedbackBarView() {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     return AllTreatmentFeedbacks(treatmentId: widget.treatment.treatmentGlobalId);
-    /*return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: Column(
-          children: [
-            Container(
-              height: height * 0.2,
-              width: width * 0.9,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(10),
-                  color: co.my_blue),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Feedback on video 1',
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                  const Text(
-                    'Feedback Status : not answerd yet',
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                  SizedBox(
-                    height: height * 0.03,
-                  ),
-                  Center(
-                    child: OutlinedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) =>
-                              RoFeedBackRequest(treatmentId: 1, videoId: 1),
-                        ));
-                      },
-                      child: Text(
-                        'review the request',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: height * 0.05,
-            ),
-            Container(
-              height: height * 0.2,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.grey[200],
-              ),
-            )
-          ],
-        ),
-      ),
-    );*/
   }
 }

@@ -83,15 +83,16 @@ class UsersProfilesController {
     return await firebaseService.register(email, password, firstName, lastName, phoneNumber);
   }
 
-  Future<bool> createTreatment(String customerUserEmail, String treatmentDescription,
+  Future<bool> createTreatment(String customerUserEmail, String treatmentName, String treatmentDescription,
    List<int> exerciseVideosIds) async{
+    validateNotNullOrEmptyString("Treatment Name",treatmentName);
     validateNotNullOrEmptyString("Treatment Description",treatmentDescription);
     validateNotNullOrEmptyString("Customer User Email",customerUserEmail);
     if(exerciseVideosIds.isEmpty){
       throw ExpectedFailureException("you can't create Treatment without any Exercise Video");
     }
     validatSystemManagerIsLoggedIn();
-    return await firebaseService.createTreatment(customerUserEmail,
+    return await firebaseService.createTreatment(customerUserEmail, treatmentName,
      treatmentDescription, exerciseVideosIds);
   }
 
@@ -108,6 +109,10 @@ class UsersProfilesController {
     validatCustomerUserIsLoggedIn();
     return await firebaseService.createFeedbackRequest(loggedInUser!.getEmail(), treatmentId,
      videoTreamentId, myVideoURL, description);
+  }
+
+  Future<String> getTreatmentNameById(int treatmentId) async{
+    return (await firebaseService.getTreatmentById(treatmentId)).treatmentName!;
   }
 
 
@@ -146,6 +151,14 @@ class UsersProfilesController {
   Future<bool> cleanCollection(String collectionName) async {
     return await firebaseService.cleanCollection(collectionName);
   }
+
+  Future<User> getCustomerUserByEmail(String email) async{
+    validatUserIsLoggedIn();
+    validateNotNullOrEmptyString('User Email', email);
+    return await firebaseService.getCustomerUserByEmail(email);
+  }
+
+
   void setIsTestExecution(bool flag){
     firebaseService.setIsTestExecution(flag);
   }

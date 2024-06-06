@@ -6,6 +6,7 @@ import '../../data/services/firebase_service_impl.dart';
 class Treatment{
 
 
+  String? treatmentName;
   int? treatmentGlobalId;
   String? treatmentDescription;
   List<ExerciseVideo>? videosList;
@@ -22,12 +23,12 @@ class Treatment{
     return videosIdsList!;
   }
 
-  Treatment(this.treatmentGlobalId, this.treatmentDescription, 
+  Treatment(this.treatmentName, this.treatmentGlobalId, this.treatmentDescription, 
   this.videosIdsList, this.customerUserEmail);
 
     factory Treatment.fromSnapshot(DocumentSnapshot documentSnapshot){
     var snapshot = documentSnapshot.data() as Map<String, dynamic>;
-    return Treatment(snapshot["treatmentGlobalId"], snapshot["treatmentDescription"],
+    return Treatment(snapshot["treatmentName"], snapshot["treatmentGlobalId"], snapshot["treatmentDescription"],
      List.from(snapshot["videosIdsList"]),
      snapshot["customerUserEmail"]);
    }
@@ -43,6 +44,7 @@ class Treatment{
 
    Map<String, dynamic> toJson() {
     return {
+      "treatmentName":treatmentName,
       "treatmentGlobalId":treatmentGlobalId,
       "treatmentDescription":treatmentDescription,
       "videosIdsList":videosIdsList,

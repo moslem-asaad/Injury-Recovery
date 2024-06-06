@@ -77,7 +77,7 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
         ),
       );
     } else {
-      return const Text('there is no video to display');
+      return const Text('לא סופק סרטון להצגה');
     }
   }
 

@@ -88,14 +88,20 @@ class _VideosViewState extends State<VideosView> {
 
   void _onHorizontalDragEnd(DragEndDetails details) {
     if (details.primaryVelocity! > 0) {
-      // Swiped from left to right, move to previous video
+      // Swiped from left to right, move to next video
+       if (_currentPageIndex < widget.videos.length - 1) {
+        _onPageChanged(_currentPageIndex + 1);
+      }
+      /*if (_currentPageIndex > 0) {
+        _onPageChanged(_currentPageIndex - 1);
+      }*/
+    } else if (details.primaryVelocity! < 0) {
+      // Swiped from right to left, move to prev video
+      /*if (_currentPageIndex < widget.videos.length - 1) {
+        _onPageChanged(_currentPageIndex + 1);
+      }*/
       if (_currentPageIndex > 0) {
         _onPageChanged(_currentPageIndex - 1);
-      }
-    } else if (details.primaryVelocity! < 0) {
-      // Swiped from right to left, move to next video
-      if (_currentPageIndex < widget.videos.length - 1) {
-        _onPageChanged(_currentPageIndex + 1);
       }
     }
   }
@@ -140,7 +146,7 @@ class _VideosViewState extends State<VideosView> {
                         color: backgraound,
                       ),
                       label: const Text(
-                        'Feedback',
+                        'משהו לא ברור ? תשלח משוב כאן',
                         style: TextStyle(
                           color: backgraound,
                         ),

@@ -18,7 +18,7 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgraound,
-      appBar: MenuButton(title: 'Main UI').bar(context),
+      appBar: MenuButton(title: 'הפרופיל שלי').bar(context),
       body: Column(
         children: [
           //const SizedBox(height: 150),
@@ -65,7 +65,7 @@ Widget _uploadVideo(BuildContext context) {
     () {
       Navigator.of(context).pushNamed(uploadVideoRout);
     },
-    'Upload Video ',
+    'העלאת סרטון ',
     getToMainUI(context, 0.1, 1),
   );
 }
@@ -77,7 +77,7 @@ Widget _createTreatment(BuildContext context) {
     () {
       Navigator.of(context).pushNamed(createTreatmentRoute);
     },
-    'Create Treatment ',
+    'יצירת טיפול ',
     getToMainUI(context, 0.1, 2),
   );
 }
@@ -90,7 +90,7 @@ Widget _userFeedbacks(BuildContext context) {
       () {
         Navigator.of(context).pushNamed(usersFeedbacksRout);
       },
-      'Users Feedbacks ',
+      'תגובות משתמשים ',
       getToMainUI(context, 0.1, 3),
     ),
   );

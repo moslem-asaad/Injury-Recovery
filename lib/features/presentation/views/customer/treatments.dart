@@ -4,6 +4,7 @@ import 'package:injury_recovery/components/menu_button.dart';
 import 'package:injury_recovery/features/presentation/services/response.dart';
 import 'package:injury_recovery/features/presentation/services/service_layer.dart';
 import 'package:injury_recovery/features/presentation/views/customer/treatment/treatment_view.dart';
+import 'package:injury_recovery/features/presentation/widgets/Loading_page.dart';
 import 'package:injury_recovery/features/presentation/widgets/my_box_shadow.dart';
 import 'package:injury_recovery/features/presentation/widgets/treatments_images.dart';
 import 'package:injury_recovery/utilities/show_error_dialog.dart';
@@ -18,6 +19,7 @@ class Treatmants extends StatefulWidget {
 
 class _TreatmantsState extends State<Treatmants> {
   late Future<List<Treatment>> futureTreatments;
+  int image_index = 0;
 
   @override
   void initState() {
@@ -41,14 +43,14 @@ class _TreatmantsState extends State<Treatmants> {
         future: futureTreatments,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return Loading(context);
           } else if (snapshot.hasError) {
             showErrorDialog(context, '${snapshot.error}');
             return Text('Error: ${snapshot.error}');
           } else {
             var treatments = snapshot.data!;
             return Scaffold(
-              appBar: const MenuButton(title: 'Treatments').bar(context),
+              appBar: const MenuButton(title: 'טיפולים שלי').bar(context),
               backgroundColor: Colors.white,
               body: SingleChildScrollView(
                 child: Column(
@@ -63,7 +65,12 @@ class _TreatmantsState extends State<Treatmants> {
         });
   }
 
+  void increment_image_indx() {
+    image_index = ((image_index + 1) % 5) + 1;
+  }
+
   treatmentWidget(Treatment treatment) {
+    increment_image_indx();
     return Padding(
       padding: const EdgeInsets.all(25.0),
       child: Container(
@@ -78,7 +85,7 @@ class _TreatmantsState extends State<Treatmants> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            getImage(context, 0.5, treatment.treatmentGlobalId!),
+            getImage(context, 0.5, image_index),
             const SizedBox(
               height: 10,
             ),
@@ -87,22 +94,8 @@ class _TreatmantsState extends State<Treatmants> {
               child: Row(
                 children: [
                   Text(
-                    treatment.treatmentGlobalId!.toString(),
+                    treatment.treatmentName!.toString(),
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                children: [
-                  Text(
-                    'Duration: 30 mins',
-                    style: TextStyle(fontSize: 17),
                   ),
                 ],
               ),
@@ -130,14 +123,17 @@ class _TreatmantsState extends State<Treatmants> {
                         border: Border.all(color: Colors.black),
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.white,
+                        boxShadow: myBoxShadow(),
                       ),
                       width: MediaQuery.of(context).size.width * 0.5,
                       height: MediaQuery.of(context).size.height * 0.06,
                       child: const Center(
                         child: Text(
-                          'Start Treatment',
+                          'התחל טיפול',
                           style: TextStyle(
                             color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
                           ),
                         ),
                       ),

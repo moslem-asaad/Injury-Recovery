@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injury_recovery/components/my_button.dart';
+import 'package:injury_recovery/features/presentation/widgets/Loading_page.dart';
 import 'package:injury_recovery/features/presentation/widgets/my_video_player.dart';
 import 'package:injury_recovery/services/store/store_date.dart';
 import 'package:injury_recovery/utilities/show_error_dialog.dart';
@@ -41,7 +42,7 @@ class _UploadVideoViewState extends State<UploadVideoView> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Upload Video'),
+        title: const Text('העלאת סרטון'),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -53,7 +54,7 @@ class _UploadVideoViewState extends State<UploadVideoView> {
             child: Center(
               child: _videoURL != null
                   ? _videoPlayerPreview()
-                  : const Text('No Video is Selected'),
+                  : const Text('טרם נבחר סרטון'),
             ),
           ),
         ),
@@ -73,7 +74,7 @@ class _UploadVideoViewState extends State<UploadVideoView> {
               onPressed: _pickVideo,
               icon: const Icon(Icons.video_library), // Icon color
               label: const Text(
-                'Pick Video',
+                'בחר סרטון',
               ), // Text color
             ),
           )
@@ -113,22 +114,6 @@ class _UploadVideoViewState extends State<UploadVideoView> {
       return Column(
         children: [
           MyVideoPlayer(controller: _controller),
-          /*GestureDetector(
-            onTap: () {
-              _handleTap();
-            },
-            child: Stack(
-              children: [
-                AspectRatio(
-                  aspectRatio: _aspectRatio,
-                  child: VideoPlayer(_controller!),
-                ),
-                _pauseVideo(),
-                _restartVideo(),
-                if (_showVideoButtons) _videoProgress(),
-              ],
-            ),
-          ),*/
           MyButton(
             onPressed: _uploadVideo,
             title: ('Upload'),
@@ -145,7 +130,7 @@ class _UploadVideoViewState extends State<UploadVideoView> {
         ],
       );
     } else {
-      return const CircularProgressIndicator();
+      return Loading(context);
     }
   }
 

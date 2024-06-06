@@ -7,6 +7,7 @@ import 'package:injury_recovery/components/my_button.dart';
 import 'package:injury_recovery/components/my_text_field.dart';
 import 'package:injury_recovery/features/presentation/services/service_layer.dart';
 import 'package:injury_recovery/features/presentation/views/customer/treatment/video_player_preview.dart';
+import 'package:injury_recovery/features/presentation/widgets/Loading_page.dart';
 import 'package:injury_recovery/features/presentation/widgets/row_line_with_button.dart';
 import 'package:injury_recovery/features/presentation/widgets/my_video_player.dart';
 import 'package:injury_recovery/utilities/show_error_dialog.dart';
@@ -51,7 +52,7 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feedback Request'),
+        title: Text('בקשת משוב'),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -74,11 +75,11 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
                 //keyboardType: TextInputType.emailAddress,
               ),
               RowTextTextButtun(
-                text1: 'provide your performe by',
+                text1: 'ספק את הביצועים שלך על ידי',
                 onPresses: () {
                   _showOptions(context);
                 },
-                button_text: 'clicking here',
+                button_text: 'לחיצה כאן',
               ),
               Container(
                 height: MediaQuery.of(context).size.height * 0.4,
@@ -94,7 +95,7 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
                   //print('asdasd ${widget.videoId} ${_description.text} ${_videoURL}');
                   await sendFeedbackRequest();
                 },
-                title: 'Send your request',
+                title: 'שליחת הבקשה',
               ),
               SizedBox(height: 20),
               Visibility(
@@ -153,7 +154,7 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
             children: <Widget>[
               ListTile(
                 leading: Icon(Icons.image),
-                title: Text('Open Gallary'),
+                title: Text('פתח את הגלריה'),
                 onTap: () {
                   _pickVideo(0);
                   Navigator.pop(context);
@@ -161,7 +162,7 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
               ),
               ListTile(
                 leading: Icon(Icons.camera_alt),
-                title: Text('Open Camera'),
+                title: Text('פתח את המצלמה'),
                 onTap: () {
                   _pickVideo(1);
                   Navigator.pop(context);
@@ -197,7 +198,7 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
         ),
       );
     } else {
-      return const CircularProgressIndicator();
+      return Loading(context);
     }
   }
 
@@ -207,7 +208,6 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
         _uploadProgressVisibile = !_uploadProgressVisibile;
         _uploadProgress = 0; // Reset progress before starting upload
       });
-      print('sendFeedbackRequestt videoURL $_videoURL');
 
       var response1 = await Service().uploadVideo(_videoURL!, 'customersVideos',
           (progress) {
@@ -220,7 +220,6 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
         await showErrorDialog(context, response1.errorMessage!);
       }
       _downloadURL = response1.val!;
-      print('sendFeedbackRequestt download $_downloadURL');
       var response2 = await Service().sendFeedbackRequest(
         widget.treatmentId,
         widget.videoId,

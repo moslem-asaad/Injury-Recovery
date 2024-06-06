@@ -21,6 +21,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
   //late final TextEditingController _video_url;
   late final TextEditingController _treatment_discription;
   late List<int> videos;
+  int videosLength = 0;
 
   void initState() {
     _treatment_name = TextEditingController();
@@ -46,7 +47,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
     return Scaffold(
       backgroundColor: backgraound,
       appBar: AppBar(
-        title: const Center(child: Text('Create Treatment')),
+        title: const Center(child: Text('יצירת טיפול')),
         foregroundColor: Colors.black,
         backgroundColor: Colors.grey,
       ),
@@ -57,7 +58,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
               children: [
                 MyTextField(
                   controller: _treatment_name,
-                  hintText: 'Treatment Name',
+                  hintText: 'שם טיפול',
                   obscureText: false,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -67,7 +68,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
                 SizedBox(height: screen_height / 82),
                 MyTextField(
                   controller: _user_name,
-                  hintText: 'User Name',
+                  hintText: 'שם משתמש',
                   obscureText: false,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -95,16 +96,25 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
                               .push(MaterialPageRoute(
                             builder: (context) => ExerciseVideos(),
                           )); //videos = (await _getVideosIds());
+                          setState(() {
+                            num_videos();
+                          });
                         },
-                        child: Text('pick treatment videos'),
+                        child: Text('בחר סרטוני טיפול'),
                       ),
+                    ),
+                    Visibility(
+                      child: Text(
+                        '${num_videos()} סרטונים נבחרו',
+                      ),
+                      visible: videos.isNotEmpty,
                     ),
                   ],
                 ),
                 SizedBox(height: screen_height / 82),
                 MyTextField(
                   controller: _treatment_discription,
-                  hintText: 'Treatment Discription',
+                  hintText: 'תיאור הטיפול',
                   obscureText: false,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -114,7 +124,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
                 MyButton(
                   onPressed: () async {
                     var response = await Service().createTreatment(
-                        _user_name.text, _treatment_discription.text, videos);
+                        _user_name.text, _treatment_name.text, _treatment_discription.text, videos);
 
                     if (response.errorOccured!) {
                       await showErrorDialog(context, response.errorMessage!);
@@ -122,7 +132,7 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
                       Navigator.pop(context);
                     }
                   },
-                  title: 'Crerate Treatment',
+                  title: 'צור טיפול',
                 ),
               ],
             ),
@@ -130,6 +140,13 @@ class _CreateTreatmentsViewState extends State<CreateTreatments> {
         ),
       ),
     );
+  }
+
+  int num_videos(){
+    setState(() {
+      videosLength = videos.length;
+    });
+    return videosLength;
   }
 
   Future<List<int>> _getVideosIds() async {

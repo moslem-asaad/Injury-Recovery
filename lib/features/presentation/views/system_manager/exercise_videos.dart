@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:injury_recovery/constants/colors.dart';
 import 'package:injury_recovery/features/domain/entities/exercise_video.dart';
+import 'package:injury_recovery/features/presentation/widgets/Loading_page.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../../components/menu_button.dart';
@@ -42,7 +43,7 @@ class _ExerciseVideosState extends State<ExerciseVideos> {
       future: futureVideos,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return Loading(context);
         } else if (snapshot.hasError) {
           showErrorDialog(context, '${snapshot.error}');
           return Text('Error: ${snapshot.error}');
@@ -57,10 +58,13 @@ class _ExerciseVideosState extends State<ExerciseVideos> {
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  for (var video in videos) _videoWidget(video),
+                  for (var video in videos) Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: _videoWidget(video),
+                  ),
                   IconButton(
                     onPressed: () {
-                      Navigator.pop(context,selectedVideos);
+                      Navigator.pop(context, selectedVideos);
                     },
                     icon: Icon(Icons.check),
                   ),
@@ -93,6 +97,14 @@ class _ExerciseVideosState extends State<ExerciseVideos> {
       style: ButtonStyle(
         backgroundColor: MaterialStatePropertyAll(
           videosColors[video.videoUrl!],
+        ),
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(10), // Adjust the border radius as needed
+            side: BorderSide(
+                color: Colors.black), // Adjust the border color as needed
+          ),
         ),
       ),
     );
