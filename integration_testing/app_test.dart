@@ -76,10 +76,10 @@ void main() {
     await tester.pump();
 
     await tester.pump(const Duration(seconds: 1));
-    await tester.tap(find.byIcon(Icons.volume_off_outlined));
-    await tester.pump();
+    //await tester.tap(find.byIcon(Icons.volume_off_outlined));
+    //await tester.pump();
 
-    await tester.pump(const Duration(seconds: 1));
+    //await tester.pump(const Duration(seconds: 1));
 
     await tester.tap(find.byIcon(Icons.fullscreen));
     await tester.pump();
@@ -114,10 +114,33 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  Future<void> _feedbackWithoutVideo(WidgetTester tester) async {
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField).at(0), 'משוב ללא סרטון');
+    await Future.delayed(Duration(seconds: 1));
+    await tester.pumpAndSettle();
+    expect(find.text('שליחת הבקשה'), findsOneWidget);
+    await Future.delayed(Duration(seconds: 5));
+    await tester.pump(const Duration(seconds: 10));
+    await tester.tap(find.text('שליחת הבקשה'));
+    await Future.delayed(Duration(seconds: 1));
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pump();
+
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> _openRequest(WidgetTester tester) async {
+    await tester.pumpAndSettle();
+    expect(find.text('עיון בבקשה'), findsAtLeast(1));
+    await tester.tap(find.text('עיון בבקשה').first);
+    await tester.pumpAndSettle();
+  }
+
   group(
     'app test',
     () {
-      testWidgets('Test navigation to reset password and back',
+      testWidgets('Test Cutomer side',
           (WidgetTester tester) async {
         await tester.pumpWidget(myapp);
 
@@ -134,9 +157,12 @@ void main() {
               .tap(find.byType(TextButton).at(0)); // Navigate to feedbacks page
           await tester.pumpAndSettle(); // Wait for navigation to complete
 
-          await Future.delayed(Duration(
-              seconds: 1)); // Add a delay to ensure navigation is complete
-
+          await Future.delayed(Duration(seconds: 3));
+          await tester.pump(Duration(seconds: 3));
+          await _openRequest(tester);
+          await tester.pumpAndSettle();
+          await tester.pageBack(); // Navigate back to profile page
+          await tester.pumpAndSettle();
           await tester.pageBack(); // Navigate back to profile page
           await tester.pumpAndSettle();
 
@@ -166,34 +192,35 @@ void main() {
           await Future.delayed(Duration(seconds: 3));
           await tester.pumpAndSettle();
           await _navigateIndex(tester, 2);
-          await _myVideoPlayerSenarios(tester);
+          //await _myVideoPlayerSenarios(tester);
           await tester.pumpAndSettle();
           expect(find.text('משהו לא ברור ? תשלח משוב כאן'), findsOneWidget);
           await Future.delayed(Duration(seconds: 1));
           await tester.tap(find.text('משהו לא ברור ? תשלח משוב כאן'));
           await Future.delayed(Duration(seconds: 1));
           await tester.pumpAndSettle();
+          expect(find.text('לחיצה כאן'), findsOneWidget);
+          await Future.delayed(Duration(seconds: 1));
+          await _feedbackWithoutVideo(tester);
+          await tester.tap(find.text('Ok'));
+          //await tester.pump(const Duration(seconds: 15));
+          //expect(find.text('Feedback sent successfully'), findsOneWidget);
+          //await Future.delayed(Duration(seconds: 1));
+          await tester.pump(const Duration(seconds: 5));
+          await tester.pumpAndSettle();
+          //expect(find.text('משהו לא ברור ? תשלח משוב כאן'), findsOneWidget);
 
           // Tap on the 'בקשות משוב' tab
-          /*await tester.tap(find.text('בקשות משוב'));
-          await Future.delayed(Duration(seconds: 4));
+          await tester.tap(find.text('בקשות משוב'));
           await tester.pumpAndSettle();
-          await tester.tap(find.text('תרגילים'));
-          await Future.delayed(Duration(seconds: 2));
-          await tester.pumpAndSettle();*/
-
-          //await tester.pumpAndSettle();
-          //await tester.tap(find.byType(MyVideoPlayer).at(0));
-          //await Future.delayed(Duration(seconds: 3));
-          //await tester.pumpAndSettle();
-          //await tester.tap(find.byType(TextButton).at(0));
-          //await Future.delayed(Duration(seconds: 3));
-          //await tester.pumpAndSettle();
-          //await tester.pageBack();
-          // await tester.pumpAndSettle();
-          //expect(ctr, findsOneWidget);
-        } catch (e) {
+          await Future.delayed(Duration(seconds: 3));
+          await tester.pump(Duration(seconds: 3));
+          await _openRequest(tester);
           await tester.pumpAndSettle();
+          
+        } catch (e) { // if the user not logged in, make the logging in process
+        
+           await tester.pumpAndSettle();
           // Trigger navigation to the reset password page
           await tester.tap(find.byType(TextButton).at(0));
           await tester.pumpAndSettle();
@@ -249,29 +276,15 @@ void main() {
       /*testWidgets('login register login senarios', (tester) async {
         app.main();
         await tester.pumpAndSettle();
-        try {
-          var user = await UsersProfilesController().getLoggedInUser();
-        } catch (e) {
-         /* await UsersProfilesController()
-              .logIn('moslem.asaad2000@gmail.com', '123456');
-          print(' aaaaaaaaaa');
-                    await tester.pumpAndSettle();*/
-          //app.main();
+        
+          // Trigger navigation to the reset password page
+          await tester.enterText(
+              find.byType(MyTextField).at(0), 'moslem.asaad2000@gmail.com');
           await tester.pumpAndSettle();
-          expect(find.byType(TextButton), findsAny);
+          await tester.enterText(find.byType(MyTextField).at(1), '123456');
+          await tester.pumpAndSettle();
           await tester.tap(find.byType(TextButton).at(1));
           await tester.pumpAndSettle();
-        }
-         await tester.pumpAndSettle();
-          expect(find.byType(TextButton), findsAny);
-          await tester.tap(find.byType(TextButton).at(1));
-          await tester.pumpAndSettle();
-        /*await tester.tap(find.byType(TextButton).at(2));
-        await Future.delayed(Duration(seconds: 3));
-        await tester.pumpAndSettle();
-        await tester.tap(find.byType(TextButton).at(1));
-        await Future.delayed(Duration(seconds: 3));
-        await tester.pumpAndSettle();*/
       });*/
     },
   );

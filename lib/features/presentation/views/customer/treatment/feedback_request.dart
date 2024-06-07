@@ -86,13 +86,9 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
                 child: MyVideoPlayer(
                   controller: _controller,
                 ),
-                /*child: _videoURL != null
-                    ? _videoPlayerPreview()
-                    : Text('no video selected'),*/
               ),
               MyButton(
                 onPressed: () async {
-                  //print('asdasd ${widget.videoId} ${_description.text} ${_videoURL}');
                   await sendFeedbackRequest();
                 },
                 title: 'שליחת הבקשה',
