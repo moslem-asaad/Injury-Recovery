@@ -51,10 +51,13 @@ class _UploadVideoViewState extends State<UploadVideoView> {
               maxWidth: MediaQuery.of(context).size.width,
               maxHeight: MediaQuery.of(context).size.height,
             ),
-            child: Center(
-              child: _videoURL != null
-                  ? _videoPlayerPreview()
-                  : const Text('טרם נבחר סרטון'),
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical:  MediaQuery.of(context).size.height*0.2),
+              child: Center(
+                child: _videoURL != null
+                    ? _videoPlayerPreview()
+                    : const Text('טרם נבחר סרטון'),
+              ),
             ),
           ),
         ),
@@ -77,7 +80,7 @@ class _UploadVideoViewState extends State<UploadVideoView> {
                 'בחר סרטון',
               ), // Text color
             ),
-          )
+          ) 
         ],
       ),
     );
@@ -88,7 +91,10 @@ class _UploadVideoViewState extends State<UploadVideoView> {
     XFile? videoFile;
     try {
       videoFile = await picker.pickVideo(source: ImageSource.gallery);
-      _videoURL = videoFile!.path;
+      setState(() {
+         _videoURL = videoFile!.path;
+         _uploadProgress = 0;
+      });
     } catch (e) {
       print(e.toString());
     }
@@ -252,7 +258,7 @@ class _UploadVideoViewState extends State<UploadVideoView> {
         });
       });*/
       //_downloadURL = await StoreData().uploadVideo(_videoURL!);
-      var response2 = await Service().createExerciseVideo(_downloadURL!,_description!,_summary!);
+      var response2 = await Service().createExerciseVideo(_downloadURL!,_summary!,_description!);
       if(response2.errorOccured!){
         await showErrorDialog(context, response2.errorMessage!);
       }

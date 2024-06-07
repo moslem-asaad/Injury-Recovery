@@ -137,8 +137,8 @@ class _VideosViewState extends State<VideosView> {
                         );
                       },
                       style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(my_green),
-                        minimumSize: MaterialStatePropertyAll(Size(10,50)),
+                        backgroundColor: WidgetStatePropertyAll(my_green),
+                        minimumSize: WidgetStatePropertyAll(Size(10,50)),
 
                       ),
                       icon: const Icon(

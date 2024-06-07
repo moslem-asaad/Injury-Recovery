@@ -27,6 +27,12 @@ class _ExerciseVideosState extends State<ExerciseVideos> {
     futureVideos = _getvideos();
   }
 
+  @override
+  void dispose() {
+    disposeControllers();
+    super.dispose();
+  }
+
   Future<List<ExerciseVideo>> _getvideos() async {
     var exerciseVideoResponse = await Service().getAllExerciseVideos();
     if (exerciseVideoResponse.errorOccured!) {
@@ -64,6 +70,7 @@ class _ExerciseVideosState extends State<ExerciseVideos> {
                   ),
                   IconButton(
                     onPressed: () {
+                      disposeControllers();
                       Navigator.pop(context, selectedVideos);
                     },
                     icon: Icon(Icons.check),
@@ -95,10 +102,10 @@ class _ExerciseVideosState extends State<ExerciseVideos> {
         // _getVideoPlayerController(video.videoUrl!).dispose();
       },
       style: ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll(
+        backgroundColor: WidgetStatePropertyAll(
           videosColors[video.videoUrl!],
         ),
-        shape: MaterialStateProperty.all(
+        shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
             borderRadius:
                 BorderRadius.circular(10), // Adjust the border radius as needed
