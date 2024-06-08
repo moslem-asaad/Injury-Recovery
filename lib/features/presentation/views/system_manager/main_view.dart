@@ -103,14 +103,14 @@ Future<bool> showLogOutDialog(BuildContext context) {
       return AlertDialog(
         backgroundColor: Colors.blue,
         title: const Text(
-          'Sign Out',
+          'התנתק',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
         ),
         content: const Text(
-          'Are you sure you want to sign out?',
+          'האם אתה בטוח שאתה רוצה לצאת?',
           style: TextStyle(
             fontSize: Checkbox.width,
             color: Colors.white,
@@ -141,7 +141,7 @@ Future<bool> showLogOutDialog(BuildContext context) {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            child: const Text('Log out'),
+            child: const Text('התנתק'),
           ),
         ],
       );

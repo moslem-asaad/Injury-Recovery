@@ -257,14 +257,14 @@ class _RoFeedBackRequestState extends State<RoFeedBackRequest> {
                                         context, response.errorMessage!);
                                   } else {
                                     await showMyDialog(
-                                        context, 'response sent succefully');
+                                        context, 'התגובה נשלחה בהצלחה');
                                     Navigator.pop(context);
                                     Navigator.pop(context);
                                     Navigator.pushNamed(
                                         context, usersFeedbacksRout);
                                   }
                                 },
-                                title: 'send response',
+                                title: 'שליחת תגובה',
                               ),
                           ],
                         ),
