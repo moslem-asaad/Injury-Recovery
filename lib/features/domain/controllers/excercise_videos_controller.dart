@@ -18,9 +18,9 @@ class ExerciseVideosController {
       String videoDescription) async {
     UsersProfilesController().validatSystemManagerIsLoggedIn();
     UsersProfilesController()
-        .validateNotNullOrEmptyString("Video Summary", videoSummary);
+        .validateNotNullOrEmptyString("סיכום וידאו", videoSummary);
     UsersProfilesController()
-        .validateNotNullOrEmptyString("Video Description", videoDescription);
+        .validateNotNullOrEmptyString("תיאור וידאו", videoDescription);
 
     return await firebaseService.createExerciseVideo(
         videoDownloadURL, videoSummary, videoDescription);
@@ -30,7 +30,7 @@ class ExerciseVideosController {
       String videoURL, String path, Function(double)? onProgress) async {
     //UsersProfilesController().validatSystemManagerIsLoggedIn();
     UsersProfilesController()
-        .validateNotNullOrEmptyString("Video URL", videoURL);
+        .validateNotNullOrEmptyString("קישור לוידאו", videoURL);
 
     return await firebaseService.uploadVideo(videoURL, path, onProgress);
   }

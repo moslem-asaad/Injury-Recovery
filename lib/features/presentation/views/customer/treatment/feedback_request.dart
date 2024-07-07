@@ -227,7 +227,7 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
         await showErrorDialog(context, response2.errorMessage!);
       } else {
         Navigator.pop(context);
-        showMyDialog(context, 'feedback sent succefully');
+        showMyDialog(context, 'בקשת משוב נשלחה בהצלחה !');
       }
     }else{
        var response2 = await Service().sendFeedbackRequest(
@@ -240,7 +240,7 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
         await showErrorDialog(context, response2.errorMessage!);
       } else {
         Navigator.pop(context);
-        showMyDialog(context, 'feedback sent succefully');
+        showMyDialog(context, 'בקשת משוב נשלחה בהצלחה !');
       }
     }
   }

@@ -60,10 +60,10 @@ class FirebaseServiceImpl{
     }on FirebaseAuthException catch (e){
 
       if (e.code == 'user-not-found'){
-        throw ExpectedFailureException('user not found');
+        throw ExpectedFailureException('משתמש לא קיים');
       }
       else if (e.code == 'wrong-password'){
-        throw ExpectedFailureException('entered password is wrong');
+        throw ExpectedFailureException('סיסמה לא נכונה');
       }else{
 
       
@@ -147,11 +147,11 @@ class FirebaseServiceImpl{
     }on FirebaseAuthException catch(e){
       print("register FirebaseAuthException 1");
       if(e.code == 'weak-password'){
-        throw ExpectedFailureException("password is weak");
+        throw ExpectedFailureException("סיסמה חלשה");
       }else if (e.code == 'email-already-in-use'){
-        throw ExpectedFailureException("email already in use");
+        throw ExpectedFailureException("משתמש כבר קיים");
       } else if (e.code == 'invalid-email'){
-        throw ExpectedFailureException("invalid email");
+        throw ExpectedFailureException("איימיל לא תקין");
       }else{
         print("register FirebaseAuthException 2");
         print(e.code);
@@ -195,7 +195,7 @@ class FirebaseServiceImpl{
         return true;
       }
       else{
-        throw ExpectedFailureException("Category name already exists");
+        throw ExpectedFailureException("משהו השתבש ..");
       }
     }on ExpectedFailureException catch(_){
       rethrow;
@@ -333,7 +333,7 @@ class FirebaseServiceImpl{
 
   Future<void> validateCustomerUserExists(String customerUserEmail) async{
     if(! await customerUserExist(customerUserEmail)){
-        throw ExpectedFailureException("entered user email does not exist");
+        throw ExpectedFailureException("משתמש לא קיים");
     }
   }
 
@@ -366,7 +366,7 @@ class FirebaseServiceImpl{
 
   Future<void> validateExerciseVideosExist(List<int> exerciseVideosIds) async{
     if(! await exerciseVideosExist(exerciseVideosIds)){
-       throw ExpectedFailureException("one or more exercise videos does not exist");
+       throw ExpectedFailureException("לפחות וידאו אחד לא קיים");
     }
   }
 
@@ -546,7 +546,7 @@ class FirebaseServiceImpl{
     try{
       FeedbackRequest feedbackRequest = await getFeedbackRequestbyId(feedbackId);
       if(feedbackRequest.wasResponded()){
-        throw ExpectedFailureException("Feedback request was already responded");
+        throw ExpectedFailureException("בקשת משוב כבר נענתה !");
       }
       feedbackRequest.setSystemManagerResponse(response);
       await updateFeedbackRequest(feedbackRequest);

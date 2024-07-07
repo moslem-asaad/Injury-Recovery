@@ -13,7 +13,7 @@ import '../../domain/entities/user.dart';
 class Service {
 
   // ignore: non_constant_identifier_names
-  final String SOME_THING_WENT_WRONG = "Some Thing Went Wrong";
+  final String SOME_THING_WENT_WRONG = "משהו השתבש ..";
   UsersProfilesController usersController = UsersProfilesController();
   ExerciseVideosController exerciseVideosController = ExerciseVideosController();
   static final Service _instance = Service.internalConstructor();
