@@ -120,7 +120,7 @@ class _LoginViewState extends State<LoginView> {
                 MyButton(
                   title: 'כניסה',
                   onPressed: () async {
-                     print("login testt: ");
+                     //print("login testt: ");
 
                     final email = _email.text;
                     final password = _password.text;

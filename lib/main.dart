@@ -4,6 +4,7 @@ import 'package:injury_recovery/constants/routes.dart';
 import 'package:injury_recovery/features/presentation/services/service_layer.dart';
 import 'package:injury_recovery/features/presentation/views/customer/customer_profile.dart';
 import 'package:injury_recovery/features/presentation/views/customer/treatments.dart';
+import 'package:injury_recovery/features/presentation/views/initial_page.dart';
 import 'package:injury_recovery/features/presentation/views/system_manager/create_treatment.dart';
 import 'package:injury_recovery/features/presentation/views/system_manager/upload_video_view.dart';
 import 'package:injury_recovery/features/presentation/views/system_manager/users_feedbacks.dart';
@@ -72,16 +73,20 @@ class HomePage extends StatelessWidget {
                     if(response.errorOccured!){
                       print('asassa ${response.errorMessage}');
                       //showErrorDialog(context, response.errorMessage!);
-                      return const LoginView();
-                    }else{
-                      var user = response.val!;
-                      print('asassa ${user.email}');
-                      if(user.isSystemManager){
+                      //return const LoginView();
+                    }//else{
+                      var user = response.val;
+                      //print('asassa ${user.email}');
+
+                      if(user == null){
+                        return InitialPage();
+                      }
+                      else if(user.isSystemManager){
                         return const MainView();
                       }else{
                         return const CustomerProfile();
                       }
-                    }
+                    //}
                   default:return getGif(context, 5, 1, 'LoadingLogo');
                 }
               },
