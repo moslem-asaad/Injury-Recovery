@@ -19,6 +19,7 @@ class ExerciseVideos extends StatefulWidget {
 class _ExerciseVideosState extends State<ExerciseVideos> {
   late Future<List<ExerciseVideo>> futureVideos;
   final Map<String, VideoPlayerController> _controllers = {};
+  final Map<String,bool> firstTuch = {};
   final Map<String, Color> videosColors = {};
   late List<int> selectedVideos = [];
   @override
@@ -52,7 +53,7 @@ class _ExerciseVideosState extends State<ExerciseVideos> {
           return Loading(context);
         } else if (snapshot.hasError) {
           showErrorDialog(context, '${snapshot.error}');
-          return Text('Error: ${snapshot.error}');
+          return Text('שגיאה: ${snapshot.error}');
         } else {
           var videos = snapshot.data!;
           for (var video in videos) {
@@ -93,6 +94,14 @@ class _ExerciseVideosState extends State<ExerciseVideos> {
         ),
       ),
       onPressed: () {
+        final controller = _controllers[video.videoUrl!];
+        if (controller != null) {
+          if(firstTuch[video.videoUrl!] == true){
+            controller.seekTo(Duration.zero);
+            firstTuch[video.videoUrl!] = false;
+          }
+          //controller.play();
+        }
         setVidoColor(video.videoUrl!);
         if (selectedVideos.contains(video.videoGlobalId)) {
           selectedVideos.remove(video.videoGlobalId);
@@ -121,7 +130,7 @@ class _ExerciseVideosState extends State<ExerciseVideos> {
     _controllers.values.forEach((controller) => controller.dispose());
   }
 
-  _getVideoPlayerController(String videoUrl) {
+  /*_getVideoPlayerController(String videoUrl) {
     if (_controllers.containsKey(videoUrl)) {
       // If controller already exists, return it
       return _controllers[videoUrl]!;
@@ -135,6 +144,22 @@ class _ExerciseVideosState extends State<ExerciseVideos> {
         );
       _controllers[videoUrl] = controller;
       videosColors[videoUrl] = backgraound;
+    }
+  }*/
+  VideoPlayerController _getVideoPlayerController(String videoUrl) {
+    if (_controllers.containsKey(videoUrl)) {
+      return _controllers[videoUrl]!;
+    } else {
+      final VideoPlayerController controller = VideoPlayerController.networkUrl(Uri.parse(videoUrl));
+      controller.initialize().then((_) {
+        setState(() {
+          controller.seekTo(Duration(seconds: 4));
+        });
+      });
+      _controllers[videoUrl] = controller;
+      videosColors[videoUrl] = backgraound;
+      firstTuch[videoUrl] = true;
+      return controller;
     }
   }
 
