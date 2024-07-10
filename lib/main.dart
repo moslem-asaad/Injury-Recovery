@@ -24,7 +24,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Injury Recover',
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
         //scaffoldBackgroundColor: Color.fromARGB(87, 155, 155, 155),
