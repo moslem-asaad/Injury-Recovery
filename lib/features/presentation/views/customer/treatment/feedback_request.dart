@@ -67,7 +67,7 @@ class _FeedbackRequestState extends State<FeedbackRequest> {
             children: [
               MyTextField(
                 controller: _description,
-                hintText: 'Description',
+                hintText: 'תיאור',
                 obscureText: false,
                 enableSuggestions: false,
                 autocorrect: false,
